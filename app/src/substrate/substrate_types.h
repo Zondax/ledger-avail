@@ -44,42 +44,39 @@ typedef uint32_t pd_u32_t;
 typedef uint64_t pd_u64_t;
 typedef uint32_t pd_BlockNumber_t;
 
-#define CHECK_ERROR(FUNC_CALL)          \
-    {                                   \
-        parser_error_t err = FUNC_CALL; \
-        if (err != parser_ok)           \
-            return err;                 \
-    }
+#define CHECK_ERROR(FUNC_CALL)                                                 \
+  {                                                                            \
+    parser_error_t err = FUNC_CALL;                                            \
+    if (err != parser_ok)                                                      \
+      return err;                                                              \
+  }
 
 typedef struct {
-    uint8_t moduleIdx;
-    uint8_t idx;
+  uint8_t moduleIdx;
+  uint8_t idx;
 } pd_CallIndex_t;
 
-typedef enum {
-    eEraImmortal = 0,
-    eEraMortal = 1
-} pd_ExtrinsicEra_e;
+typedef enum { eEraImmortal = 0, eEraMortal = 1 } pd_ExtrinsicEra_e;
 
 // This type has a non-standard serialization
 // core/sr-primitives/src/generic/era.rs
 typedef struct {
-    pd_ExtrinsicEra_e type;
-    uint64_t period;
-    uint64_t phase;
+  pd_ExtrinsicEra_e type;
+  uint64_t period;
+  uint64_t phase;
 } pd_ExtrinsicEra_t;
 
 typedef struct {
-    const uint8_t* ptr;
-    uint8_t len;
+  const uint8_t *ptr;
+  uint8_t len;
 } compactInt_t;
 
 typedef struct {
-    uint32_t _lenBuffer;
-    const uint8_t* _ptr; // Pointer to actual
-    const uint8_t* _nextPtr; // Pointer to next Call
-    uint8_t slotIdx; // Count of nested calls
-    bool isTail;
+  uint32_t _lenBuffer;
+  const uint8_t *_ptr;     // Pointer to actual
+  const uint8_t *_nextPtr; // Pointer to next Call
+  uint8_t slotIdx;         // Count of nested calls
+  bool isTail;
 } pd_NestCallIdx_t;
 
 ////////////////////////
@@ -99,227 +96,244 @@ typedef compactInt_t pd_CompactReferendumIndex_t;
 typedef compactInt_t pd_CompactRegistrarIndex_t;
 typedef compactInt_t pd_CompactWeight_t;
 
-typedef enum {
-    eAddressIndex = 0,
-    eAddressId = 1
-} pd_Address_e;
+typedef enum { eAddressIndex = 0, eAddressId = 1 } pd_Address_e;
 
 typedef struct {
-    pd_Address_e type;
-    uint64_t idx;
-    const uint8_t* idPtr;
+  pd_Address_e type;
+  uint64_t idx;
+  const uint8_t *idPtr;
 } pd_Address_t;
 
 typedef struct {
-    compactInt_t index;
+  compactInt_t index;
 } pd_CompactIndex_t;
 
 typedef struct {
-    compactInt_t value;
+  compactInt_t value;
 } pd_CompactBalance_t;
 
 typedef struct {
-    const uint8_t* _ptr;
+  const uint8_t *_ptr;
 } pd_AccountId_t;
 
 typedef struct {
-    uint64_t _len;
-    const uint8_t* _ptr;
+  uint64_t _len;
+  const uint8_t *_ptr;
 } pd_Bytes_t;
 
 typedef struct {
-    compactInt_t value;
+  compactInt_t value;
 } pd_CompactAccountIndex_t;
 
 typedef struct {
-    uint32_t value;
+  uint32_t value;
 } pd_Perbill_t;
 
 typedef struct {
-    uint8_t value;
-    union {
-        pd_AccountId_t id;
-        pd_CompactAccountIndex_t index;
-        pd_Bytes_t raw;
-        const uint8_t* _ptr;
-    };
+  const uint8_t *_ptr;
+} pd_u128_t;
+
+typedef struct {
+  uint8_t value;
+  union {
+    pd_AccountId_t id;
+    pd_CompactAccountIndex_t index;
+    pd_Bytes_t raw;
+    const uint8_t *_ptr;
+  };
 } pd_AccountIdLookupOfT_t;
 
 typedef struct {
-    const uint8_t* _ptr;
+  const uint8_t *_ptr;
 } pd_Balance_t;
 
 typedef struct {
-    pd_CallIndex_t callIndex;
-    const uint32_t* _txVerPtr;
-    pd_NestCallIdx_t nestCallIdx;
+  pd_CallIndex_t callIndex;
+  const uint32_t *_txVerPtr;
+  pd_NestCallIdx_t nestCallIdx;
 } pd_Call_t;
 
 typedef struct {
-    uint8_t value;
-    pd_AccountId_t id;
+  uint8_t value;
+  pd_AccountId_t id;
 } pd_CommissionClaimPermissionAccountId_t;
 
 typedef struct {
-    compactInt_t value;
+  compactInt_t value;
 } pd_CompactPerBill_t;
 
 typedef struct {
-    uint8_t value;
+  uint8_t value;
 } pd_Percent_t;
 
 typedef struct {
-    pd_BlockNumber_t height;
-    uint32_t index;
+  pd_BlockNumber_t height;
+  uint32_t index;
 } pd_Timepoint_t;
 
 typedef struct {
-    pd_Perbill_t perbill;
-    pd_AccountId_t id;
+  pd_Perbill_t perbill;
+  pd_AccountId_t id;
 } pd_TuplePerbillAccountId_t;
 
 typedef struct {
-    uint8_t value;
-    pd_Balance_t freeBalance;
+  uint8_t value;
+  uint32_t some;
+} pd_WeightFee_t;
+
+typedef struct {
+  uint8_t value;
+  pd_u128_t some;
+} pd_WeightMaximumFee_t;
+
+typedef struct {
+  uint8_t value;
+  pd_Balance_t freeBalance;
 } pd_BondExtraBalanceOfT_t;
 
 typedef struct {
-    pd_Perbill_t maxIncrease;
-    uint32_t minDelay;
+  pd_Perbill_t maxIncrease;
+  uint32_t minDelay;
 } pd_CommissionChangeRateBlockNumber_t;
 
 typedef struct {
-    uint8_t value;
-    pd_AccountId_t set;
+  uint8_t value;
+  pd_AccountId_t set;
 } pd_ConfigOpAccountId_t;
 
 typedef struct {
-    uint8_t value;
-    pd_Balance_t set;
+  uint8_t value;
+  pd_Balance_t set;
 } pd_ConfigOpBalanceOfT_t;
 
 typedef struct {
-    uint8_t value;
-    pd_Perbill_t set;
+  uint8_t value;
+  pd_Perbill_t set;
 } pd_ConfigOpPerbill_t;
 
 typedef struct {
-    uint8_t value;
-    pd_Percent_t set;
+  uint8_t value;
+  pd_Percent_t set;
 } pd_ConfigOpPercent_t;
 
 typedef struct {
-    uint8_t some;
-    pd_CommissionClaimPermissionAccountId_t contained;
+  pd_WeightMaximumFee_t weight_maximum_fee;
+  pd_WeightFee_t weight_fee_divider;
+  pd_WeightFee_t weight_fee_multiplier;
+} pd_DispatchFeeModifier_t;
+
+typedef struct {
+  uint8_t some;
+  pd_CommissionClaimPermissionAccountId_t contained;
 } pd_OptionCommissionClaimPermissionAccountId_t;
 
 typedef struct {
-    uint8_t some;
-    pd_Timepoint_t contained;
+  uint8_t some;
+  pd_Timepoint_t contained;
 } pd_OptionTimepoint_t;
 
 typedef struct {
-    uint8_t some;
-    pd_TuplePerbillAccountId_t contained;
+  uint8_t some;
+  pd_TuplePerbillAccountId_t contained;
 } pd_OptionTuplePerbillAccountId_t;
 
 typedef struct {
-    uint8_t value;
-    pd_AccountId_t accountId;
+  uint8_t value;
+  pd_AccountId_t accountId;
 } pd_RewardDestination_t;
 
 typedef struct {
-    pd_CompactPerBill_t commission;
-    pd_bool_t blocked;
+  pd_CompactPerBill_t commission;
+  pd_bool_t blocked;
 } pd_ValidatorPrefs_t;
 
 typedef struct {
-    uint64_t _len;
-    const uint8_t* _ptr;
-    uint64_t _lenBuffer;
+  uint64_t _len;
+  const uint8_t *_ptr;
+  uint64_t _lenBuffer;
 } pd_VecAccountIdLookupOfT_t;
 
 typedef struct {
-    uint64_t _len;
-    const uint8_t* _ptr;
-    uint64_t _lenBuffer;
-    uint32_t callTxVersion;
+  uint64_t _len;
+  const uint8_t *_ptr;
+  uint64_t _lenBuffer;
+  uint32_t callTxVersion;
 } pd_VecCall_t;
 
 typedef struct {
-    pd_Compactu64_t refTime;
-    pd_Compactu64_t proofSize;
+  pd_Compactu64_t refTime;
+  pd_Compactu64_t proofSize;
 } pd_Weight_t;
 
 typedef struct {
-    uint8_t value;
+  uint8_t value;
 } pd_AdjustmentDirection_t;
 
 typedef struct {
-    uint64_t _len;
-    const uint8_t* _ptr;
-    uint64_t _lenBuffer;
+  uint64_t _len;
+  const uint8_t *_ptr;
+  uint64_t _lenBuffer;
 } pd_AppData_t;
 
 typedef struct {
-    uint64_t _len;
-    const uint8_t* _ptr;
-    uint64_t _lenBuffer;
+  uint64_t _len;
+  const uint8_t *_ptr;
+  uint64_t _lenBuffer;
 } pd_AppKey_t;
 
 typedef struct {
-    uint8_t value;
+  uint8_t value;
 } pd_ClaimPermission_t;
 
 typedef struct {
-    uint8_t value;
-    uint32_t set;
+  uint8_t value;
+  uint32_t set;
 } pd_ConfigOpu32_t;
 
 typedef struct {
-    uint32_t value;
+  uint32_t value;
 } pd_EraIndex_t;
 
 typedef struct {
-    const uint8_t* _ptr;
+  const uint8_t *_ptr;
 } pd_H256_t;
 
 typedef struct {
-    const uint8_t* _ptr;
+  const uint8_t *_ptr;
 } pd_Hash_t;
 
 typedef struct {
-    const uint8_t* _ptr;
+  const uint8_t *_ptr;
 } pd_Keys_t;
 
 typedef struct {
-    uint32_t value;
+  uint32_t value;
 } pd_Page_t;
 
 typedef struct {
-    uint32_t value;
+  uint32_t value;
 } pd_PoolId_t;
 
 typedef struct {
-    uint8_t value;
+  uint8_t value;
 } pd_PoolState_t;
 
 typedef struct {
-    uint64_t _len;
-    const uint8_t* _ptr;
-    uint64_t _lenBuffer;
+  uint64_t _len;
+  const uint8_t *_ptr;
+  uint64_t _lenBuffer;
 } pd_VecAccountId_t;
 
 typedef struct {
-    uint64_t _len;
-    const uint8_t* _ptr;
-    uint64_t _lenBuffer;
+  uint64_t _len;
+  const uint8_t *_ptr;
+  uint64_t _lenBuffer;
 } pd_Vecu32_t;
 
 typedef struct {
-    uint64_t _len;
-    const uint8_t* _ptr;
-    uint64_t _lenBuffer;
+  uint64_t _len;
+  const uint8_t *_ptr;
+  uint64_t _lenBuffer;
 } pd_Vecu8_t;
 
 #ifdef __cplusplus

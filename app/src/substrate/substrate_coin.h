@@ -42,10 +42,10 @@ extern "C" {
 #define BLAKE2B_DIGEST_SIZE 32u
 
 typedef enum {
-    key_ed25519 = 0,
+  key_ed25519 = 0,
 
 #if defined(SUPPORT_SR25519)
-    key_sr25519 = 1
+  key_sr25519 = 1
 #endif
 
 } key_kind_e;
@@ -59,7 +59,8 @@ typedef enum {
 
 #define COIN_AMOUNT_DECIMAL_PLACES 18
 
-#define COIN_GENESIS_HASH "d3d2f3a3495dc597434a99d7d449ebad6616db45e4e4f178f31cc6fa14378b70"
+#define COIN_GENESIS_HASH                                                      \
+  "b91746b45e0346cc2f815a520b9c6cb4d5c0902af848db0a80f85932d2e8276a"
 #define COIN_NAME "Avail"
 #define COIN_TICKER "AVAIL "
 

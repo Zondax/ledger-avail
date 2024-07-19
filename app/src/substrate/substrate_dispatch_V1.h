@@ -26,23 +26,26 @@ extern "C" {
 #include <stddef.h>
 #include <stdint.h>
 
-parser_error_t _readMethod_V1(parser_context_t* c, uint8_t moduleIdx, uint8_t callIdx, pd_Method_V1_t* method);
+parser_error_t _readMethod_V1(parser_context_t *c, uint8_t moduleIdx,
+                              uint8_t callIdx, pd_Method_V1_t *method);
 
-const char* _getMethod_ModuleName_V1(uint8_t moduleIdx);
+const char *_getMethod_ModuleName_V1(uint8_t moduleIdx);
 
-const char* _getMethod_Name_V1(uint8_t moduleIdx, uint8_t callIdx);
-const char* _getMethod_Name_V1_ParserFull(uint16_t callPrivIdx);
+const char *_getMethod_Name_V1(uint8_t moduleIdx, uint8_t callIdx);
+const char *_getMethod_Name_V1_ParserFull(uint16_t callPrivIdx);
 
-const char* _getMethod_ItemName_V1(uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx);
+const char *_getMethod_ItemName_V1(uint8_t moduleIdx, uint8_t callIdx,
+                                   uint8_t itemIdx);
 
 uint8_t _getMethod_NumItems_V1(uint8_t moduleIdx, uint8_t callIdx);
 
-parser_error_t _getMethod_ItemValue_V1(
-    pd_Method_V1_t* m, uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx,
-    char* outValue, uint16_t outValueLen,
-    uint8_t pageIdx, uint8_t* pageCount);
+parser_error_t _getMethod_ItemValue_V1(pd_Method_V1_t *m, uint8_t moduleIdx,
+                                       uint8_t callIdx, uint8_t itemIdx,
+                                       char *outValue, uint16_t outValueLen,
+                                       uint8_t pageIdx, uint8_t *pageCount);
 
-bool _getMethod_ItemIsExpert_V1(uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx);
+bool _getMethod_ItemIsExpert_V1(uint8_t moduleIdx, uint8_t callIdx,
+                                uint8_t itemIdx);
 bool _getMethod_IsNestingSupported_V1(uint8_t moduleIdx, uint8_t callIdx);
 
 #ifdef __cplusplus
