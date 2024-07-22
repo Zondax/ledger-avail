@@ -15,6 +15,7 @@ jobs:
       matrix:
         sdk: ["$NANOS_SDK", "$NANOX_SDK", "$NANOSP_SDK", "$STAX_SDK"]
     runs-on: ubuntu-latest
+    if: github.event.repository.private == false
     container:
       image: ghcr.io/ledgerhq/ledger-app-builder/ledger-app-builder-legacy:latest
 

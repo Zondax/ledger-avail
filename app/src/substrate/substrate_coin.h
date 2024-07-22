@@ -42,10 +42,10 @@ extern "C" {
 #define BLAKE2B_DIGEST_SIZE 32u
 
 typedef enum {
-    key_ed25519 = 0,
+  key_ed25519 = 0,
 
 #if defined(SUPPORT_SR25519)
-    key_sr25519 = 1
+  key_sr25519 = 1
 #endif
 
 } key_kind_e;
