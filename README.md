@@ -28,7 +28,7 @@ Please:
 - **Do not use in production**
 - **Do not use a Ledger device with funds for development purposes.**
 - **Have a separate and marked device that is used ONLY for development and testing**
-# Avail 1.30.x
+# Avail 1.35.x
 
 ## System
 
@@ -36,7 +36,7 @@ Please:
 | -------------------------------- | ------ | ------------------ | ------------------ | ------------------ | --------------------------------- |
 | Remark                           |        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `Bytes`remark<br/>                |
 | Set heap pages                   |        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `u64`pages<br/>                   |
-| Set code                         |        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `Vecu8`code<br/>                  |
+| Set code                         |        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `Bytes`code<br/>                  |
 | Set code without checks          |        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `Vecu8`code<br/>                  |
 | Set storage                      |        |                    |                    |                    | `VecKeyValue`items<br/>           |
 | Kill storage                     |        |                    |                    |                    | `VecKey`keys<br/>                 |
@@ -213,6 +213,7 @@ Please:
 | Submit data                  |        | :heavy_check_mark: | :heavy_check_mark: |         | `AppData`data<br/>                       |
 | Submit block length proposal |        | :heavy_check_mark: | :heavy_check_mark: |         | `u32`rows<br/>`u32`cols<br/>             |
 | Set application key          |        | :heavy_check_mark: | :heavy_check_mark: |         | `AppKey`old_key<br/>`AppKey`new_key<br/> |
+| Set submit data fee modifier |        |                    |                    |         | `DispatchFeeModifier`modifier<br/>       |
 
 ## Preimage
 
