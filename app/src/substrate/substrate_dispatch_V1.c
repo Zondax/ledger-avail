@@ -433,6 +433,13 @@ __Z_INLINE parser_error_t _readMethod_dataavailability_set_application_key_V1(
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_dataavailability_set_submit_data_fee_modifier_V1(
+    parser_context_t* c, pd_dataavailability_set_submit_data_fee_modifier_V1_t* m)
+{
+    CHECK_ERROR(_readDispatchFeeModifier(c, &m->modifier))
+    return parser_ok;
+}
+
 __Z_INLINE parser_error_t _readMethod_multisig_as_multi_threshold_1_V1(
     parser_context_t* c, pd_multisig_as_multi_threshold_1_V1_t* m)
 {
@@ -840,6 +847,9 @@ parser_error_t _readMethod_V1(
     case 7427: /* module 29 call 3 */
         CHECK_ERROR(_readMethod_dataavailability_set_application_key_V1(c, &method->basic.dataavailability_set_application_key_V1))
         break;
+    case 7428: /* module 29 call 4 */
+        CHECK_ERROR(_readMethod_dataavailability_set_submit_data_fee_modifier_V1(c, &method->basic.dataavailability_set_submit_data_fee_modifier_V1))
+        break;
     case 8704: /* module 34 call 0 */
         CHECK_ERROR(_readMethod_multisig_as_multi_threshold_1_V1(c, &method->nested.multisig_as_multi_threshold_1_V1))
         break;
@@ -1090,6 +1100,8 @@ const char* _getMethod_Name_V1_ParserFull(uint16_t callPrivIdx)
         return STR_ME_SUBMIT_BLOCK_LENGTH_PROPOSAL;
     case 7427: /* module 29 call 3 */
         return STR_ME_SET_APPLICATION_KEY;
+    case 7428: /* module 29 call 4 */
+        return STR_ME_SET_SUBMIT_DATA_FEE_MODIFIER;
     case 8704: /* module 34 call 0 */
         return STR_ME_AS_MULTI_THRESHOLD_1;
     case 8705: /* module 34 call 1 */
@@ -1268,6 +1280,8 @@ uint8_t _getMethod_NumItems_V1(uint8_t moduleIdx, uint8_t callIdx)
         return 2;
     case 7427: /* module 29 call 3 */
         return 2;
+    case 7428: /* module 29 call 4 */
+        return 1;
     case 8704: /* module 34 call 0 */
         return 2;
     case 8705: /* module 34 call 1 */
@@ -1749,6 +1763,13 @@ const char* _getMethod_ItemName_V1(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
             return STR_IT_old_key;
         case 1:
             return STR_IT_new_key;
+        default:
+            return NULL;
+        }
+    case 7428: /* module 29 call 4 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_modifier;
         default:
             return NULL;
         }
@@ -2667,6 +2688,16 @@ parser_error_t _getMethod_ItemValue_V1(
         default:
             return parser_no_data;
         }
+    case 7428: /* module 29 call 4 */
+        switch (itemIdx) {
+        case 0: /* dataavailability_set_submit_data_fee_modifier_V1 - modifier */;
+            return _toStringDispatchFeeModifier(
+                &m->basic.dataavailability_set_submit_data_fee_modifier_V1.modifier,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
     case 8704: /* module 34 call 0 */
         switch (itemIdx) {
         case 0: /* multisig_as_multi_threshold_1_V1 - other_signatories */;
@@ -3218,6 +3249,7 @@ bool _getMethod_IsNestingSupported_V1(uint8_t moduleIdx, uint8_t callIdx)
     case 7425: // DataAvailability:Submit data
     case 7426: // DataAvailability:Submit block length proposal
     case 7427: // DataAvailability:Set application key
+    case 7428: // DataAvailability:Set submit data fee modifier
     case 9220: // NominationPools:Pool withdraw unbonded
     case 9223: // NominationPools:Create with pool id
     case 9227: // NominationPools:Set configs

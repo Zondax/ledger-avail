@@ -183,7 +183,7 @@
 | Submit data                  |        | :heavy_check_mark: | :heavy_check_mark: |         | `AppData`data<br/>                       |
 | Submit block length proposal |        | :heavy_check_mark: | :heavy_check_mark: |         | `u32`rows<br/>`u32`cols<br/>             |
 | Set application key          |        | :heavy_check_mark: | :heavy_check_mark: |         | `AppKey`old_key<br/>`AppKey`new_key<br/> |
-| Set submit data fee modifier |        |                    |                    |         | `DispatchFeeModifier`modifier<br/>       |
+| Set submit data fee modifier |        | :heavy_check_mark: | :heavy_check_mark: |         | `DispatchFeeModifier`modifier<br/>       |
 
 ## Preimage
 

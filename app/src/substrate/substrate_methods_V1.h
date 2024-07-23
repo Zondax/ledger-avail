@@ -216,6 +216,11 @@ typedef struct {
     pd_AppKey_t new_key;
 } pd_dataavailability_set_application_key_V1_t;
 
+#define PD_CALL_DATAAVAILABILITY_SET_SUBMIT_DATA_FEE_MODIFIER_V1 4
+typedef struct {
+    pd_DispatchFeeModifier_t modifier;
+} pd_dataavailability_set_submit_data_fee_modifier_V1_t;
+
 #define PD_CALL_NOMINATIONPOOLS_POOL_WITHDRAW_UNBONDED_V1 4
 typedef struct {
     pd_PoolId_t pool_id;
@@ -296,6 +301,7 @@ typedef union {
     pd_dataavailability_submit_data_V1_t dataavailability_submit_data_V1;
     pd_dataavailability_submit_block_length_proposal_V1_t dataavailability_submit_block_length_proposal_V1;
     pd_dataavailability_set_application_key_V1_t dataavailability_set_application_key_V1;
+    pd_dataavailability_set_submit_data_fee_modifier_V1_t dataavailability_set_submit_data_fee_modifier_V1;
     pd_nominationpools_pool_withdraw_unbonded_V1_t nominationpools_pool_withdraw_unbonded_V1;
     pd_nominationpools_create_with_pool_id_V1_t nominationpools_create_with_pool_id_V1;
     pd_nominationpools_set_configs_V1_t nominationpools_set_configs_V1;
