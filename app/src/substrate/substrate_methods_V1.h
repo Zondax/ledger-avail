@@ -410,7 +410,7 @@ typedef struct {
 
 #define PD_CALL_SYSTEM_SET_CODE_V1 2
 typedef struct {
-    pd_Vecu8_t code;
+    pd_Bytes_t code;
 } pd_system_set_code_V1_t;
 
 #define PD_CALL_SYSTEM_SET_CODE_WITHOUT_CHECKS_V1 3
