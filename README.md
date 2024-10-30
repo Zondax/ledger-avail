@@ -12,9 +12,9 @@ _Please visit our website at [zondax.ch](https://www.zondax.ch)_
 
 ---
 
-This project contains the Avail app (https://www.availproject.org/) for Ledger Nano S and X.
+This project contains the Avail app (https://www.availproject.org/) for Ledger Nano S, Nano S+, Nano X, Stax and Flex.
 
-- Ledger Nano S/X BOLOS app
+- Ledger Nano S/S+/X, Stax and Flex Avail app
 - Specs / Documentation
 - C++ unit tests
 - Zemu tests
