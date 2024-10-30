@@ -70,6 +70,16 @@ endif
 APPNAME = "Avail"
 APPPATH = "44'/709'"
 
+else ifeq ($(COIN),AVAIL_RECOVERY)
+# Main app configuration
+DEFINES += APP_STANDARD
+ifneq ($(TARGET_NAME),TARGET_NANOS)
+DEFINES += SUBSTRATE_PARSER_FULL
+endif
+APPNAME = "Avail Recovery"
+# This is the polkadot derivation path, as we want to enable users to move funds from polkadot-style derived addresses in avail chain
+APPPATH = "44'/354'"
+
 else ifeq ($(COIN),AVAIL_XL)
 # XL app configuration
 DEFINES += APP_STANDARD SUBSTRATE_PARSER_FULL

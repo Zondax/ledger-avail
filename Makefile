@@ -52,3 +52,7 @@ test_all:
 	make clean_build
 	SUBSTRATE_PARSER_FULL=1 SUPPORT_SR25519=1 make buildS
 	make zemu_test
+
+build_all:
+	COIN=AVAIL_RECOVERY make
+	make
