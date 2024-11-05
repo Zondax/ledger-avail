@@ -84,6 +84,7 @@ jobs:
         BOLOS_SDK: /opt/nanos-secure-sdk
     outputs:
       size: ${{steps.build.outputs.size}}
+      size_recovery: ${{steps.build_recovery.outputs.size_recovery}}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -99,6 +100,16 @@ jobs:
         shell: bash -l {0}
         run: |
           SUBSTRATE_PARSER_FULL=1 SUPPORT_SR25519=1 make
+      - name: Build Recovery app
+        id: build_recovery
+        shell: bash -l {0}
+        run: |
+          SUBSTRATE_PARSER_FULL=1 COIN=AVAIL_RECOVERY make
+          echo "size_recovery=$(python3 deps/ledger-zxlib/scripts/getSize.py s)" >> $GITHUB_OUTPUT
+      - name: Build SR25519 Recovery app
+        shell: bash -l {0}
+        run: |
+          SUBSTRATE_PARSER_FULL=1 SUPPORT_SR25519=1 COIN=AVAIL_RECOVERY make
 
   size_nano_s:
     needs: build_ledger
@@ -109,6 +120,9 @@ jobs:
       - run: |
           echo "LNS app size: ${{needs.build_ledger.outputs.size}} KiB"
           [ ${{needs.build_ledger.outputs.size}} -le $NANOS_LIMIT_SIZE ]
+      - run: |
+          echo "LNS Recovery app size: ${{needs.build_ledger.outputs.size_recovery}} KiB"
+          [ ${{needs.build_ledger.outputs.size_recovery}} -le $NANOS_LIMIT_SIZE ]
 
   test_zemu:
     runs-on: ${{ github.repository_owner == 'zondax' && 'zondax-runners' || 'ubuntu-latest' }}
@@ -318,6 +332,186 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
           files: ./app/pkg/installer_flex.sh
+          tag_name: ${{ steps.flex.outputs.tag_name }}
+          draft: false
+          prerelease: false
+
+  build_package_recovery_nanos:
+    needs: [configure, build, build_ledger, test_zemu]
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ${{ github.repository_owner == 'zondax' && 'zondax-runners' || 'ubuntu-latest' }}
+    container:
+      image: zondax/ledger-app-builder:latest
+      options: --user ${{ needs.configure.outputs.uid_gid }}
+      env:
+        BOLOS_SDK: /opt/nanos-secure-sdk
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Install deps
+        run: pip install ledgerblue
+
+      - name: Build NanoS
+        shell: bash -l {0}
+        run: |
+          PRODUCTION_BUILD=0 SUBSTRATE_PARSER_FULL=0 COIN=AVAIL_RECOVERY make
+          mv ./app/pkg/installer_s.sh ./app/pkg/installer_recovery_nanos.sh
+      - name: Set tag
+        id: nanos_light
+        run: echo "tag_name=$(./app/pkg/installer_recovery_nanos.sh version)" >> $GITHUB_OUTPUT
+      - name: Create or Update Release (1)
+        id: create_release_0
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          files: ./app/pkg/installer_recovery_nanos.sh
+          tag_name: ${{ steps.nanos_light.outputs.tag_name }}
+          draft: false
+          prerelease: false
+
+  build_package_recovery_nanos_xl:
+    needs: [configure, build, build_ledger, test_zemu]
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    container:
+      image: zondax/ledger-app-builder:latest
+      options: --user ${{ needs.configure.outputs.uid_gid }}
+      env:
+        BOLOS_SDK: /opt/nanos-secure-sdk
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Install deps
+        run: pip install ledgerblue
+
+      - name: Build NanoS XL
+        shell: bash -l {0}
+        run: |
+          PRODUCTION_BUILD=0 SUBSTRATE_PARSER_FULL=1 COIN=AVAIL_RECOVERY make
+          mv ./app/pkg/installer_s.sh ./app/pkg/installer_recovery_nanos_xl.sh
+      - name: Set tag
+        id: nanos_xl
+        run: echo "tag_name=$(./app/pkg/installer_recovery_nanos_xl.sh version)" >> $GITHUB_OUTPUT
+      - name: Update Release
+        id: update_release_1
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          files: ./app/pkg/installer_recovery_nanos_xl.sh
+          tag_name: ${{ steps.nanos_xl.outputs.tag_name }}
+          draft: false
+          prerelease: false
+
+  build_package_recovery_nanosp:
+    needs: [configure, build, build_ledger, test_zemu]
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ${{ github.repository_owner == 'zondax' && 'zondax-runners' || 'ubuntu-latest' }}
+    container:
+      image: zondax/ledger-app-builder:latest
+      options: --user ${{ needs.configure.outputs.uid_gid }}
+      env:
+        BOLOS_SDK: /opt/nanosplus-secure-sdk
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Install deps
+        run: pip install ledgerblue
+
+      - name: Build NanoSP
+        shell: bash -l {0}
+        run: |
+          PRODUCTION_BUILD=0 SUBSTRATE_PARSER_FULL=1 COIN=AVAIL_RECOVERY make
+          mv ./app/pkg/installer_s2.sh ./app/pkg/installer_recovery_nanos_plus.sh
+      - name: Set tag
+        id: nanosp
+        run: echo "tag_name=$(./app/pkg/installer_recovery_nanos_plus.sh version)" >> $GITHUB_OUTPUT
+      - name: Update Release
+        id: update_release_2
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          files: ./app/pkg/installer_recovery_nanos_plus.sh
+          tag_name: ${{ steps.nanosp.outputs.tag_name }}
+          draft: false
+          prerelease: false
+
+  build_package_recovery_stax:
+    needs: [configure, build, build_ledger, test_zemu]
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ${{ github.repository_owner == 'zondax' && 'zondax-runners' || 'ubuntu-latest' }}
+    container:
+      image: zondax/ledger-app-builder:latest
+      options: --user ${{ needs.configure.outputs.uid_gid }}
+      env:
+        BOLOS_SDK: /opt/stax-secure-sdk
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Install deps
+        run: pip install ledgerblue
+
+      - name: Build Stax
+        shell: bash -l {0}
+        run: |
+          PRODUCTION_BUILD=0 SUBSTRATE_PARSER_FULL=1 COIN=AVAIL_RECOVERY make
+          mv ./app/pkg/installer_stax.sh ./app/pkg/installer_recovery_stax.sh
+      - name: Set tag
+        id: stax
+        run: echo "tag_name=$(./app/pkg/installer_recovery_stax.sh version)" >> $GITHUB_OUTPUT
+      - name: Update Release
+        id: update_release_2
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          files: ./app/pkg/installer_recovery_stax.sh
+          tag_name: ${{ steps.stax.outputs.tag_name }}
+          draft: false
+          prerelease: false
+          
+  build_package_recovery_flex:
+    needs: [configure, build, build_ledger, test_zemu]
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ${{ github.repository_owner == 'zondax' && 'zondax-runners' || 'ubuntu-latest' }}
+    container:
+      image: zondax/ledger-app-builder:latest
+      options: --user ${{ needs.configure.outputs.uid_gid }}
+      env:
+        BOLOS_SDK: /opt/flex-secure-sdk
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Install deps
+        run: pip install ledgerblue
+
+      - name: Build Flex
+        shell: bash -l {0}
+        run: |
+          PRODUCTION_BUILD=0 SUBSTRATE_PARSER_FULL=1 COIN=AVAIL_RECOVERY make
+          mv ./app/pkg/installer_flex.sh ./app/pkg/installer_recovery_flex.sh
+      - name: Set tag
+        id: flex
+        run: echo "tag_name=$(./app/pkg/installer_recovery_flex.sh version)" >> $GITHUB_OUTPUT
+      - name: Update Release
+        id: update_release_2
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          files: ./app/pkg/installer_recovery_flex.sh
           tag_name: ${{ steps.flex.outputs.tag_name }}
           draft: false
           prerelease: false
