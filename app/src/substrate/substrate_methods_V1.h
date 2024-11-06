@@ -35,6 +35,7 @@ extern "C" {
 #define PD_CALL_BALANCES_V1 6
 #define PD_CALL_STAKING_V1 10
 #define PD_CALL_SESSION_V1 11
+#define PD_CALL_TECHNICALCOMMITTEE_V1 14
 #define PD_CALL_DATAAVAILABILITY_V1 29
 #define PD_CALL_MULTISIG_V1 34
 #define PD_CALL_NOMINATIONPOOLS_V1 36
@@ -197,6 +198,33 @@ typedef struct {
     pd_AccountId_t controller;
 } pd_staking_update_payee_V1_t;
 
+#define PD_CALL_TECHNICALCOMMITTEE_SET_MEMBERS_V1 0
+typedef struct {
+    pd_VecAccountId_t new_members;
+    pd_OptionAccountId_t prime;
+    pd_MemberCount_t old_count;
+} pd_technicalcommittee_set_members_V1_t;
+
+#define PD_CALL_TECHNICALCOMMITTEE_EXECUTE_V1 1
+typedef struct {
+    pd_Proposal_t proposal;
+    pd_Compactu32_t length_bound;
+} pd_technicalcommittee_execute_V1_t;
+
+#define PD_CALL_TECHNICALCOMMITTEE_PROPOSE_V1 2
+typedef struct {
+    pd_Compactu32_t threshold;
+    pd_Proposal_t proposal;
+    pd_Compactu32_t length_bound;
+} pd_technicalcommittee_propose_V1_t;
+
+#define PD_CALL_TECHNICALCOMMITTEE_VOTE_V1 3
+typedef struct {
+    pd_Hash_t proposal;
+    pd_Compactu32_t index;
+    pd_bool_t approve;
+} pd_technicalcommittee_vote_V1_t;
+
 #define PD_CALL_DATAAVAILABILITY_CREATE_APPLICATION_KEY_V1 0
 typedef struct {
     pd_AppKey_t key;
@@ -324,6 +352,10 @@ typedef union {
     pd_staking_set_min_commission_V1_t staking_set_min_commission_V1;
     pd_staking_payout_stakers_by_page_V1_t staking_payout_stakers_by_page_V1;
     pd_staking_update_payee_V1_t staking_update_payee_V1;
+    pd_technicalcommittee_set_members_V1_t technicalcommittee_set_members_V1;
+    pd_technicalcommittee_execute_V1_t technicalcommittee_execute_V1;
+    pd_technicalcommittee_propose_V1_t technicalcommittee_propose_V1;
+    pd_technicalcommittee_vote_V1_t technicalcommittee_vote_V1;
     pd_dataavailability_create_application_key_V1_t dataavailability_create_application_key_V1;
     pd_dataavailability_submit_data_V1_t dataavailability_submit_data_V1;
     pd_dataavailability_submit_block_length_proposal_V1_t dataavailability_submit_block_length_proposal_V1;

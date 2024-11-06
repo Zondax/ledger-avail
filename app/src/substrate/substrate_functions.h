@@ -72,6 +72,7 @@ parser_error_t _readIdentityInfo(parser_context_t* c, pd_IdentityInfo_t* v);
 parser_error_t _readOptionCommissionClaimPermissionAccountId(parser_context_t* c, pd_OptionCommissionClaimPermissionAccountId_t* v);
 parser_error_t _readOptionTimepoint(parser_context_t* c, pd_OptionTimepoint_t* v);
 parser_error_t _readOptionTuplePerbillAccountId(parser_context_t* c, pd_OptionTuplePerbillAccountId_t* v);
+parser_error_t _readProposal(parser_context_t* c, pd_Proposal_t* v);
 parser_error_t _readRewardDestination(parser_context_t* c, pd_RewardDestination_t* v);
 parser_error_t _readValidProof(parser_context_t* c, pd_ValidProof_t* v);
 parser_error_t _readValidatorPrefs(parser_context_t* c, pd_ValidatorPrefs_t* v);
@@ -86,6 +87,8 @@ parser_error_t _readConfigOpu32(parser_context_t* c, pd_ConfigOpu32_t* v);
 parser_error_t _readEraIndex(parser_context_t* c, pd_EraIndex_t* v);
 parser_error_t _readHash(parser_context_t* c, pd_Hash_t* v);
 parser_error_t _readKeys(parser_context_t* c, pd_Keys_t* v);
+parser_error_t _readMemberCount(parser_context_t* c, pd_MemberCount_t* v);
+parser_error_t _readOptionAccountId(parser_context_t* c, pd_OptionAccountId_t* v);
 parser_error_t _readOptionProxyType(parser_context_t* c, pd_OptionProxyType_t* v);
 parser_error_t _readPage(parser_context_t* c, pd_Page_t* v);
 parser_error_t _readPoolId(parser_context_t* c, pd_PoolId_t* v);
@@ -418,6 +421,13 @@ parser_error_t _toStringOptionTuplePerbillAccountId(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
+parser_error_t _toStringProposal(
+    const pd_Proposal_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
 parser_error_t _toStringRewardDestination(
     const pd_RewardDestination_t* v,
     char* outValue,
@@ -511,6 +521,20 @@ parser_error_t _toStringHash(
 
 parser_error_t _toStringKeys(
     const pd_Keys_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringMemberCount(
+    const pd_MemberCount_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringOptionAccountId(
+    const pd_OptionAccountId_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,

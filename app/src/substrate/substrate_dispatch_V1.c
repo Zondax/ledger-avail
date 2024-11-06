@@ -403,6 +403,41 @@ __Z_INLINE parser_error_t _readMethod_staking_update_payee_V1(
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_technicalcommittee_set_members_V1(
+    parser_context_t* c, pd_technicalcommittee_set_members_V1_t* m)
+{
+    CHECK_ERROR(_readVecAccountId(c, &m->new_members))
+    CHECK_ERROR(_readOptionAccountId(c, &m->prime))
+    CHECK_ERROR(_readMemberCount(c, &m->old_count))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_technicalcommittee_execute_V1(
+    parser_context_t* c, pd_technicalcommittee_execute_V1_t* m)
+{
+    CHECK_ERROR(_readProposal(c, &m->proposal))
+    CHECK_ERROR(_readCompactu32(c, &m->length_bound))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_technicalcommittee_propose_V1(
+    parser_context_t* c, pd_technicalcommittee_propose_V1_t* m)
+{
+    CHECK_ERROR(_readCompactu32(c, &m->threshold))
+    CHECK_ERROR(_readProposal(c, &m->proposal))
+    CHECK_ERROR(_readCompactu32(c, &m->length_bound))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_technicalcommittee_vote_V1(
+    parser_context_t* c, pd_technicalcommittee_vote_V1_t* m)
+{
+    CHECK_ERROR(_readHash(c, &m->proposal))
+    CHECK_ERROR(_readCompactu32(c, &m->index))
+    CHECK_ERROR(_readbool(c, &m->approve))
+    return parser_ok;
+}
+
 __Z_INLINE parser_error_t _readMethod_dataavailability_create_application_key_V1(
     parser_context_t* c, pd_dataavailability_create_application_key_V1_t* m)
 {
@@ -896,6 +931,18 @@ parser_error_t _readMethod_V1(
     case 2587: /* module 10 call 27 */
         CHECK_ERROR(_readMethod_staking_update_payee_V1(c, &method->basic.staking_update_payee_V1))
         break;
+    case 3584: /* module 14 call 0 */
+        CHECK_ERROR(_readMethod_technicalcommittee_set_members_V1(c, &method->basic.technicalcommittee_set_members_V1))
+        break;
+    case 3585: /* module 14 call 1 */
+        CHECK_ERROR(_readMethod_technicalcommittee_execute_V1(c, &method->basic.technicalcommittee_execute_V1))
+        break;
+    case 3586: /* module 14 call 2 */
+        CHECK_ERROR(_readMethod_technicalcommittee_propose_V1(c, &method->basic.technicalcommittee_propose_V1))
+        break;
+    case 3587: /* module 14 call 3 */
+        CHECK_ERROR(_readMethod_technicalcommittee_vote_V1(c, &method->basic.technicalcommittee_vote_V1))
+        break;
     case 7424: /* module 29 call 0 */
         CHECK_ERROR(_readMethod_dataavailability_create_application_key_V1(c, &method->basic.dataavailability_create_application_key_V1))
         break;
@@ -1042,6 +1089,8 @@ const char* _getMethod_ModuleName_V1(uint8_t moduleIdx)
 #endif
     case 0:
         return STR_MO_SYSTEM;
+    case 14:
+        return STR_MO_TECHNICALCOMMITTEE;
     case 29:
         return STR_MO_DATAAVAILABILITY;
     case 34:
@@ -1180,6 +1229,14 @@ const char* _getMethod_Name_V1_ParserFull(uint16_t callPrivIdx)
         return STR_ME_PAYOUT_STAKERS_BY_PAGE;
     case 2587: /* module 10 call 27 */
         return STR_ME_UPDATE_PAYEE;
+    case 3584: /* module 14 call 0 */
+        return STR_ME_SET_MEMBERS;
+    case 3585: /* module 14 call 1 */
+        return STR_ME_EXECUTE;
+    case 3586: /* module 14 call 2 */
+        return STR_ME_PROPOSE;
+    case 3587: /* module 14 call 3 */
+        return STR_ME_VOTE;
     case 7424: /* module 29 call 0 */
         return STR_ME_CREATE_APPLICATION_KEY;
     case 7425: /* module 29 call 1 */
@@ -1374,6 +1431,14 @@ uint8_t _getMethod_NumItems_V1(uint8_t moduleIdx, uint8_t callIdx)
         return 3;
     case 2587: /* module 10 call 27 */
         return 1;
+    case 3584: /* module 14 call 0 */
+        return 3;
+    case 3585: /* module 14 call 1 */
+        return 2;
+    case 3586: /* module 14 call 2 */
+        return 3;
+    case 3587: /* module 14 call 3 */
+        return 3;
     case 7424: /* module 29 call 0 */
         return 1;
     case 7425: /* module 29 call 1 */
@@ -1847,6 +1912,48 @@ const char* _getMethod_ItemName_V1(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         switch (itemIdx) {
         case 0:
             return STR_IT_controller;
+        default:
+            return NULL;
+        }
+    case 3584: /* module 14 call 0 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_new_members;
+        case 1:
+            return STR_IT_prime;
+        case 2:
+            return STR_IT_old_count;
+        default:
+            return NULL;
+        }
+    case 3585: /* module 14 call 1 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_proposal;
+        case 1:
+            return STR_IT_length_bound;
+        default:
+            return NULL;
+        }
+    case 3586: /* module 14 call 2 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_threshold;
+        case 1:
+            return STR_IT_proposal;
+        case 2:
+            return STR_IT_length_bound;
+        default:
+            return NULL;
+        }
+    case 3587: /* module 14 call 3 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_proposal;
+        case 1:
+            return STR_IT_index;
+        case 2:
+            return STR_IT_approve;
         default:
             return NULL;
         }
@@ -2823,6 +2930,81 @@ parser_error_t _getMethod_ItemValue_V1(
         default:
             return parser_no_data;
         }
+    case 3584: /* module 14 call 0 */
+        switch (itemIdx) {
+        case 0: /* technicalcommittee_set_members_V1 - new_members */;
+            return _toStringVecAccountId(
+                &m->basic.technicalcommittee_set_members_V1.new_members,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* technicalcommittee_set_members_V1 - prime */;
+            return _toStringOptionAccountId(
+                &m->basic.technicalcommittee_set_members_V1.prime,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* technicalcommittee_set_members_V1 - old_count */;
+            return _toStringMemberCount(
+                &m->basic.technicalcommittee_set_members_V1.old_count,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 3585: /* module 14 call 1 */
+        switch (itemIdx) {
+        case 0: /* technicalcommittee_execute_V1 - proposal */;
+            return _toStringProposal(
+                &m->basic.technicalcommittee_execute_V1.proposal,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* technicalcommittee_execute_V1 - length_bound */;
+            return _toStringCompactu32(
+                &m->basic.technicalcommittee_execute_V1.length_bound,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 3586: /* module 14 call 2 */
+        switch (itemIdx) {
+        case 0: /* technicalcommittee_propose_V1 - threshold */;
+            return _toStringCompactu32(
+                &m->basic.technicalcommittee_propose_V1.threshold,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* technicalcommittee_propose_V1 - proposal */;
+            return _toStringProposal(
+                &m->basic.technicalcommittee_propose_V1.proposal,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* technicalcommittee_propose_V1 - length_bound */;
+            return _toStringCompactu32(
+                &m->basic.technicalcommittee_propose_V1.length_bound,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 3587: /* module 14 call 3 */
+        switch (itemIdx) {
+        case 0: /* technicalcommittee_vote_V1 - proposal */;
+            return _toStringHash(
+                &m->basic.technicalcommittee_vote_V1.proposal,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* technicalcommittee_vote_V1 - index */;
+            return _toStringCompactu32(
+                &m->basic.technicalcommittee_vote_V1.index,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* technicalcommittee_vote_V1 - approve */;
+            return _toStringbool(
+                &m->basic.technicalcommittee_vote_V1.approve,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
     case 7424: /* module 29 call 0 */
         switch (itemIdx) {
         case 0: /* dataavailability_create_application_key_V1 - key */;
@@ -3550,6 +3732,10 @@ bool _getMethod_IsNestingSupported_V1(uint8_t moduleIdx, uint8_t callIdx)
     case 2585: // Staking:Set min commission
     case 2586: // Staking:Payout stakers by page
     case 2587: // Staking:Update payee
+    case 3584: // TechnicalCommittee:Set members
+    case 3585: // TechnicalCommittee:Execute
+    case 3586: // TechnicalCommittee:Propose
+    case 3587: // TechnicalCommittee:Vote
     case 7424: // DataAvailability:Create application key
     case 7425: // DataAvailability:Submit data
     case 7426: // DataAvailability:Submit block length proposal

@@ -319,6 +319,10 @@ typedef struct {
 } pd_OptionTuplePerbillAccountId_t;
 
 typedef struct {
+    pd_Call_t call;
+} pd_Proposal_t;
+
+typedef struct {
     uint8_t value;
     pd_AccountId_t accountId;
 } pd_RewardDestination_t;
@@ -386,6 +390,15 @@ typedef struct {
 typedef struct {
     const uint8_t* _ptr;
 } pd_Keys_t;
+
+typedef struct {
+    uint32_t value;
+} pd_MemberCount_t;
+
+typedef struct {
+    uint8_t some;
+    pd_AccountId_t contained;
+} pd_OptionAccountId_t;
 
 typedef struct {
     uint8_t some;
