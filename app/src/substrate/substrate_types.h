@@ -121,6 +121,11 @@ typedef struct {
 typedef compactInt_t pd_Compactu128_t;
 
 typedef struct {
+    uint8_t value;
+    const uint8_t* _ptr;
+} pd_Data_t;
+
+typedef struct {
     const uint8_t* _ptr;
 } pd_H256_t;
 
@@ -147,8 +152,17 @@ typedef struct {
 } pd_Perbill_t;
 
 typedef struct {
+    pd_Data_t data1;
+    pd_Data_t data2;
+} pd_TupleDataData_t;
+
+typedef struct {
     const uint8_t* _ptr;
 } pd_u128_t;
+
+typedef struct {
+    const uint8_t* _ptr;
+} pd_u8_array_20_t;
 
 typedef struct {
     uint8_t value;
@@ -188,6 +202,11 @@ typedef struct {
 } pd_Message_t;
 
 typedef struct {
+    uint8_t some;
+    pd_u8_array_20_t contained;
+} pd_Optionu8_array_20_t;
+
+typedef struct {
     uint8_t value;
 } pd_Percent_t;
 
@@ -210,6 +229,12 @@ typedef struct {
     const uint8_t* _ptr;
     uint64_t _lenBuffer;
 } pd_VecBytes_t;
+
+typedef struct {
+    uint64_t _len;
+    const uint8_t* _ptr;
+    uint64_t _lenBuffer;
+} pd_VecTupleDataData_t;
 
 typedef struct {
     uint8_t value;
@@ -265,6 +290,18 @@ typedef struct {
     pd_WeightFee_t weight_fee_divider;
     pd_WeightFee_t weight_fee_multiplier;
 } pd_DispatchFeeModifier_t;
+
+typedef struct {
+    pd_VecTupleDataData_t additional;
+    pd_Data_t display;
+    pd_Data_t legal;
+    pd_Data_t web;
+    pd_Data_t riot;
+    pd_Data_t email;
+    pd_Optionu8_array_20_t pgp_fingerprint;
+    pd_Data_t image;
+    pd_Data_t twitter;
+} pd_IdentityInfo_t;
 
 typedef struct {
     uint8_t some;

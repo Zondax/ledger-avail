@@ -113,6 +113,21 @@ parser_error_t _readCompactu128(parser_context_t* c, pd_Compactu128_t* v)
     return _readCompactInt(c, v);
 }
 
+parser_error_t _readData(parser_context_t* c, pd_Data_t* v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readUInt8(c, &v->value))
+    if (v->value <= 1) {
+        return parser_ok;
+    } else if (v->value <= 37) {
+        const uint8_t length = v->value <= 32 ? v->value - 1 : 32;
+        GEN_DEF_READARRAY(length)
+    } else {
+        return parser_unexpected_value;
+    }
+    return parser_ok;
+}
+
 parser_error_t _readH256(parser_context_t* c, pd_H256_t* v) {
     GEN_DEF_READARRAY(32)
 }
@@ -154,8 +169,20 @@ parser_error_t _readPerbill(parser_context_t* c, pd_Perbill_t* v)
     return parser_ok;
 }
 
+parser_error_t _readTupleDataData(parser_context_t* c, pd_TupleDataData_t* v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readData(c, &v->data1))
+    CHECK_ERROR(_readData(c, &v->data2))
+    return parser_ok;
+}
+
 parser_error_t _readu128(parser_context_t* c, pd_u128_t* v) {
     GEN_DEF_READARRAY(16)
+}
+
+parser_error_t _readu8_array_20(parser_context_t* c, pd_u8_array_20_t* v) {
+    GEN_DEF_READARRAY(20)
 }
 
 parser_error_t _readAccountIdLookupOfT(parser_context_t* c, pd_AccountIdLookupOfT_t* v)
@@ -426,6 +453,21 @@ parser_error_t _readDispatchFeeModifier(parser_context_t* c, pd_DispatchFeeModif
     return parser_ok;
 }
 
+parser_error_t _readIdentityInfo(parser_context_t* c, pd_IdentityInfo_t* v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readVecTupleDataData(c, &v->additional));
+    CHECK_ERROR(_readData(c, &v->display));
+    CHECK_ERROR(_readData(c, &v->legal));
+    CHECK_ERROR(_readData(c, &v->web));
+    CHECK_ERROR(_readData(c, &v->riot));
+    CHECK_ERROR(_readData(c, &v->email));
+    CHECK_ERROR(_readOptionu8_array_20(c, &v->pgp_fingerprint));
+    CHECK_ERROR(_readData(c, &v->image));
+    CHECK_ERROR(_readData(c, &v->twitter));
+    return parser_ok;
+}
+
 parser_error_t _readRewardDestination(parser_context_t* c, pd_RewardDestination_t* v)
 {
     CHECK_INPUT()
@@ -574,6 +616,10 @@ parser_error_t _readVecBytes(parser_context_t* c, pd_VecBytes_t* v) {
     GEN_DEF_READVECTOR(Bytes)
 }
 
+parser_error_t _readVecTupleDataData(parser_context_t* c, pd_VecTupleDataData_t* v) {
+    GEN_DEF_READVECTOR(TupleDataData)
+}
+
 parser_error_t _readVecAccountIdLookupOfT(parser_context_t* c, pd_VecAccountIdLookupOfT_t* v) {
     GEN_DEF_READVECTOR(AccountIdLookupOfT)
 }
@@ -588,6 +634,16 @@ parser_error_t _readVecu32(parser_context_t* c, pd_Vecu32_t* v) {
 
 parser_error_t _readVecu8(parser_context_t* c, pd_Vecu8_t* v) {
     GEN_DEF_READVECTOR(u8)
+}
+
+parser_error_t _readOptionu8_array_20(parser_context_t* c, pd_Optionu8_array_20_t* v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readUInt8(c, &v->some))
+    if (v->some > 0) {
+        CHECK_ERROR(_readu8_array_20(c, &v->contained))
+    }
+    return parser_ok;
 }
 
 parser_error_t _readOptionCommissionClaimPermissionAccountId(parser_context_t* c, pd_OptionCommissionClaimPermissionAccountId_t* v)
@@ -761,6 +817,41 @@ parser_error_t _toStringCompactu128(
     return _toStringCompactInt(v, 0, false, "", "", outValue, outValueLen, pageIdx, pageCount);
 }
 
+parser_error_t _toStringData(
+    const pd_Data_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    CLEAN_AND_CHECK()
+    *pageCount = 1;
+    if (v->value == 0) {
+        snprintf(outValue, outValueLen, "None");
+        return parser_ok;
+    } else if (v->value == 1) {
+        snprintf(outValue, outValueLen, "Empty raw");
+        return parser_ok;
+    } else if (v->value > 37) {
+        return parser_unexpected_value;
+    }
+    const uint8_t length = v->value <= 32 ? v->value - 1 : 32;
+    bool allPrintable = true;
+    if (v->value <= 33) {
+        for (uint8_t i = 0; i < length; i++) {
+            allPrintable &= IS_PRINTABLE(v->_ptr[i]);
+        }
+    }
+    if (v->value <= 33 && allPrintable) {
+        char bufferUI[40] = { 0 };
+        snprintf(bufferUI, length + 1, "%s", v->_ptr); // it counts null terminator
+        pageString(outValue, outValueLen, (const char*)bufferUI, pageIdx, pageCount);
+    } else {
+        GEN_DEF_TOSTRING_ARRAY(length)
+    }
+    return parser_ok;
+}
+
 parser_error_t _toStringH256(
     const pd_H256_t* v,
     char* outValue,
@@ -859,6 +950,43 @@ parser_error_t _toStringPerbill(
     return parser_ok;
 }
 
+parser_error_t _toStringTupleDataData(
+    const pd_TupleDataData_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    CLEAN_AND_CHECK()
+
+    // First measure number of pages
+    uint8_t pages[2] = { 0 };
+    CHECK_ERROR(_toStringData(&v->data1, outValue, outValueLen, 0, &pages[0]))
+    CHECK_ERROR(_toStringData(&v->data2, outValue, outValueLen, 0, &pages[1]))
+
+    *pageCount = 0;
+    for (uint8_t i = 0; i < (uint8_t)sizeof(pages); i++) {
+        *pageCount += pages[i];
+    }
+
+    if (pageIdx >= *pageCount) {
+        return parser_display_idx_out_of_range;
+    }
+
+    if (pageIdx < pages[0]) {
+        CHECK_ERROR(_toStringData(&v->data1, outValue, outValueLen, pageIdx, &pages[0]))
+        return parser_ok;
+    }
+    pageIdx -= pages[0];
+
+    if (pageIdx < pages[1]) {
+        CHECK_ERROR(_toStringData(&v->data2, outValue, outValueLen, pageIdx, &pages[1]))
+        return parser_ok;
+    }
+
+    return parser_display_idx_out_of_range;
+}
+
 parser_error_t _toStringu128(
     const pd_u128_t* v,
     char* outValue,
@@ -887,6 +1015,15 @@ parser_error_t _toStringu128(
     pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);
 
     return parser_ok;
+}
+
+parser_error_t _toStringu8_array_20(
+    const pd_u8_array_20_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount) {
+    GEN_DEF_TOSTRING_ARRAY(20)
 }
 
 parser_error_t _toStringAccountIdLookupOfT(
@@ -1536,6 +1673,92 @@ parser_error_t _toStringDispatchFeeModifier(
     return parser_display_idx_out_of_range;
 }
 
+parser_error_t _toStringIdentityInfo(
+    const pd_IdentityInfo_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    CLEAN_AND_CHECK()
+
+    // First measure number of pages
+    uint8_t pages[9] = { 0 };
+    CHECK_ERROR(_toStringVecTupleDataData(&v->additional, outValue, outValueLen, 0, &pages[0]))
+    CHECK_ERROR(_toStringData(&v->display, outValue, outValueLen, 0, &pages[1]))
+    CHECK_ERROR(_toStringData(&v->legal, outValue, outValueLen, 0, &pages[2]))
+    CHECK_ERROR(_toStringData(&v->web, outValue, outValueLen, 0, &pages[3]))
+    CHECK_ERROR(_toStringData(&v->riot, outValue, outValueLen, 0, &pages[4]))
+    CHECK_ERROR(_toStringData(&v->email, outValue, outValueLen, 0, &pages[5]))
+    CHECK_ERROR(_toStringOptionu8_array_20(&v->pgp_fingerprint, outValue, outValueLen, 0, &pages[6]))
+    CHECK_ERROR(_toStringData(&v->image, outValue, outValueLen, 0, &pages[7]))
+    CHECK_ERROR(_toStringData(&v->twitter, outValue, outValueLen, 0, &pages[8]))
+
+    *pageCount = 0;
+    for (uint8_t i = 0; i < (uint8_t)sizeof(pages); i++) {
+        *pageCount += pages[i];
+    }
+
+    if (pageIdx >= *pageCount) {
+        return parser_display_idx_out_of_range;
+    }
+
+    if (pageIdx < pages[0]) {
+        CHECK_ERROR(_toStringVecTupleDataData(&v->additional, outValue, outValueLen, pageIdx, &pages[0]))
+        return parser_ok;
+    }
+    pageIdx -= pages[0];
+
+    if (pageIdx < pages[1]) {
+        CHECK_ERROR(_toStringData(&v->display, outValue, outValueLen, pageIdx, &pages[1]))
+        return parser_ok;
+    }
+    pageIdx -= pages[1];
+
+    if (pageIdx < pages[2]) {
+        CHECK_ERROR(_toStringData(&v->legal, outValue, outValueLen, pageIdx, &pages[2]))
+        return parser_ok;
+    }
+    pageIdx -= pages[2];
+
+    if (pageIdx < pages[3]) {
+        CHECK_ERROR(_toStringData(&v->web, outValue, outValueLen, pageIdx, &pages[3]))
+        return parser_ok;
+    }
+    pageIdx -= pages[3];
+
+    if (pageIdx < pages[4]) {
+        CHECK_ERROR(_toStringData(&v->riot, outValue, outValueLen, pageIdx, &pages[4]))
+        return parser_ok;
+    }
+    pageIdx -= pages[4];
+
+    if (pageIdx < pages[5]) {
+        CHECK_ERROR(_toStringData(&v->email, outValue, outValueLen, pageIdx, &pages[5]))
+        return parser_ok;
+    }
+    pageIdx -= pages[5];
+
+    if (pageIdx < pages[6]) {
+        CHECK_ERROR(_toStringOptionu8_array_20(&v->pgp_fingerprint, outValue, outValueLen, pageIdx, &pages[6]))
+        return parser_ok;
+    }
+    pageIdx -= pages[6];
+
+    if (pageIdx < pages[7]) {
+        CHECK_ERROR(_toStringData(&v->image, outValue, outValueLen, pageIdx, &pages[7]))
+        return parser_ok;
+    }
+    pageIdx -= pages[7];
+
+    if (pageIdx < pages[8]) {
+        CHECK_ERROR(_toStringData(&v->twitter, outValue, outValueLen, pageIdx, &pages[8]))
+        return parser_ok;
+    }
+
+    return parser_display_idx_out_of_range;
+}
+
 parser_error_t _toStringRewardDestination(
     const pd_RewardDestination_t* v,
     char* outValue,
@@ -1914,6 +2137,16 @@ parser_error_t _toStringVecBytes(
     GEN_DEF_TOSTRING_VECTOR(Bytes);
 }
 
+parser_error_t _toStringVecTupleDataData(
+    const pd_VecTupleDataData_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    GEN_DEF_TOSTRING_VECTOR(TupleDataData);
+}
+
 parser_error_t _toStringVecAccountIdLookupOfT(
     const pd_VecAccountIdLookupOfT_t* v,
     char* outValue,
@@ -1952,6 +2185,27 @@ parser_error_t _toStringVecu8(
     uint8_t* pageCount)
 {
     GEN_DEF_TOSTRING_VECTOR(u8);
+}
+
+parser_error_t _toStringOptionu8_array_20(
+    const pd_Optionu8_array_20_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    CLEAN_AND_CHECK()
+
+    *pageCount = 1;
+    if (v->some > 0) {
+        CHECK_ERROR(_toStringu8_array_20(
+            &v->contained,
+            outValue, outValueLen,
+            pageIdx, pageCount));
+    } else {
+        snprintf(outValue, outValueLen, "None");
+    }
+    return parser_ok;
 }
 
 parser_error_t _toStringOptionCommissionClaimPermissionAccountId(

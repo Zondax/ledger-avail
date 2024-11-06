@@ -242,30 +242,30 @@
 
 ## Identity
 
-| Name                      | Nano S | Nano S XL | Nano SP/X - Stax | Nesting | Arguments                                                                                                       |
-| ------------------------- | ------ | --------- | ---------------- | ------- | --------------------------------------------------------------------------------------------------------------- |
-| Add registrar             |        |           |                  |         | `AccountIdLookupOfT`account<br/>                                                                                |
-| Set identity              |        |           |                  |         | `IdentityInfo`info<br/>                                                                                         |
-| Set subs                  |        |           |                  |         | `VecTupleAccountIdData`subs<br/>                                                                                |
-| Clear identity            |        |           |                  |         |                                                                                                                 |
-| Request judgement         |        |           |                  |         | `Compactu32`reg_index<br/>`Compactu128`max_fee<br/>                                                             |
-| Cancel request            |        |           |                  |         | `RegistrarIndex`reg_index<br/>                                                                                  |
-| Set fee                   |        |           |                  |         | `Compactu32`index<br/>`Compactu128`fee<br/>                                                                     |
-| Set account id            |        |           |                  |         | `Compactu32`index<br/>`AccountIdLookupOfT`new\_<br/>                                                            |
-| Set fields                |        |           |                  |         | `Compactu32`index<br/>`IdentityInformationasIdentityInformationProviderFieldsIdentifier`fields<br/>             |
-| Provide judgement         |        |           |                  |         | `Compactu32`reg_index<br/>`AccountIdLookupOfT`target<br/>`JudgementBalanceOfT`judgement<br/>`Hash`identity<br/> |
-| Kill identity             |        |           |                  |         | `AccountIdLookupOfT`target<br/>                                                                                 |
-| Add sub                   |        |           |                  |         | `AccountIdLookupOfT`sub<br/>`Data`data<br/>                                                                     |
-| Rename sub                |        |           |                  |         | `AccountIdLookupOfT`sub<br/>`Data`data<br/>                                                                     |
-| Remove sub                |        |           |                  |         | `AccountIdLookupOfT`sub<br/>                                                                                    |
-| Quit sub                  |        |           |                  |         |                                                                                                                 |
-| Add username authority    |        |           |                  |         | `AccountIdLookupOfT`authority<br/>`Vecu8`suffix<br/>`u32`allocation<br/>                                        |
-| Remove username authority |        |           |                  |         | `AccountIdLookupOfT`authority<br/>                                                                              |
-| Set username for          |        |           |                  |         | `AccountIdLookupOfT`who<br/>`Vecu8`username<br/>`OptionOffchainSignature`signature<br/>                         |
-| Accept username           |        |           |                  |         | `UsernameT`username<br/>                                                                                        |
-| Remove expired approval   |        |           |                  |         | `UsernameT`username<br/>                                                                                        |
-| Set primary username      |        |           |                  |         | `UsernameT`username<br/>                                                                                        |
-| Remove dangling username  |        |           |                  |         | `UsernameT`username<br/>                                                                                        |
+| Name                      | Nano S | Nano S XL          | Nano SP/X - Stax   | Nesting | Arguments                                                                                                       |
+| ------------------------- | ------ | ------------------ | ------------------ | ------- | --------------------------------------------------------------------------------------------------------------- |
+| Add registrar             |        |                    |                    |         | `AccountIdLookupOfT`account<br/>                                                                                |
+| Set identity              |        | :heavy_check_mark: | :heavy_check_mark: |         | `IdentityInfo`info<br/>                                                                                         |
+| Set subs                  |        |                    |                    |         | `VecTupleAccountIdData`subs<br/>                                                                                |
+| Clear identity            |        | :heavy_check_mark: | :heavy_check_mark: |         |                                                                                                                 |
+| Request judgement         |        |                    |                    |         | `Compactu32`reg_index<br/>`Compactu128`max_fee<br/>                                                             |
+| Cancel request            |        |                    |                    |         | `RegistrarIndex`reg_index<br/>                                                                                  |
+| Set fee                   |        |                    |                    |         | `Compactu32`index<br/>`Compactu128`fee<br/>                                                                     |
+| Set account id            |        |                    |                    |         | `Compactu32`index<br/>`AccountIdLookupOfT`new\_<br/>                                                            |
+| Set fields                |        |                    |                    |         | `Compactu32`index<br/>`IdentityInformationasIdentityInformationProviderFieldsIdentifier`fields<br/>             |
+| Provide judgement         |        |                    |                    |         | `Compactu32`reg_index<br/>`AccountIdLookupOfT`target<br/>`JudgementBalanceOfT`judgement<br/>`Hash`identity<br/> |
+| Kill identity             |        |                    |                    |         | `AccountIdLookupOfT`target<br/>                                                                                 |
+| Add sub                   |        |                    |                    |         | `AccountIdLookupOfT`sub<br/>`Data`data<br/>                                                                     |
+| Rename sub                |        |                    |                    |         | `AccountIdLookupOfT`sub<br/>`Data`data<br/>                                                                     |
+| Remove sub                |        |                    |                    |         | `AccountIdLookupOfT`sub<br/>                                                                                    |
+| Quit sub                  |        |                    |                    |         |                                                                                                                 |
+| Add username authority    |        |                    |                    |         | `AccountIdLookupOfT`authority<br/>`Vecu8`suffix<br/>`u32`allocation<br/>                                        |
+| Remove username authority |        |                    |                    |         | `AccountIdLookupOfT`authority<br/>                                                                              |
+| Set username for          |        |                    |                    |         | `AccountIdLookupOfT`who<br/>`Vecu8`username<br/>`OptionOffchainSignature`signature<br/>                         |
+| Accept username           |        |                    |                    |         | `UsernameT`username<br/>                                                                                        |
+| Remove expired approval   |        |                    |                    |         | `UsernameT`username<br/>                                                                                        |
+| Set primary username      |        |                    |                    |         | `UsernameT`username<br/>                                                                                        |
+| Remove dangling username  |        |                    |                    |         | `UsernameT`username<br/>                                                                                        |
 
 ## Mandate
 

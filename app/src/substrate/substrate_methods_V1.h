@@ -38,6 +38,7 @@ extern "C" {
 #define PD_CALL_DATAAVAILABILITY_V1 29
 #define PD_CALL_MULTISIG_V1 34
 #define PD_CALL_NOMINATIONPOOLS_V1 36
+#define PD_CALL_IDENTITY_V1 37
 #define PD_CALL_VECTOR_V1 39
 #define PD_CALL_PROXY_V1 40
 
@@ -265,6 +266,15 @@ typedef struct {
     pd_OptionCommissionClaimPermissionAccountId_t permission;
 } pd_nominationpools_set_commission_claim_permission_V1_t;
 
+#define PD_CALL_IDENTITY_SET_IDENTITY_V1 1
+typedef struct {
+    pd_IdentityInfo_t info;
+} pd_identity_set_identity_V1_t;
+
+#define PD_CALL_IDENTITY_CLEAR_IDENTITY_V1 3
+typedef struct {
+} pd_identity_clear_identity_V1_t;
+
 #define PD_CALL_VECTOR_EXECUTE_V1 1
 typedef struct {
     pd_Compactu64_t slot;
@@ -325,6 +335,8 @@ typedef union {
     pd_nominationpools_bond_extra_other_V1_t nominationpools_bond_extra_other_V1;
     pd_nominationpools_adjust_pool_deposit_V1_t nominationpools_adjust_pool_deposit_V1;
     pd_nominationpools_set_commission_claim_permission_V1_t nominationpools_set_commission_claim_permission_V1;
+    pd_identity_set_identity_V1_t identity_set_identity_V1;
+    pd_identity_clear_identity_V1_t identity_clear_identity_V1;
     pd_vector_execute_V1_t vector_execute_V1;
     pd_vector_send_message_V1_t vector_send_message_V1;
 #endif

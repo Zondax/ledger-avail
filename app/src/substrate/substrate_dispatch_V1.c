@@ -669,6 +669,21 @@ __Z_INLINE parser_error_t _readMethod_nominationpools_set_commission_claim_permi
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_identity_set_identity_V1(
+    parser_context_t* c, pd_identity_set_identity_V1_t* m)
+{
+    CHECK_ERROR(_readIdentityInfo(c, &m->info))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_identity_clear_identity_V1(
+    parser_context_t* c, pd_identity_clear_identity_V1_t* m)
+{
+    UNUSED(c);
+    UNUSED(m);
+    return parser_ok;
+}
+
 __Z_INLINE parser_error_t _readMethod_vector_execute_V1(
     parser_context_t* c, pd_vector_execute_V1_t* m)
 {
@@ -977,6 +992,12 @@ parser_error_t _readMethod_V1(
     case 9238: /* module 36 call 22 */
         CHECK_ERROR(_readMethod_nominationpools_set_commission_claim_permission_V1(c, &method->basic.nominationpools_set_commission_claim_permission_V1))
         break;
+    case 9473: /* module 37 call 1 */
+        CHECK_ERROR(_readMethod_identity_set_identity_V1(c, &method->basic.identity_set_identity_V1))
+        break;
+    case 9475: /* module 37 call 3 */
+        CHECK_ERROR(_readMethod_identity_clear_identity_V1(c, &method->basic.identity_clear_identity_V1))
+        break;
     case 9985: /* module 39 call 1 */
         CHECK_ERROR(_readMethod_vector_execute_V1(c, &method->basic.vector_execute_V1))
         break;
@@ -1027,6 +1048,8 @@ const char* _getMethod_ModuleName_V1(uint8_t moduleIdx)
         return STR_MO_MULTISIG;
     case 36:
         return STR_MO_NOMINATIONPOOLS;
+    case 37:
+        return STR_MO_IDENTITY;
     case 39:
         return STR_MO_VECTOR;
     case 40:
@@ -1221,6 +1244,10 @@ const char* _getMethod_Name_V1_ParserFull(uint16_t callPrivIdx)
         return STR_ME_ADJUST_POOL_DEPOSIT;
     case 9238: /* module 36 call 22 */
         return STR_ME_SET_COMMISSION_CLAIM_PERMISSION;
+    case 9473: /* module 37 call 1 */
+        return STR_ME_SET_IDENTITY;
+    case 9475: /* module 37 call 3 */
+        return STR_ME_CLEAR_IDENTITY;
     case 9985: /* module 39 call 1 */
         return STR_ME_EXECUTE;
     case 9987: /* module 39 call 3 */
@@ -1411,6 +1438,10 @@ uint8_t _getMethod_NumItems_V1(uint8_t moduleIdx, uint8_t callIdx)
         return 1;
     case 9238: /* module 36 call 22 */
         return 2;
+    case 9473: /* module 37 call 1 */
+        return 1;
+    case 9475: /* module 37 call 3 */
+        return 0;
     case 9985: /* module 39 call 1 */
         return 4;
     case 9987: /* module 39 call 3 */
@@ -2120,6 +2151,18 @@ const char* _getMethod_ItemName_V1(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
             return STR_IT_pool_id;
         case 1:
             return STR_IT_permission;
+        default:
+            return NULL;
+        }
+    case 9473: /* module 37 call 1 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_info;
+        default:
+            return NULL;
+        }
+    case 9475: /* module 37 call 3 */
+        switch (itemIdx) {
         default:
             return NULL;
         }
@@ -3300,6 +3343,21 @@ parser_error_t _getMethod_ItemValue_V1(
         default:
             return parser_no_data;
         }
+    case 9473: /* module 37 call 1 */
+        switch (itemIdx) {
+        case 0: /* identity_set_identity_V1 - info */;
+            return _toStringIdentityInfo(
+                &m->basic.identity_set_identity_V1.info,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 9475: /* module 37 call 3 */
+        switch (itemIdx) {
+        default:
+            return parser_no_data;
+        }
     case 9985: /* module 39 call 1 */
         switch (itemIdx) {
         case 0: /* vector_execute_V1 - slot */;
@@ -3503,6 +3561,8 @@ bool _getMethod_IsNestingSupported_V1(uint8_t moduleIdx, uint8_t callIdx)
     case 9230: // NominationPools:Bond extra other
     case 9237: // NominationPools:Adjust pool deposit
     case 9238: // NominationPools:Set commission claim permission
+    case 9473: // Identity:Set identity
+    case 9475: // Identity:Clear identity
     case 9985: // Vector:Execute
     case 9987: // Vector:Send message
         return false;
