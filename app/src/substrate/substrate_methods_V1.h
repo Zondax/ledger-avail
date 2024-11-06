@@ -36,6 +36,7 @@ extern "C" {
 #define PD_CALL_STAKING_V1 10
 #define PD_CALL_SESSION_V1 11
 #define PD_CALL_TECHNICALCOMMITTEE_V1 14
+#define PD_CALL_GRANDPA_V1 17
 #define PD_CALL_DATAAVAILABILITY_V1 29
 #define PD_CALL_MULTISIG_V1 34
 #define PD_CALL_NOMINATIONPOOLS_V1 36
@@ -225,6 +226,12 @@ typedef struct {
     pd_bool_t approve;
 } pd_technicalcommittee_vote_V1_t;
 
+#define PD_CALL_GRANDPA_NOTE_STALLED_V1 2
+typedef struct {
+    pd_BlockNumber_t delay;
+    pd_BlockNumber_t best_finalized_block_number;
+} pd_grandpa_note_stalled_V1_t;
+
 #define PD_CALL_DATAAVAILABILITY_CREATE_APPLICATION_KEY_V1 0
 typedef struct {
     pd_AppKey_t key;
@@ -356,6 +363,7 @@ typedef union {
     pd_technicalcommittee_execute_V1_t technicalcommittee_execute_V1;
     pd_technicalcommittee_propose_V1_t technicalcommittee_propose_V1;
     pd_technicalcommittee_vote_V1_t technicalcommittee_vote_V1;
+    pd_grandpa_note_stalled_V1_t grandpa_note_stalled_V1;
     pd_dataavailability_create_application_key_V1_t dataavailability_create_application_key_V1;
     pd_dataavailability_submit_data_V1_t dataavailability_submit_data_V1;
     pd_dataavailability_submit_block_length_proposal_V1_t dataavailability_submit_block_length_proposal_V1;

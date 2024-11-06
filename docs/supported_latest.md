@@ -128,11 +128,11 @@
 
 ## Grandpa
 
-| Name                         | Nano S | Nano S XL | Nano SP/X - Stax | Nesting | Arguments                                                                                       |
-| ---------------------------- | ------ | --------- | ---------------- | ------- | ----------------------------------------------------------------------------------------------- |
-| Report equivocation          |        |           |                  |         | `BoxEquivocationProofHashBlockNumber`equivocation_proof<br/>`KeyOwnerProof`key_owner_proof<br/> |
-| Report equivocation unsigned |        |           |                  |         | `BoxEquivocationProofHashBlockNumber`equivocation_proof<br/>`KeyOwnerProof`key_owner_proof<br/> |
-| Note stalled                 |        |           |                  |         | `BlockNumber`delay<br/>`BlockNumber`best_finalized_block_number<br/>                            |
+| Name                         | Nano S | Nano S XL          | Nano SP/X - Stax   | Nesting | Arguments                                                                                       |
+| ---------------------------- | ------ | ------------------ | ------------------ | ------- | ----------------------------------------------------------------------------------------------- |
+| Report equivocation          |        |                    |                    |         | `BoxEquivocationProofHashBlockNumber`equivocation_proof<br/>`KeyOwnerProof`key_owner_proof<br/> |
+| Report equivocation unsigned |        |                    |                    |         | `BoxEquivocationProofHashBlockNumber`equivocation_proof<br/>`KeyOwnerProof`key_owner_proof<br/> |
+| Note stalled                 |        | :heavy_check_mark: | :heavy_check_mark: |         | `BlockNumber`delay<br/>`BlockNumber`best_finalized_block_number<br/>                            |
 
 ## Treasury
 

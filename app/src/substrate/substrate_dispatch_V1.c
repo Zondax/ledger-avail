@@ -438,6 +438,14 @@ __Z_INLINE parser_error_t _readMethod_technicalcommittee_vote_V1(
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_grandpa_note_stalled_V1(
+    parser_context_t* c, pd_grandpa_note_stalled_V1_t* m)
+{
+    CHECK_ERROR(_readBlockNumber(c, &m->delay))
+    CHECK_ERROR(_readBlockNumber(c, &m->best_finalized_block_number))
+    return parser_ok;
+}
+
 __Z_INLINE parser_error_t _readMethod_dataavailability_create_application_key_V1(
     parser_context_t* c, pd_dataavailability_create_application_key_V1_t* m)
 {
@@ -943,6 +951,9 @@ parser_error_t _readMethod_V1(
     case 3587: /* module 14 call 3 */
         CHECK_ERROR(_readMethod_technicalcommittee_vote_V1(c, &method->basic.technicalcommittee_vote_V1))
         break;
+    case 4354: /* module 17 call 2 */
+        CHECK_ERROR(_readMethod_grandpa_note_stalled_V1(c, &method->basic.grandpa_note_stalled_V1))
+        break;
     case 7424: /* module 29 call 0 */
         CHECK_ERROR(_readMethod_dataavailability_create_application_key_V1(c, &method->basic.dataavailability_create_application_key_V1))
         break;
@@ -1091,6 +1102,8 @@ const char* _getMethod_ModuleName_V1(uint8_t moduleIdx)
         return STR_MO_SYSTEM;
     case 14:
         return STR_MO_TECHNICALCOMMITTEE;
+    case 17:
+        return STR_MO_GRANDPA;
     case 29:
         return STR_MO_DATAAVAILABILITY;
     case 34:
@@ -1237,6 +1250,8 @@ const char* _getMethod_Name_V1_ParserFull(uint16_t callPrivIdx)
         return STR_ME_PROPOSE;
     case 3587: /* module 14 call 3 */
         return STR_ME_VOTE;
+    case 4354: /* module 17 call 2 */
+        return STR_ME_NOTE_STALLED;
     case 7424: /* module 29 call 0 */
         return STR_ME_CREATE_APPLICATION_KEY;
     case 7425: /* module 29 call 1 */
@@ -1439,6 +1454,8 @@ uint8_t _getMethod_NumItems_V1(uint8_t moduleIdx, uint8_t callIdx)
         return 3;
     case 3587: /* module 14 call 3 */
         return 3;
+    case 4354: /* module 17 call 2 */
+        return 2;
     case 7424: /* module 29 call 0 */
         return 1;
     case 7425: /* module 29 call 1 */
@@ -1954,6 +1971,15 @@ const char* _getMethod_ItemName_V1(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
             return STR_IT_index;
         case 2:
             return STR_IT_approve;
+        default:
+            return NULL;
+        }
+    case 4354: /* module 17 call 2 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_delay;
+        case 1:
+            return STR_IT_best_finalized_block_number;
         default:
             return NULL;
         }
@@ -3005,6 +3031,21 @@ parser_error_t _getMethod_ItemValue_V1(
         default:
             return parser_no_data;
         }
+    case 4354: /* module 17 call 2 */
+        switch (itemIdx) {
+        case 0: /* grandpa_note_stalled_V1 - delay */;
+            return _toStringBlockNumber(
+                &m->basic.grandpa_note_stalled_V1.delay,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* grandpa_note_stalled_V1 - best_finalized_block_number */;
+            return _toStringBlockNumber(
+                &m->basic.grandpa_note_stalled_V1.best_finalized_block_number,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
     case 7424: /* module 29 call 0 */
         switch (itemIdx) {
         case 0: /* dataavailability_create_application_key_V1 - key */;
@@ -3736,6 +3777,7 @@ bool _getMethod_IsNestingSupported_V1(uint8_t moduleIdx, uint8_t callIdx)
     case 3585: // TechnicalCommittee:Execute
     case 3586: // TechnicalCommittee:Propose
     case 3587: // TechnicalCommittee:Vote
+    case 4354: // Grandpa:Note stalled
     case 7424: // DataAvailability:Create application key
     case 7425: // DataAvailability:Submit data
     case 7426: // DataAvailability:Submit block length proposal
