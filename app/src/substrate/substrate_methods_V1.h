@@ -39,6 +39,7 @@ extern "C" {
 #define PD_CALL_MULTISIG_V1 34
 #define PD_CALL_NOMINATIONPOOLS_V1 36
 #define PD_CALL_VECTOR_V1 39
+#define PD_CALL_PROXY_V1 40
 
 #define PD_CALL_UTILITY_BATCH_V1 0
 typedef struct {
@@ -578,6 +579,27 @@ typedef struct {
     pd_PoolId_t pool_id;
 } pd_nominationpools_claim_commission_V1_t;
 
+#define PD_CALL_PROXY_PROXY_V1 0
+typedef struct {
+    pd_AccountIdLookupOfT_t real;
+    pd_OptionProxyType_t force_proxy_type;
+    pd_Call_t call;
+} pd_proxy_proxy_V1_t;
+
+#define PD_CALL_PROXY_ADD_PROXY_V1 1
+typedef struct {
+    pd_AccountIdLookupOfT_t delegate;
+    pd_ProxyType_t proxy_type;
+    pd_BlockNumber_t delay;
+} pd_proxy_add_proxy_V1_t;
+
+#define PD_CALL_PROXY_REMOVE_PROXY_V1 2
+typedef struct {
+    pd_AccountIdLookupOfT_t delegate;
+    pd_ProxyType_t proxy_type;
+    pd_BlockNumber_t delay;
+} pd_proxy_remove_proxy_V1_t;
+
 #endif
 
 typedef union {
@@ -627,6 +649,9 @@ typedef union {
     pd_nominationpools_set_commission_max_V1_t nominationpools_set_commission_max_V1;
     pd_nominationpools_set_commission_change_rate_V1_t nominationpools_set_commission_change_rate_V1;
     pd_nominationpools_claim_commission_V1_t nominationpools_claim_commission_V1;
+    pd_proxy_proxy_V1_t proxy_proxy_V1;
+    pd_proxy_add_proxy_V1_t proxy_add_proxy_V1;
+    pd_proxy_remove_proxy_V1_t proxy_remove_proxy_V1;
 #endif
 } pd_MethodNested_V1_t;
 

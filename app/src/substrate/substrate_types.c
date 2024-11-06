@@ -253,6 +253,16 @@ parser_error_t _readPercent(parser_context_t* c, pd_Percent_t* v)
     return parser_ok;
 }
 
+parser_error_t _readProxyType(parser_context_t* c, pd_ProxyType_t* v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readUInt8(c, &v->value))
+    if (v->value > 5) {
+        return parser_value_out_of_range;
+    }
+    return parser_ok;
+}
+
 parser_error_t _readTimepoint(parser_context_t* c, pd_Timepoint_t* v)
 {
     CHECK_ERROR(_readBlockNumber(c, &v->height))
@@ -606,6 +616,16 @@ parser_error_t _readOptionTuplePerbillAccountId(parser_context_t* c, pd_OptionTu
     CHECK_ERROR(_readUInt8(c, &v->some))
     if (v->some > 0) {
         CHECK_ERROR(_readTuplePerbillAccountId(c, &v->contained))
+    }
+    return parser_ok;
+}
+
+parser_error_t _readOptionProxyType(parser_context_t* c, pd_OptionProxyType_t* v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readUInt8(c, &v->some))
+    if (v->some > 0) {
+        CHECK_ERROR(_readProxyType(c, &v->contained))
     }
     return parser_ok;
 }
@@ -1090,6 +1110,43 @@ parser_error_t _toStringPercent(
 
     snprintf(bufferUI, sizeof(bufferUI), "%s%%", bufferRatio);
     pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);
+    return parser_ok;
+}
+
+parser_error_t _toStringProxyType(
+    const pd_ProxyType_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    CLEAN_AND_CHECK()
+    UNUSED(pageIdx);
+
+    *pageCount = 1;
+    switch (v->value) {
+    case 0:
+        snprintf(outValue, outValueLen, "Any");
+        break;
+    case 1:
+        snprintf(outValue, outValueLen, "NonTransfer");
+        break;
+    case 2:
+        snprintf(outValue, outValueLen, "Governance");
+        break;
+    case 3:
+        snprintf(outValue, outValueLen, "Staking");
+        break;
+    case 4:
+        snprintf(outValue, outValueLen, "IdentityJudgement");
+        break;
+    case 5:
+        snprintf(outValue, outValueLen, "NominationPools");
+        break;
+    default:
+        return parser_print_not_supported;
+    }
+
     return parser_ok;
 }
 
@@ -1951,6 +2008,27 @@ parser_error_t _toStringOptionTuplePerbillAccountId(
     *pageCount = 1;
     if (v->some > 0) {
         CHECK_ERROR(_toStringTuplePerbillAccountId(
+            &v->contained,
+            outValue, outValueLen,
+            pageIdx, pageCount));
+    } else {
+        snprintf(outValue, outValueLen, "None");
+    }
+    return parser_ok;
+}
+
+parser_error_t _toStringOptionProxyType(
+    const pd_OptionProxyType_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    CLEAN_AND_CHECK()
+
+    *pageCount = 1;
+    if (v->some > 0) {
+        CHECK_ERROR(_toStringProxyType(
             &v->contained,
             outValue, outValueLen,
             pageIdx, pageCount));

@@ -49,6 +49,7 @@ parser_error_t _readCommissionClaimPermissionAccountId(parser_context_t* c, pd_C
 parser_error_t _readCompactPerBill(parser_context_t* c, pd_CompactPerBill_t* v);
 parser_error_t _readMessage(parser_context_t* c, pd_Message_t* v);
 parser_error_t _readPercent(parser_context_t* c, pd_Percent_t* v);
+parser_error_t _readProxyType(parser_context_t* c, pd_ProxyType_t* v);
 parser_error_t _readTimepoint(parser_context_t* c, pd_Timepoint_t* v);
 parser_error_t _readTuplePerbillAccountId(parser_context_t* c, pd_TuplePerbillAccountId_t* v);
 parser_error_t _readVecBytes(parser_context_t* c, pd_VecBytes_t* v);
@@ -79,6 +80,7 @@ parser_error_t _readConfigOpu32(parser_context_t* c, pd_ConfigOpu32_t* v);
 parser_error_t _readEraIndex(parser_context_t* c, pd_EraIndex_t* v);
 parser_error_t _readHash(parser_context_t* c, pd_Hash_t* v);
 parser_error_t _readKeys(parser_context_t* c, pd_Keys_t* v);
+parser_error_t _readOptionProxyType(parser_context_t* c, pd_OptionProxyType_t* v);
 parser_error_t _readPage(parser_context_t* c, pd_Page_t* v);
 parser_error_t _readPoolId(parser_context_t* c, pd_PoolId_t* v);
 parser_error_t _readPoolState(parser_context_t* c, pd_PoolState_t* v);
@@ -244,6 +246,13 @@ parser_error_t _toStringMessage(
 
 parser_error_t _toStringPercent(
     const pd_Percent_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringProxyType(
+    const pd_ProxyType_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -454,6 +463,13 @@ parser_error_t _toStringHash(
 
 parser_error_t _toStringKeys(
     const pd_Keys_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringOptionProxyType(
+    const pd_OptionProxyType_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,

@@ -688,6 +688,33 @@ __Z_INLINE parser_error_t _readMethod_vector_send_message_V1(
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_proxy_proxy_V1(
+    parser_context_t* c, pd_proxy_proxy_V1_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->real))
+    CHECK_ERROR(_readOptionProxyType(c, &m->force_proxy_type))
+    CHECK_ERROR(_readCall(c, &m->call))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_proxy_add_proxy_V1(
+    parser_context_t* c, pd_proxy_add_proxy_V1_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->delegate))
+    CHECK_ERROR(_readProxyType(c, &m->proxy_type))
+    CHECK_ERROR(_readBlockNumber(c, &m->delay))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_proxy_remove_proxy_V1(
+    parser_context_t* c, pd_proxy_remove_proxy_V1_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->delegate))
+    CHECK_ERROR(_readProxyType(c, &m->proxy_type))
+    CHECK_ERROR(_readBlockNumber(c, &m->delay))
+    return parser_ok;
+}
+
 #endif
 
 parser_error_t _readMethod_V1(
@@ -956,6 +983,15 @@ parser_error_t _readMethod_V1(
     case 9987: /* module 39 call 3 */
         CHECK_ERROR(_readMethod_vector_send_message_V1(c, &method->basic.vector_send_message_V1))
         break;
+    case 10240: /* module 40 call 0 */
+        CHECK_ERROR(_readMethod_proxy_proxy_V1(c, &method->nested.proxy_proxy_V1))
+        break;
+    case 10241: /* module 40 call 1 */
+        CHECK_ERROR(_readMethod_proxy_add_proxy_V1(c, &method->nested.proxy_add_proxy_V1))
+        break;
+    case 10242: /* module 40 call 2 */
+        CHECK_ERROR(_readMethod_proxy_remove_proxy_V1(c, &method->nested.proxy_remove_proxy_V1))
+        break;
 #endif
     default:
         return parser_unexpected_callIndex;
@@ -993,6 +1029,8 @@ const char* _getMethod_ModuleName_V1(uint8_t moduleIdx)
         return STR_MO_NOMINATIONPOOLS;
     case 39:
         return STR_MO_VECTOR;
+    case 40:
+        return STR_MO_PROXY;
 #endif
     default:
         return NULL;
@@ -1187,6 +1225,12 @@ const char* _getMethod_Name_V1_ParserFull(uint16_t callPrivIdx)
         return STR_ME_EXECUTE;
     case 9987: /* module 39 call 3 */
         return STR_ME_SEND_MESSAGE;
+    case 10240: /* module 40 call 0 */
+        return STR_ME_PROXY;
+    case 10241: /* module 40 call 1 */
+        return STR_ME_ADD_PROXY;
+    case 10242: /* module 40 call 2 */
+        return STR_ME_REMOVE_PROXY;
 #endif
     default:
         return NULL;
@@ -1370,6 +1414,12 @@ uint8_t _getMethod_NumItems_V1(uint8_t moduleIdx, uint8_t callIdx)
     case 9985: /* module 39 call 1 */
         return 4;
     case 9987: /* module 39 call 3 */
+        return 3;
+    case 10240: /* module 40 call 0 */
+        return 3;
+    case 10241: /* module 40 call 1 */
+        return 3;
+    case 10242: /* module 40 call 2 */
         return 3;
 #endif
     default:
@@ -2094,6 +2144,39 @@ const char* _getMethod_ItemName_V1(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
             return STR_IT_to;
         case 2:
             return STR_IT_domain;
+        default:
+            return NULL;
+        }
+    case 10240: /* module 40 call 0 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_real;
+        case 1:
+            return STR_IT_force_proxy_type;
+        case 2:
+            return STR_IT_call;
+        default:
+            return NULL;
+        }
+    case 10241: /* module 40 call 1 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_delegate;
+        case 1:
+            return STR_IT_proxy_type;
+        case 2:
+            return STR_IT_delay;
+        default:
+            return NULL;
+        }
+    case 10242: /* module 40 call 2 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_delegate;
+        case 1:
+            return STR_IT_proxy_type;
+        case 2:
+            return STR_IT_delay;
         default:
             return NULL;
         }
@@ -3257,6 +3340,66 @@ parser_error_t _getMethod_ItemValue_V1(
         case 2: /* vector_send_message_V1 - domain */;
             return _toStringCompactu32(
                 &m->basic.vector_send_message_V1.domain,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 10240: /* module 40 call 0 */
+        switch (itemIdx) {
+        case 0: /* proxy_proxy_V1 - real */;
+            return _toStringAccountIdLookupOfT(
+                &m->nested.proxy_proxy_V1.real,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* proxy_proxy_V1 - force_proxy_type */;
+            return _toStringOptionProxyType(
+                &m->nested.proxy_proxy_V1.force_proxy_type,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* proxy_proxy_V1 - call */;
+            return _toStringCall(
+                &m->nested.proxy_proxy_V1.call,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 10241: /* module 40 call 1 */
+        switch (itemIdx) {
+        case 0: /* proxy_add_proxy_V1 - delegate */;
+            return _toStringAccountIdLookupOfT(
+                &m->nested.proxy_add_proxy_V1.delegate,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* proxy_add_proxy_V1 - proxy_type */;
+            return _toStringProxyType(
+                &m->nested.proxy_add_proxy_V1.proxy_type,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* proxy_add_proxy_V1 - delay */;
+            return _toStringBlockNumber(
+                &m->nested.proxy_add_proxy_V1.delay,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 10242: /* module 40 call 2 */
+        switch (itemIdx) {
+        case 0: /* proxy_remove_proxy_V1 - delegate */;
+            return _toStringAccountIdLookupOfT(
+                &m->nested.proxy_remove_proxy_V1.delegate,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* proxy_remove_proxy_V1 - proxy_type */;
+            return _toStringProxyType(
+                &m->nested.proxy_remove_proxy_V1.proxy_type,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* proxy_remove_proxy_V1 - delay */;
+            return _toStringBlockNumber(
+                &m->nested.proxy_remove_proxy_V1.delay,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:

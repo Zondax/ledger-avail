@@ -29,6 +29,7 @@ static const char* STR_MO_DATAAVAILABILITY = "Dataavailability";
 static const char* STR_MO_MULTISIG = "Multisig";
 static const char* STR_MO_NOMINATIONPOOLS = "Nominationpools";
 static const char* STR_MO_VECTOR = "Vector";
+static const char* STR_MO_PROXY = "Proxy";
 
 // Methods names
 static const char* STR_ME_REMARK = "Remark";
@@ -110,6 +111,9 @@ static const char* STR_ME_ADJUST_POOL_DEPOSIT = "Adjust pool deposit";
 static const char* STR_ME_SET_COMMISSION_CLAIM_PERMISSION = "Set commission claim permission";
 static const char* STR_ME_EXECUTE = "Execute";
 static const char* STR_ME_SEND_MESSAGE = "Send message";
+static const char* STR_ME_PROXY = "Proxy";
+static const char* STR_ME_ADD_PROXY = "Add proxy";
+static const char* STR_ME_REMOVE_PROXY = "Remove proxy";
 
 // Items names
 static const char* STR_IT_remark = "Remark";
@@ -212,6 +216,14 @@ static const char* STR_IT_broadcaster = "Broadcaster";
 static const char* STR_IT_value = "Value";
 static const char* STR_IT_failed_txs = "Failed txs";
 static const char* STR_IT_updater = "Updater";
+static const char* STR_IT_real = "Real";
+static const char* STR_IT_force_proxy_type = "Force proxy type";
+static const char* STR_IT_delegate = "Delegate";
+static const char* STR_IT_proxy_type = "Proxy type";
+static const char* STR_IT_delay = "Delay";
+static const char* STR_IT_spawner = "Spawner";
+static const char* STR_IT_height = "Height";
+static const char* STR_IT_ext_index = "Ext index";
 
 #ifdef __cplusplus
 }

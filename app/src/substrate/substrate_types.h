@@ -192,6 +192,10 @@ typedef struct {
 } pd_Percent_t;
 
 typedef struct {
+    uint8_t value;
+} pd_ProxyType_t;
+
+typedef struct {
     pd_BlockNumber_t height;
     uint32_t index;
 } pd_Timepoint_t;
@@ -345,6 +349,11 @@ typedef struct {
 typedef struct {
     const uint8_t* _ptr;
 } pd_Keys_t;
+
+typedef struct {
+    uint8_t some;
+    pd_ProxyType_t contained;
+} pd_OptionProxyType_t;
 
 typedef struct {
     uint32_t value;

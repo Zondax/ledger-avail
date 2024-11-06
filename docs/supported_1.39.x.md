@@ -293,18 +293,18 @@
 
 ## Proxy
 
-| Name                | Nano S | Nano S XL | Nano SP/X - Stax | Nesting | Arguments                                                                                                                  |
-| ------------------- | ------ | --------- | ---------------- | ------- | -------------------------------------------------------------------------------------------------------------------------- |
-| Proxy               |        |           |                  |         | `AccountIdLookupOfT`real<br/>`OptionProxyType`force_proxy_type<br/>`Call`call<br/>                                         |
-| Add proxy           |        |           |                  |         | `AccountIdLookupOfT`delegate<br/>`ProxyType`proxy_type<br/>`BlockNumber`delay<br/>                                         |
-| Remove proxy        |        |           |                  |         | `AccountIdLookupOfT`delegate<br/>`ProxyType`proxy_type<br/>`BlockNumber`delay<br/>                                         |
-| Remove proxies      |        |           |                  |         |                                                                                                                            |
-| Create pure         |        |           |                  |         | `ProxyType`proxy_type<br/>`BlockNumber`delay<br/>`u16`index<br/>                                                           |
-| Kill pure           |        |           |                  |         | `AccountIdLookupOfT`spawner<br/>`ProxyType`proxy_type<br/>`u16`index<br/>`Compactu32`height<br/>`Compactu32`ext_index<br/> |
-| Announce            |        |           |                  |         | `AccountIdLookupOfT`real<br/>`CallHashOf`call_hash<br/>                                                                    |
-| Remove announcement |        |           |                  |         | `AccountIdLookupOfT`real<br/>`CallHashOf`call_hash<br/>                                                                    |
-| Reject announcement |        |           |                  |         | `AccountIdLookupOfT`delegate<br/>`CallHashOf`call_hash<br/>                                                                |
-| Proxy announced     |        |           |                  |         | `AccountIdLookupOfT`delegate<br/>`AccountIdLookupOfT`real<br/>`OptionProxyType`force_proxy_type<br/>`Call`call<br/>        |
+| Name                | Nano S | Nano S XL          | Nano SP/X - Stax   | Nesting            | Arguments                                                                                                                  |
+| ------------------- | ------ | ------------------ | ------------------ | ------------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| Proxy               |        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `AccountIdLookupOfT`real<br/>`OptionProxyType`force_proxy_type<br/>`Call`call<br/>                                         |
+| Add proxy           |        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `AccountIdLookupOfT`delegate<br/>`ProxyType`proxy_type<br/>`BlockNumber`delay<br/>                                         |
+| Remove proxy        |        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `AccountIdLookupOfT`delegate<br/>`ProxyType`proxy_type<br/>`BlockNumber`delay<br/>                                         |
+| Remove proxies      |        |                    |                    |                    |                                                                                                                            |
+| Create pure         |        |                    |                    |                    | `ProxyType`proxy_type<br/>`BlockNumber`delay<br/>`u16`index<br/>                                                           |
+| Kill pure           |        |                    |                    |                    | `AccountIdLookupOfT`spawner<br/>`ProxyType`proxy_type<br/>`u16`index<br/>`Compactu32`height<br/>`Compactu32`ext_index<br/> |
+| Announce            |        |                    |                    |                    | `AccountIdLookupOfT`real<br/>`CallHashOf`call_hash<br/>                                                                    |
+| Remove announcement |        |                    |                    |                    | `AccountIdLookupOfT`real<br/>`CallHashOf`call_hash<br/>                                                                    |
+| Reject announcement |        |                    |                    |                    | `AccountIdLookupOfT`delegate<br/>`CallHashOf`call_hash<br/>                                                                |
+| Proxy announced     |        |                    |                    |                    | `AccountIdLookupOfT`delegate<br/>`AccountIdLookupOfT`real<br/>`OptionProxyType`force_proxy_type<br/>`Call`call<br/>        |
 
 ## TxPause
 
