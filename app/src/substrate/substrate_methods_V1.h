@@ -38,6 +38,7 @@ extern "C" {
 #define PD_CALL_DATAAVAILABILITY_V1 29
 #define PD_CALL_MULTISIG_V1 34
 #define PD_CALL_NOMINATIONPOOLS_V1 36
+#define PD_CALL_VECTOR_V1 39
 
 #define PD_CALL_UTILITY_BATCH_V1 0
 typedef struct {
@@ -216,6 +217,11 @@ typedef struct {
     pd_AppKey_t new_key;
 } pd_dataavailability_set_application_key_V1_t;
 
+#define PD_CALL_DATAAVAILABILITY_SET_SUBMIT_DATA_FEE_MODIFIER_V1 4
+typedef struct {
+    pd_DispatchFeeModifier_t modifier;
+} pd_dataavailability_set_submit_data_fee_modifier_V1_t;
+
 #define PD_CALL_NOMINATIONPOOLS_POOL_WITHDRAW_UNBONDED_V1 4
 typedef struct {
     pd_PoolId_t pool_id;
@@ -258,6 +264,21 @@ typedef struct {
     pd_OptionCommissionClaimPermissionAccountId_t permission;
 } pd_nominationpools_set_commission_claim_permission_V1_t;
 
+#define PD_CALL_VECTOR_EXECUTE_V1 1
+typedef struct {
+    pd_Compactu64_t slot;
+    pd_AddressedMessage_t addr_message;
+    pd_ValidProof_t account_proof;
+    pd_ValidProof_t storage_proof;
+} pd_vector_execute_V1_t;
+
+#define PD_CALL_VECTOR_SEND_MESSAGE_V1 3
+typedef struct {
+    pd_Message_t message;
+    pd_H256_t to;
+    pd_Compactu32_t domain;
+} pd_vector_send_message_V1_t;
+
 #endif
 
 typedef union {
@@ -296,12 +317,15 @@ typedef union {
     pd_dataavailability_submit_data_V1_t dataavailability_submit_data_V1;
     pd_dataavailability_submit_block_length_proposal_V1_t dataavailability_submit_block_length_proposal_V1;
     pd_dataavailability_set_application_key_V1_t dataavailability_set_application_key_V1;
+    pd_dataavailability_set_submit_data_fee_modifier_V1_t dataavailability_set_submit_data_fee_modifier_V1;
     pd_nominationpools_pool_withdraw_unbonded_V1_t nominationpools_pool_withdraw_unbonded_V1;
     pd_nominationpools_create_with_pool_id_V1_t nominationpools_create_with_pool_id_V1;
     pd_nominationpools_set_configs_V1_t nominationpools_set_configs_V1;
     pd_nominationpools_bond_extra_other_V1_t nominationpools_bond_extra_other_V1;
     pd_nominationpools_adjust_pool_deposit_V1_t nominationpools_adjust_pool_deposit_V1;
     pd_nominationpools_set_commission_claim_permission_V1_t nominationpools_set_commission_claim_permission_V1;
+    pd_vector_execute_V1_t vector_execute_V1;
+    pd_vector_send_message_V1_t vector_send_message_V1;
 #endif
 } pd_MethodBasic_V1_t;
 

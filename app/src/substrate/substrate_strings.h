@@ -28,6 +28,7 @@ static const char* STR_MO_SESSION = "Session";
 static const char* STR_MO_DATAAVAILABILITY = "Dataavailability";
 static const char* STR_MO_MULTISIG = "Multisig";
 static const char* STR_MO_NOMINATIONPOOLS = "Nominationpools";
+static const char* STR_MO_VECTOR = "Vector";
 
 // Methods names
 static const char* STR_ME_REMARK = "Remark";
@@ -84,6 +85,7 @@ static const char* STR_ME_CREATE_APPLICATION_KEY = "Create application key";
 static const char* STR_ME_SUBMIT_DATA = "Submit data";
 static const char* STR_ME_SUBMIT_BLOCK_LENGTH_PROPOSAL = "Submit block length proposal";
 static const char* STR_ME_SET_APPLICATION_KEY = "Set application key";
+static const char* STR_ME_SET_SUBMIT_DATA_FEE_MODIFIER = "Set submit data fee modifier";
 static const char* STR_ME_AS_MULTI_THRESHOLD_1 = "As multi threshold 1";
 static const char* STR_ME_AS_MULTI = "As multi";
 static const char* STR_ME_APPROVE_AS_MULTI = "Approve as multi";
@@ -106,6 +108,8 @@ static const char* STR_ME_SET_COMMISSION_CHANGE_RATE = "Set commission change ra
 static const char* STR_ME_CLAIM_COMMISSION = "Claim commission";
 static const char* STR_ME_ADJUST_POOL_DEPOSIT = "Adjust pool deposit";
 static const char* STR_ME_SET_COMMISSION_CLAIM_PERMISSION = "Set commission claim permission";
+static const char* STR_ME_EXECUTE = "Execute";
+static const char* STR_ME_SEND_MESSAGE = "Send message";
 
 // Items names
 static const char* STR_IT_remark = "Remark";
@@ -157,6 +161,7 @@ static const char* STR_IT_rows = "Rows";
 static const char* STR_IT_cols = "Cols";
 static const char* STR_IT_old_key = "Old key";
 static const char* STR_IT_new_key = "New key";
+static const char* STR_IT_modifier = "Modifier";
 static const char* STR_IT_other_signatories = "Other signatories";
 static const char* STR_IT_threshold = "Threshold";
 static const char* STR_IT_maybe_timepoint = "Maybe timepoint";
@@ -188,6 +193,25 @@ static const char* STR_IT_other = "Other";
 static const char* STR_IT_new_commission = "New commission";
 static const char* STR_IT_max_commission = "Max commission";
 static const char* STR_IT_change_rate = "Change rate";
+static const char* STR_IT_function_id = "Function id";
+static const char* STR_IT_input = "Input";
+static const char* STR_IT_output = "Output";
+static const char* STR_IT_slot = "Slot";
+static const char* STR_IT_addr_message = "Addr message";
+static const char* STR_IT_account_proof = "Account proof";
+static const char* STR_IT_storage_proof = "Storage proof";
+static const char* STR_IT_source_chain_id = "Source chain id";
+static const char* STR_IT_frozen = "Frozen";
+static const char* STR_IT_message = "Message";
+static const char* STR_IT_to = "To";
+static const char* STR_IT_domain = "Domain";
+static const char* STR_IT_period = "Period";
+static const char* STR_IT_poseidon_hash = "Poseidon hash";
+static const char* STR_IT_broadcaster_domain = "Broadcaster domain";
+static const char* STR_IT_broadcaster = "Broadcaster";
+static const char* STR_IT_value = "Value";
+static const char* STR_IT_failed_txs = "Failed txs";
+static const char* STR_IT_updater = "Updater";
 
 #ifdef __cplusplus
 }

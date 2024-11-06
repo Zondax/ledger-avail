@@ -28,7 +28,7 @@ Please:
 - **Do not use in production**
 - **Do not use a Ledger device with funds for development purposes.**
 - **Have a separate and marked device that is used ONLY for development and testing**
-# Avail 1.35.x
+# Avail 1.39.x
 
 ## System
 
@@ -213,7 +213,7 @@ Please:
 | Submit data                  |        | :heavy_check_mark: | :heavy_check_mark: |         | `AppData`data<br/>                       |
 | Submit block length proposal |        | :heavy_check_mark: | :heavy_check_mark: |         | `u32`rows<br/>`u32`cols<br/>             |
 | Set application key          |        | :heavy_check_mark: | :heavy_check_mark: |         | `AppKey`old_key<br/>`AppKey`new_key<br/> |
-| Set submit data fee modifier |        |                    |                    |         | `DispatchFeeModifier`modifier<br/>       |
+| Set submit data fee modifier |        | :heavy_check_mark: | :heavy_check_mark: |         | `DispatchFeeModifier`modifier<br/>       |
 
 ## Preimage
 
@@ -305,21 +305,21 @@ Please:
 
 ## Vector
 
-| Name                        | Nano S | Nano S XL | Nano SP/X - Stax | Nesting | Arguments                                                                                                                |
-| --------------------------- | ------ | --------- | ---------------- | ------- | ------------------------------------------------------------------------------------------------------------------------ |
-| Fulfill call                |        |           |                  |         | `H256`function_id<br/>`FunctionInput`input<br/>`FunctionOutput`output<br/>`FunctionProof`proof<br/>`Compactu64`slot<br/> |
-| Execute                     |        |           |                  |         | `Compactu64`slot<br/>`AddressedMessage`addr_message<br/>`ValidProof`account_proof<br/>`ValidProof`storage_proof<br/>     |
-| Source chain froze          |        |           |                  |         | `Compactu32`source_chain_id<br/>`bool`frozen<br/>                                                                        |
-| Send message                |        |           |                  |         | `Message`message<br/>`H256`to<br/>`Compactu32`domain<br/>                                                                |
-| Set poseidon hash           |        |           |                  |         | `Compactu64`period<br/>`BoundedVecu8`poseidon_hash<br/>                                                                  |
-| Set broadcaster             |        |           |                  |         | `Compactu32`broadcaster_domain<br/>`H256`broadcaster<br/>                                                                |
-| Set whitelisted domains     |        |           |                  |         | `BoundedVecu32ConstU3210_000`value<br/>                                                                                  |
-| Set configuration           |        |           |                  |         | `Configuration`value<br/>                                                                                                |
-| Set function ids            |        |           |                  |         | `OptionTupleH256H256`value<br/>                                                                                          |
-| Set step verification key   |        |           |                  |         | `OptionBoundedVecu8ConstU3210_000`value<br/>                                                                             |
-| Set rotate verification key |        |           |                  |         | `OptionBoundedVecu8ConstU3210_000`value<br/>                                                                             |
-| Failed send message txs     |        |           |                  |         | `VecCompactu32`failed_txs<br/>                                                                                           |
-| Set updater                 |        |           |                  |         | `H256`updater<br/>                                                                                                       |
+| Name                        | Nano S | Nano S XL          | Nano SP/X - Stax   | Nesting | Arguments                                                                                                                |
+| --------------------------- | ------ | ------------------ | ------------------ | ------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Fulfill call                |        |                    |                    |         | `H256`function_id<br/>`FunctionInput`input<br/>`FunctionOutput`output<br/>`FunctionProof`proof<br/>`Compactu64`slot<br/> |
+| Execute                     |        | :heavy_check_mark: | :heavy_check_mark: |         | `Compactu64`slot<br/>`AddressedMessage`addr_message<br/>`ValidProof`account_proof<br/>`ValidProof`storage_proof<br/>     |
+| Source chain froze          |        |                    |                    |         | `Compactu32`source_chain_id<br/>`bool`frozen<br/>                                                                        |
+| Send message                |        | :heavy_check_mark: | :heavy_check_mark: |         | `Message`message<br/>`H256`to<br/>`Compactu32`domain<br/>                                                                |
+| Set poseidon hash           |        |                    |                    |         | `Compactu64`period<br/>`BoundedVecu8`poseidon_hash<br/>                                                                  |
+| Set broadcaster             |        |                    |                    |         | `Compactu32`broadcaster_domain<br/>`H256`broadcaster<br/>                                                                |
+| Set whitelisted domains     |        |                    |                    |         | `BoundedVecu32ConstU3210_000`value<br/>                                                                                  |
+| Set configuration           |        |                    |                    |         | `Configuration`value<br/>                                                                                                |
+| Set function ids            |        |                    |                    |         | `OptionTupleH256H256`value<br/>                                                                                          |
+| Set step verification key   |        |                    |                    |         | `OptionBoundedVecu8ConstU3210_000`value<br/>                                                                             |
+| Set rotate verification key |        |                    |                    |         | `OptionBoundedVecu8ConstU3210_000`value<br/>                                                                             |
+| Failed send message txs     |        |                    |                    |         | `VecCompactu32`failed_txs<br/>                                                                                           |
+| Set updater                 |        |                    |                    |         | `H256`updater<br/>                                                                                                       |
 
 ## Proxy
 

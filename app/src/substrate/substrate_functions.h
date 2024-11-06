@@ -34,28 +34,39 @@ parser_error_t _readCompactu32(parser_context_t* c, pd_Compactu32_t* v);
 parser_error_t _readCompactu64(parser_context_t* c, pd_Compactu64_t* v);
 parser_error_t _readCallImpl(parser_context_t* c, pd_Call_t* v, pd_MethodNested_t* m);
 
+parser_error_t _readCompactu128(parser_context_t* c, pd_Compactu128_t* v);
+parser_error_t _readH256(parser_context_t* c, pd_H256_t* v);
 parser_error_t _readAccountId(parser_context_t* c, pd_AccountId_t* v);
 parser_error_t _readBytes(parser_context_t* c, pd_Bytes_t* v);
 parser_error_t _readCompactAccountIndex(parser_context_t* c, pd_CompactAccountIndex_t* v);
+parser_error_t _readFungibleToken(parser_context_t* c, pd_FungibleToken_t* v);
 parser_error_t _readPerbill(parser_context_t* c, pd_Perbill_t* v);
+parser_error_t _readu128(parser_context_t* c, pd_u128_t* v);
 parser_error_t _readAccountIdLookupOfT(parser_context_t* c, pd_AccountIdLookupOfT_t* v);
 parser_error_t _readBalance(parser_context_t* c, pd_Balance_t* v);
 parser_error_t _readCall(parser_context_t* c, pd_Call_t* v);
 parser_error_t _readCommissionClaimPermissionAccountId(parser_context_t* c, pd_CommissionClaimPermissionAccountId_t* v);
 parser_error_t _readCompactPerBill(parser_context_t* c, pd_CompactPerBill_t* v);
+parser_error_t _readMessage(parser_context_t* c, pd_Message_t* v);
 parser_error_t _readPercent(parser_context_t* c, pd_Percent_t* v);
 parser_error_t _readTimepoint(parser_context_t* c, pd_Timepoint_t* v);
 parser_error_t _readTuplePerbillAccountId(parser_context_t* c, pd_TuplePerbillAccountId_t* v);
+parser_error_t _readVecBytes(parser_context_t* c, pd_VecBytes_t* v);
+parser_error_t _readWeightFee(parser_context_t* c, pd_WeightFee_t* v);
+parser_error_t _readWeightMaximumFee(parser_context_t* c, pd_WeightMaximumFee_t* v);
+parser_error_t _readAddressedMessage(parser_context_t* c, pd_AddressedMessage_t* v);
 parser_error_t _readBondExtraBalanceOfT(parser_context_t* c, pd_BondExtraBalanceOfT_t* v);
 parser_error_t _readCommissionChangeRateBlockNumber(parser_context_t* c, pd_CommissionChangeRateBlockNumber_t* v);
 parser_error_t _readConfigOpAccountId(parser_context_t* c, pd_ConfigOpAccountId_t* v);
 parser_error_t _readConfigOpBalanceOfT(parser_context_t* c, pd_ConfigOpBalanceOfT_t* v);
 parser_error_t _readConfigOpPerbill(parser_context_t* c, pd_ConfigOpPerbill_t* v);
 parser_error_t _readConfigOpPercent(parser_context_t* c, pd_ConfigOpPercent_t* v);
+parser_error_t _readDispatchFeeModifier(parser_context_t* c, pd_DispatchFeeModifier_t* v);
 parser_error_t _readOptionCommissionClaimPermissionAccountId(parser_context_t* c, pd_OptionCommissionClaimPermissionAccountId_t* v);
 parser_error_t _readOptionTimepoint(parser_context_t* c, pd_OptionTimepoint_t* v);
 parser_error_t _readOptionTuplePerbillAccountId(parser_context_t* c, pd_OptionTuplePerbillAccountId_t* v);
 parser_error_t _readRewardDestination(parser_context_t* c, pd_RewardDestination_t* v);
+parser_error_t _readValidProof(parser_context_t* c, pd_ValidProof_t* v);
 parser_error_t _readValidatorPrefs(parser_context_t* c, pd_ValidatorPrefs_t* v);
 parser_error_t _readVecAccountIdLookupOfT(parser_context_t* c, pd_VecAccountIdLookupOfT_t* v);
 parser_error_t _readVecCall(parser_context_t* c, pd_VecCall_t* v);
@@ -66,7 +77,6 @@ parser_error_t _readAppKey(parser_context_t* c, pd_AppKey_t* v);
 parser_error_t _readClaimPermission(parser_context_t* c, pd_ClaimPermission_t* v);
 parser_error_t _readConfigOpu32(parser_context_t* c, pd_ConfigOpu32_t* v);
 parser_error_t _readEraIndex(parser_context_t* c, pd_EraIndex_t* v);
-parser_error_t _readH256(parser_context_t* c, pd_H256_t* v);
 parser_error_t _readHash(parser_context_t* c, pd_Hash_t* v);
 parser_error_t _readKeys(parser_context_t* c, pd_Keys_t* v);
 parser_error_t _readPage(parser_context_t* c, pd_Page_t* v);
@@ -134,6 +144,20 @@ parser_error_t _toStringCompactu64(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
+parser_error_t _toStringCompactu128(
+    const pd_Compactu128_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringH256(
+    const pd_H256_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
 parser_error_t _toStringAccountId(
     const pd_AccountId_t* v,
     char* outValue,
@@ -155,8 +179,22 @@ parser_error_t _toStringCompactAccountIndex(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
+parser_error_t _toStringFungibleToken(
+    const pd_FungibleToken_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
 parser_error_t _toStringPerbill(
     const pd_Perbill_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringu128(
+    const pd_u128_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -197,6 +235,13 @@ parser_error_t _toStringCompactPerBill(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
+parser_error_t _toStringMessage(
+    const pd_Message_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
 parser_error_t _toStringPercent(
     const pd_Percent_t* v,
     char* outValue,
@@ -213,6 +258,34 @@ parser_error_t _toStringTimepoint(
 
 parser_error_t _toStringTuplePerbillAccountId(
     const pd_TuplePerbillAccountId_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringVecBytes(
+    const pd_VecBytes_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringWeightFee(
+    const pd_WeightFee_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringWeightMaximumFee(
+    const pd_WeightMaximumFee_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringAddressedMessage(
+    const pd_AddressedMessage_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -260,6 +333,13 @@ parser_error_t _toStringConfigOpPercent(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
+parser_error_t _toStringDispatchFeeModifier(
+    const pd_DispatchFeeModifier_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
 parser_error_t _toStringOptionCommissionClaimPermissionAccountId(
     const pd_OptionCommissionClaimPermissionAccountId_t* v,
     char* outValue,
@@ -283,6 +363,13 @@ parser_error_t _toStringOptionTuplePerbillAccountId(
 
 parser_error_t _toStringRewardDestination(
     const pd_RewardDestination_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringValidProof(
+    const pd_ValidProof_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -353,13 +440,6 @@ parser_error_t _toStringConfigOpu32(
 
 parser_error_t _toStringEraIndex(
     const pd_EraIndex_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount);
-
-parser_error_t _toStringH256(
-    const pd_H256_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,

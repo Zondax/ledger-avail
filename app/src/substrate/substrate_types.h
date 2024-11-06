@@ -118,6 +118,12 @@ typedef struct {
     compactInt_t value;
 } pd_CompactBalance_t;
 
+typedef compactInt_t pd_Compactu128_t;
+
+typedef struct {
+    const uint8_t* _ptr;
+} pd_H256_t;
+
 typedef struct {
     const uint8_t* _ptr;
 } pd_AccountId_t;
@@ -132,8 +138,17 @@ typedef struct {
 } pd_CompactAccountIndex_t;
 
 typedef struct {
+    pd_H256_t asset_id;
+    pd_Compactu128_t amount;
+} pd_FungibleToken_t;
+
+typedef struct {
     uint32_t value;
 } pd_Perbill_t;
+
+typedef struct {
+    const uint8_t* _ptr;
+} pd_u128_t;
 
 typedef struct {
     uint8_t value;
@@ -166,6 +181,14 @@ typedef struct {
 
 typedef struct {
     uint8_t value;
+    union {
+        pd_Bytes_t bounded_data;
+        pd_FungibleToken_t fungible_token;
+    };
+} pd_Message_t;
+
+typedef struct {
+    uint8_t value;
 } pd_Percent_t;
 
 typedef struct {
@@ -177,6 +200,31 @@ typedef struct {
     pd_Perbill_t perbill;
     pd_AccountId_t id;
 } pd_TuplePerbillAccountId_t;
+
+typedef struct {
+    uint64_t _len;
+    const uint8_t* _ptr;
+    uint64_t _lenBuffer;
+} pd_VecBytes_t;
+
+typedef struct {
+    uint8_t value;
+    uint32_t some;
+} pd_WeightFee_t;
+
+typedef struct {
+    uint8_t value;
+    pd_u128_t some;
+} pd_WeightMaximumFee_t;
+
+typedef struct {
+    pd_Message_t message;
+    pd_H256_t from;
+    pd_H256_t to;
+    pd_Compactu32_t origin_domain;
+    pd_Compactu32_t destination_domain;
+    pd_Compactu64_t id;
+} pd_AddressedMessage_t;
 
 typedef struct {
     uint8_t value;
@@ -209,6 +257,12 @@ typedef struct {
 } pd_ConfigOpPercent_t;
 
 typedef struct {
+    pd_WeightMaximumFee_t weight_maximum_fee;
+    pd_WeightFee_t weight_fee_divider;
+    pd_WeightFee_t weight_fee_multiplier;
+} pd_DispatchFeeModifier_t;
+
+typedef struct {
     uint8_t some;
     pd_CommissionClaimPermissionAccountId_t contained;
 } pd_OptionCommissionClaimPermissionAccountId_t;
@@ -227,6 +281,10 @@ typedef struct {
     uint8_t value;
     pd_AccountId_t accountId;
 } pd_RewardDestination_t;
+
+typedef struct {
+    pd_VecBytes_t valid_proof;
+} pd_ValidProof_t;
 
 typedef struct {
     pd_CompactPerBill_t commission;
@@ -279,10 +337,6 @@ typedef struct {
 typedef struct {
     uint32_t value;
 } pd_EraIndex_t;
-
-typedef struct {
-    const uint8_t* _ptr;
-} pd_H256_t;
 
 typedef struct {
     const uint8_t* _ptr;

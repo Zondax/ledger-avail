@@ -433,6 +433,13 @@ __Z_INLINE parser_error_t _readMethod_dataavailability_set_application_key_V1(
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_dataavailability_set_submit_data_fee_modifier_V1(
+    parser_context_t* c, pd_dataavailability_set_submit_data_fee_modifier_V1_t* m)
+{
+    CHECK_ERROR(_readDispatchFeeModifier(c, &m->modifier))
+    return parser_ok;
+}
+
 __Z_INLINE parser_error_t _readMethod_multisig_as_multi_threshold_1_V1(
     parser_context_t* c, pd_multisig_as_multi_threshold_1_V1_t* m)
 {
@@ -662,6 +669,25 @@ __Z_INLINE parser_error_t _readMethod_nominationpools_set_commission_claim_permi
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_vector_execute_V1(
+    parser_context_t* c, pd_vector_execute_V1_t* m)
+{
+    CHECK_ERROR(_readCompactu64(c, &m->slot))
+    CHECK_ERROR(_readAddressedMessage(c, &m->addr_message))
+    CHECK_ERROR(_readValidProof(c, &m->account_proof))
+    CHECK_ERROR(_readValidProof(c, &m->storage_proof))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_vector_send_message_V1(
+    parser_context_t* c, pd_vector_send_message_V1_t* m)
+{
+    CHECK_ERROR(_readMessage(c, &m->message))
+    CHECK_ERROR(_readH256(c, &m->to))
+    CHECK_ERROR(_readCompactu32(c, &m->domain))
+    return parser_ok;
+}
+
 #endif
 
 parser_error_t _readMethod_V1(
@@ -840,6 +866,9 @@ parser_error_t _readMethod_V1(
     case 7427: /* module 29 call 3 */
         CHECK_ERROR(_readMethod_dataavailability_set_application_key_V1(c, &method->basic.dataavailability_set_application_key_V1))
         break;
+    case 7428: /* module 29 call 4 */
+        CHECK_ERROR(_readMethod_dataavailability_set_submit_data_fee_modifier_V1(c, &method->basic.dataavailability_set_submit_data_fee_modifier_V1))
+        break;
     case 8704: /* module 34 call 0 */
         CHECK_ERROR(_readMethod_multisig_as_multi_threshold_1_V1(c, &method->nested.multisig_as_multi_threshold_1_V1))
         break;
@@ -921,6 +950,12 @@ parser_error_t _readMethod_V1(
     case 9238: /* module 36 call 22 */
         CHECK_ERROR(_readMethod_nominationpools_set_commission_claim_permission_V1(c, &method->basic.nominationpools_set_commission_claim_permission_V1))
         break;
+    case 9985: /* module 39 call 1 */
+        CHECK_ERROR(_readMethod_vector_execute_V1(c, &method->basic.vector_execute_V1))
+        break;
+    case 9987: /* module 39 call 3 */
+        CHECK_ERROR(_readMethod_vector_send_message_V1(c, &method->basic.vector_send_message_V1))
+        break;
 #endif
     default:
         return parser_unexpected_callIndex;
@@ -956,6 +991,8 @@ const char* _getMethod_ModuleName_V1(uint8_t moduleIdx)
         return STR_MO_MULTISIG;
     case 36:
         return STR_MO_NOMINATIONPOOLS;
+    case 39:
+        return STR_MO_VECTOR;
 #endif
     default:
         return NULL;
@@ -1090,6 +1127,8 @@ const char* _getMethod_Name_V1_ParserFull(uint16_t callPrivIdx)
         return STR_ME_SUBMIT_BLOCK_LENGTH_PROPOSAL;
     case 7427: /* module 29 call 3 */
         return STR_ME_SET_APPLICATION_KEY;
+    case 7428: /* module 29 call 4 */
+        return STR_ME_SET_SUBMIT_DATA_FEE_MODIFIER;
     case 8704: /* module 34 call 0 */
         return STR_ME_AS_MULTI_THRESHOLD_1;
     case 8705: /* module 34 call 1 */
@@ -1144,6 +1183,10 @@ const char* _getMethod_Name_V1_ParserFull(uint16_t callPrivIdx)
         return STR_ME_ADJUST_POOL_DEPOSIT;
     case 9238: /* module 36 call 22 */
         return STR_ME_SET_COMMISSION_CLAIM_PERMISSION;
+    case 9985: /* module 39 call 1 */
+        return STR_ME_EXECUTE;
+    case 9987: /* module 39 call 3 */
+        return STR_ME_SEND_MESSAGE;
 #endif
     default:
         return NULL;
@@ -1268,6 +1311,8 @@ uint8_t _getMethod_NumItems_V1(uint8_t moduleIdx, uint8_t callIdx)
         return 2;
     case 7427: /* module 29 call 3 */
         return 2;
+    case 7428: /* module 29 call 4 */
+        return 1;
     case 8704: /* module 34 call 0 */
         return 2;
     case 8705: /* module 34 call 1 */
@@ -1322,6 +1367,10 @@ uint8_t _getMethod_NumItems_V1(uint8_t moduleIdx, uint8_t callIdx)
         return 1;
     case 9238: /* module 36 call 22 */
         return 2;
+    case 9985: /* module 39 call 1 */
+        return 4;
+    case 9987: /* module 39 call 3 */
+        return 3;
 #endif
     default:
         return 0;
@@ -1752,6 +1801,13 @@ const char* _getMethod_ItemName_V1(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
+    case 7428: /* module 29 call 4 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_modifier;
+        default:
+            return NULL;
+        }
     case 8704: /* module 34 call 0 */
         switch (itemIdx) {
         case 0:
@@ -2014,6 +2070,30 @@ const char* _getMethod_ItemName_V1(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
             return STR_IT_pool_id;
         case 1:
             return STR_IT_permission;
+        default:
+            return NULL;
+        }
+    case 9985: /* module 39 call 1 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_slot;
+        case 1:
+            return STR_IT_addr_message;
+        case 2:
+            return STR_IT_account_proof;
+        case 3:
+            return STR_IT_storage_proof;
+        default:
+            return NULL;
+        }
+    case 9987: /* module 39 call 3 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_message;
+        case 1:
+            return STR_IT_to;
+        case 2:
+            return STR_IT_domain;
         default:
             return NULL;
         }
@@ -2667,6 +2747,16 @@ parser_error_t _getMethod_ItemValue_V1(
         default:
             return parser_no_data;
         }
+    case 7428: /* module 29 call 4 */
+        switch (itemIdx) {
+        case 0: /* dataavailability_set_submit_data_fee_modifier_V1 - modifier */;
+            return _toStringDispatchFeeModifier(
+                &m->basic.dataavailability_set_submit_data_fee_modifier_V1.modifier,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
     case 8704: /* module 34 call 0 */
         switch (itemIdx) {
         case 0: /* multisig_as_multi_threshold_1_V1 - other_signatories */;
@@ -3127,6 +3217,51 @@ parser_error_t _getMethod_ItemValue_V1(
         default:
             return parser_no_data;
         }
+    case 9985: /* module 39 call 1 */
+        switch (itemIdx) {
+        case 0: /* vector_execute_V1 - slot */;
+            return _toStringCompactu64(
+                &m->basic.vector_execute_V1.slot,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* vector_execute_V1 - addr_message */;
+            return _toStringAddressedMessage(
+                &m->basic.vector_execute_V1.addr_message,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* vector_execute_V1 - account_proof */;
+            return _toStringValidProof(
+                &m->basic.vector_execute_V1.account_proof,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 3: /* vector_execute_V1 - storage_proof */;
+            return _toStringValidProof(
+                &m->basic.vector_execute_V1.storage_proof,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 9987: /* module 39 call 3 */
+        switch (itemIdx) {
+        case 0: /* vector_send_message_V1 - message */;
+            return _toStringMessage(
+                &m->basic.vector_send_message_V1.message,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* vector_send_message_V1 - to */;
+            return _toStringH256(
+                &m->basic.vector_send_message_V1.to,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* vector_send_message_V1 - domain */;
+            return _toStringCompactu32(
+                &m->basic.vector_send_message_V1.domain,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
 #endif
     default:
         return parser_ok;
@@ -3218,12 +3353,15 @@ bool _getMethod_IsNestingSupported_V1(uint8_t moduleIdx, uint8_t callIdx)
     case 7425: // DataAvailability:Submit data
     case 7426: // DataAvailability:Submit block length proposal
     case 7427: // DataAvailability:Set application key
+    case 7428: // DataAvailability:Set submit data fee modifier
     case 9220: // NominationPools:Pool withdraw unbonded
     case 9223: // NominationPools:Create with pool id
     case 9227: // NominationPools:Set configs
     case 9230: // NominationPools:Bond extra other
     case 9237: // NominationPools:Adjust pool deposit
     case 9238: // NominationPools:Set commission claim permission
+    case 9985: // Vector:Execute
+    case 9987: // Vector:Send message
         return false;
     default:
         return true;
