@@ -727,6 +727,13 @@ __Z_INLINE parser_error_t _readMethod_identity_clear_identity_V1(
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_mandate_mandate_V1(
+    parser_context_t* c, pd_mandate_mandate_V1_t* m)
+{
+    CHECK_ERROR(_readCall(c, &m->call))
+    return parser_ok;
+}
+
 __Z_INLINE parser_error_t _readMethod_vector_execute_V1(
     parser_context_t* c, pd_vector_execute_V1_t* m)
 {
@@ -1056,6 +1063,9 @@ parser_error_t _readMethod_V1(
     case 9475: /* module 37 call 3 */
         CHECK_ERROR(_readMethod_identity_clear_identity_V1(c, &method->basic.identity_clear_identity_V1))
         break;
+    case 9728: /* module 38 call 0 */
+        CHECK_ERROR(_readMethod_mandate_mandate_V1(c, &method->basic.mandate_mandate_V1))
+        break;
     case 9985: /* module 39 call 1 */
         CHECK_ERROR(_readMethod_vector_execute_V1(c, &method->basic.vector_execute_V1))
         break;
@@ -1112,6 +1122,8 @@ const char* _getMethod_ModuleName_V1(uint8_t moduleIdx)
         return STR_MO_NOMINATIONPOOLS;
     case 37:
         return STR_MO_IDENTITY;
+    case 38:
+        return STR_MO_MANDATE;
     case 39:
         return STR_MO_VECTOR;
     case 40:
@@ -1320,6 +1332,8 @@ const char* _getMethod_Name_V1_ParserFull(uint16_t callPrivIdx)
         return STR_ME_SET_IDENTITY;
     case 9475: /* module 37 call 3 */
         return STR_ME_CLEAR_IDENTITY;
+    case 9728: /* module 38 call 0 */
+        return STR_ME_MANDATE;
     case 9985: /* module 39 call 1 */
         return STR_ME_EXECUTE;
     case 9987: /* module 39 call 3 */
@@ -1524,6 +1538,8 @@ uint8_t _getMethod_NumItems_V1(uint8_t moduleIdx, uint8_t callIdx)
         return 1;
     case 9475: /* module 37 call 3 */
         return 0;
+    case 9728: /* module 38 call 0 */
+        return 1;
     case 9985: /* module 39 call 1 */
         return 4;
     case 9987: /* module 39 call 3 */
@@ -2296,6 +2312,13 @@ const char* _getMethod_ItemName_V1(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         }
     case 9475: /* module 37 call 3 */
         switch (itemIdx) {
+        default:
+            return NULL;
+        }
+    case 9728: /* module 38 call 0 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_call;
         default:
             return NULL;
         }
@@ -3581,6 +3604,16 @@ parser_error_t _getMethod_ItemValue_V1(
         default:
             return parser_no_data;
         }
+    case 9728: /* module 38 call 0 */
+        switch (itemIdx) {
+        case 0: /* mandate_mandate_V1 - call */;
+            return _toStringCall(
+                &m->basic.mandate_mandate_V1.call,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
     case 9985: /* module 39 call 1 */
         switch (itemIdx) {
         case 0: /* vector_execute_V1 - slot */;
@@ -3791,6 +3824,7 @@ bool _getMethod_IsNestingSupported_V1(uint8_t moduleIdx, uint8_t callIdx)
     case 9238: // NominationPools:Set commission claim permission
     case 9473: // Identity:Set identity
     case 9475: // Identity:Clear identity
+    case 9728: // Mandate:Mandate
     case 9985: // Vector:Execute
     case 9987: // Vector:Send message
         return false;

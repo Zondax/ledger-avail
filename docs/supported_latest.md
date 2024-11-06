@@ -269,9 +269,9 @@
 
 ## Mandate
 
-| Name    | Nano S | Nano S XL | Nano SP/X - Stax | Nesting | Arguments       |
-| ------- | ------ | --------- | ---------------- | ------- | --------------- |
-| Mandate |        |           |                  |         | `Call`call<br/> |
+| Name    | Nano S | Nano S XL          | Nano SP/X - Stax   | Nesting | Arguments       |
+| ------- | ------ | ------------------ | ------------------ | ------- | --------------- |
+| Mandate |        | :heavy_check_mark: | :heavy_check_mark: |         | `Call`call<br/> |
 
 ## Vector
 

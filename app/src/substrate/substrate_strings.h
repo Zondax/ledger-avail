@@ -31,6 +31,7 @@ static const char* STR_MO_DATAAVAILABILITY = "Dataavailability";
 static const char* STR_MO_MULTISIG = "Multisig";
 static const char* STR_MO_NOMINATIONPOOLS = "Nominationpools";
 static const char* STR_MO_IDENTITY = "Identity";
+static const char* STR_MO_MANDATE = "Mandate";
 static const char* STR_MO_VECTOR = "Vector";
 static const char* STR_MO_PROXY = "Proxy";
 
@@ -119,6 +120,7 @@ static const char* STR_ME_ADJUST_POOL_DEPOSIT = "Adjust pool deposit";
 static const char* STR_ME_SET_COMMISSION_CLAIM_PERMISSION = "Set commission claim permission";
 static const char* STR_ME_SET_IDENTITY = "Set identity";
 static const char* STR_ME_CLEAR_IDENTITY = "Clear identity";
+static const char* STR_ME_MANDATE = "Mandate";
 static const char* STR_ME_SEND_MESSAGE = "Send message";
 static const char* STR_ME_PROXY = "Proxy";
 static const char* STR_ME_ADD_PROXY = "Add proxy";

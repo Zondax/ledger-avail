@@ -41,6 +41,7 @@ extern "C" {
 #define PD_CALL_MULTISIG_V1 34
 #define PD_CALL_NOMINATIONPOOLS_V1 36
 #define PD_CALL_IDENTITY_V1 37
+#define PD_CALL_MANDATE_V1 38
 #define PD_CALL_VECTOR_V1 39
 #define PD_CALL_PROXY_V1 40
 
@@ -310,6 +311,11 @@ typedef struct {
 typedef struct {
 } pd_identity_clear_identity_V1_t;
 
+#define PD_CALL_MANDATE_MANDATE_V1 0
+typedef struct {
+    pd_Call_t call;
+} pd_mandate_mandate_V1_t;
+
 #define PD_CALL_VECTOR_EXECUTE_V1 1
 typedef struct {
     pd_Compactu64_t slot;
@@ -377,6 +383,7 @@ typedef union {
     pd_nominationpools_set_commission_claim_permission_V1_t nominationpools_set_commission_claim_permission_V1;
     pd_identity_set_identity_V1_t identity_set_identity_V1;
     pd_identity_clear_identity_V1_t identity_clear_identity_V1;
+    pd_mandate_mandate_V1_t mandate_mandate_V1;
     pd_vector_execute_V1_t vector_execute_V1;
     pd_vector_send_message_V1_t vector_send_message_V1;
 #endif
