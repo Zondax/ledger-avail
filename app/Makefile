@@ -79,6 +79,7 @@ endif
 APPNAME = "Avail Recovery"
 # This is the polkadot derivation path, as we want to enable users to move funds from polkadot-style derived addresses in avail chain
 APPPATH = "44'/354'"
+DEFINES += RECOVERY_APP
 
 else ifeq ($(COIN),AVAIL_XL)
 # XL app configuration

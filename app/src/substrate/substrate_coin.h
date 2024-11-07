@@ -63,9 +63,15 @@ typedef enum {
 #define COIN_NAME "Avail"
 #define COIN_TICKER "AVAIL "
 
+#ifdef RECOVERY_APP
+#define MENU_MAIN_APP_LINE1 "Avail Recovery"
+#define MENU_MAIN_APP_LINE2 "Ready"
+#define APPVERSION_LINE1 "Avail Recovery"
+#else
 #define MENU_MAIN_APP_LINE1 "Avail"
 #define MENU_MAIN_APP_LINE2 "Ready"
 #define APPVERSION_LINE1 "Avail"
+#endif
 #define APPVERSION_LINE2 "v" APPVERSION
 
 #ifdef __cplusplus
