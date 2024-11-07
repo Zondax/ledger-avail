@@ -35,9 +35,16 @@ extern "C" {
 #define PD_CALL_BALANCES_V1 6
 #define PD_CALL_STAKING_V1 10
 #define PD_CALL_SESSION_V1 11
+#define PD_CALL_TECHNICALCOMMITTEE_V1 14
+#define PD_CALL_GRANDPA_V1 17
+#define PD_CALL_SCHEDULER_V1 24
 #define PD_CALL_DATAAVAILABILITY_V1 29
 #define PD_CALL_MULTISIG_V1 34
 #define PD_CALL_NOMINATIONPOOLS_V1 36
+#define PD_CALL_IDENTITY_V1 37
+#define PD_CALL_MANDATE_V1 38
+#define PD_CALL_VECTOR_V1 39
+#define PD_CALL_PROXY_V1 40
 
 #define PD_CALL_UTILITY_BATCH_V1 0
 typedef struct {
@@ -194,6 +201,47 @@ typedef struct {
     pd_AccountId_t controller;
 } pd_staking_update_payee_V1_t;
 
+#define PD_CALL_TECHNICALCOMMITTEE_SET_MEMBERS_V1 0
+typedef struct {
+    pd_VecAccountId_t new_members;
+    pd_OptionAccountId_t prime;
+    pd_MemberCount_t old_count;
+} pd_technicalcommittee_set_members_V1_t;
+
+#define PD_CALL_TECHNICALCOMMITTEE_EXECUTE_V1 1
+typedef struct {
+    pd_Proposal_t proposal;
+    pd_Compactu32_t length_bound;
+} pd_technicalcommittee_execute_V1_t;
+
+#define PD_CALL_TECHNICALCOMMITTEE_PROPOSE_V1 2
+typedef struct {
+    pd_Compactu32_t threshold;
+    pd_Proposal_t proposal;
+    pd_Compactu32_t length_bound;
+} pd_technicalcommittee_propose_V1_t;
+
+#define PD_CALL_TECHNICALCOMMITTEE_VOTE_V1 3
+typedef struct {
+    pd_Hash_t proposal;
+    pd_Compactu32_t index;
+    pd_bool_t approve;
+} pd_technicalcommittee_vote_V1_t;
+
+#define PD_CALL_GRANDPA_NOTE_STALLED_V1 2
+typedef struct {
+    pd_BlockNumber_t delay;
+    pd_BlockNumber_t best_finalized_block_number;
+} pd_grandpa_note_stalled_V1_t;
+
+#define PD_CALL_SCHEDULER_SCHEDULE_AFTER_V1 4
+typedef struct {
+    pd_BlockNumber_t after;
+    pd_OptionschedulePeriodBlockNumber_t maybe_periodic;
+    pd_schedulePriority_t priority;
+    pd_Call_t call;
+} pd_scheduler_schedule_after_V1_t;
+
 #define PD_CALL_DATAAVAILABILITY_CREATE_APPLICATION_KEY_V1 0
 typedef struct {
     pd_AppKey_t key;
@@ -215,6 +263,11 @@ typedef struct {
     pd_AppKey_t old_key;
     pd_AppKey_t new_key;
 } pd_dataavailability_set_application_key_V1_t;
+
+#define PD_CALL_DATAAVAILABILITY_SET_SUBMIT_DATA_FEE_MODIFIER_V1 4
+typedef struct {
+    pd_DispatchFeeModifier_t modifier;
+} pd_dataavailability_set_submit_data_fee_modifier_V1_t;
 
 #define PD_CALL_NOMINATIONPOOLS_POOL_WITHDRAW_UNBONDED_V1 4
 typedef struct {
@@ -258,6 +311,35 @@ typedef struct {
     pd_OptionCommissionClaimPermissionAccountId_t permission;
 } pd_nominationpools_set_commission_claim_permission_V1_t;
 
+#define PD_CALL_IDENTITY_SET_IDENTITY_V1 1
+typedef struct {
+    pd_IdentityInfo_t info;
+} pd_identity_set_identity_V1_t;
+
+#define PD_CALL_IDENTITY_CLEAR_IDENTITY_V1 3
+typedef struct {
+} pd_identity_clear_identity_V1_t;
+
+#define PD_CALL_MANDATE_MANDATE_V1 0
+typedef struct {
+    pd_Call_t call;
+} pd_mandate_mandate_V1_t;
+
+#define PD_CALL_VECTOR_EXECUTE_V1 1
+typedef struct {
+    pd_Compactu64_t slot;
+    pd_AddressedMessage_t addr_message;
+    pd_ValidProof_t account_proof;
+    pd_ValidProof_t storage_proof;
+} pd_vector_execute_V1_t;
+
+#define PD_CALL_VECTOR_SEND_MESSAGE_V1 3
+typedef struct {
+    pd_Message_t message;
+    pd_H256_t to;
+    pd_Compactu32_t domain;
+} pd_vector_send_message_V1_t;
+
 #endif
 
 typedef union {
@@ -292,16 +374,28 @@ typedef union {
     pd_staking_set_min_commission_V1_t staking_set_min_commission_V1;
     pd_staking_payout_stakers_by_page_V1_t staking_payout_stakers_by_page_V1;
     pd_staking_update_payee_V1_t staking_update_payee_V1;
+    pd_technicalcommittee_set_members_V1_t technicalcommittee_set_members_V1;
+    pd_technicalcommittee_execute_V1_t technicalcommittee_execute_V1;
+    pd_technicalcommittee_propose_V1_t technicalcommittee_propose_V1;
+    pd_technicalcommittee_vote_V1_t technicalcommittee_vote_V1;
+    pd_grandpa_note_stalled_V1_t grandpa_note_stalled_V1;
+    pd_scheduler_schedule_after_V1_t scheduler_schedule_after_V1;
     pd_dataavailability_create_application_key_V1_t dataavailability_create_application_key_V1;
     pd_dataavailability_submit_data_V1_t dataavailability_submit_data_V1;
     pd_dataavailability_submit_block_length_proposal_V1_t dataavailability_submit_block_length_proposal_V1;
     pd_dataavailability_set_application_key_V1_t dataavailability_set_application_key_V1;
+    pd_dataavailability_set_submit_data_fee_modifier_V1_t dataavailability_set_submit_data_fee_modifier_V1;
     pd_nominationpools_pool_withdraw_unbonded_V1_t nominationpools_pool_withdraw_unbonded_V1;
     pd_nominationpools_create_with_pool_id_V1_t nominationpools_create_with_pool_id_V1;
     pd_nominationpools_set_configs_V1_t nominationpools_set_configs_V1;
     pd_nominationpools_bond_extra_other_V1_t nominationpools_bond_extra_other_V1;
     pd_nominationpools_adjust_pool_deposit_V1_t nominationpools_adjust_pool_deposit_V1;
     pd_nominationpools_set_commission_claim_permission_V1_t nominationpools_set_commission_claim_permission_V1;
+    pd_identity_set_identity_V1_t identity_set_identity_V1;
+    pd_identity_clear_identity_V1_t identity_clear_identity_V1;
+    pd_mandate_mandate_V1_t mandate_mandate_V1;
+    pd_vector_execute_V1_t vector_execute_V1;
+    pd_vector_send_message_V1_t vector_send_message_V1;
 #endif
 } pd_MethodBasic_V1_t;
 
@@ -554,6 +648,27 @@ typedef struct {
     pd_PoolId_t pool_id;
 } pd_nominationpools_claim_commission_V1_t;
 
+#define PD_CALL_PROXY_PROXY_V1 0
+typedef struct {
+    pd_AccountIdLookupOfT_t real;
+    pd_OptionProxyType_t force_proxy_type;
+    pd_Call_t call;
+} pd_proxy_proxy_V1_t;
+
+#define PD_CALL_PROXY_ADD_PROXY_V1 1
+typedef struct {
+    pd_AccountIdLookupOfT_t delegate;
+    pd_ProxyType_t proxy_type;
+    pd_BlockNumber_t delay;
+} pd_proxy_add_proxy_V1_t;
+
+#define PD_CALL_PROXY_REMOVE_PROXY_V1 2
+typedef struct {
+    pd_AccountIdLookupOfT_t delegate;
+    pd_ProxyType_t proxy_type;
+    pd_BlockNumber_t delay;
+} pd_proxy_remove_proxy_V1_t;
+
 #endif
 
 typedef union {
@@ -603,6 +718,9 @@ typedef union {
     pd_nominationpools_set_commission_max_V1_t nominationpools_set_commission_max_V1;
     pd_nominationpools_set_commission_change_rate_V1_t nominationpools_set_commission_change_rate_V1;
     pd_nominationpools_claim_commission_V1_t nominationpools_claim_commission_V1;
+    pd_proxy_proxy_V1_t proxy_proxy_V1;
+    pd_proxy_add_proxy_V1_t proxy_add_proxy_V1;
+    pd_proxy_remove_proxy_V1_t proxy_remove_proxy_V1;
 #endif
 } pd_MethodNested_V1_t;
 

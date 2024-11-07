@@ -118,6 +118,17 @@ typedef struct {
     compactInt_t value;
 } pd_CompactBalance_t;
 
+typedef compactInt_t pd_Compactu128_t;
+
+typedef struct {
+    uint8_t value;
+    const uint8_t* _ptr;
+} pd_Data_t;
+
+typedef struct {
+    const uint8_t* _ptr;
+} pd_H256_t;
+
 typedef struct {
     const uint8_t* _ptr;
 } pd_AccountId_t;
@@ -132,8 +143,26 @@ typedef struct {
 } pd_CompactAccountIndex_t;
 
 typedef struct {
+    pd_H256_t asset_id;
+    pd_Compactu128_t amount;
+} pd_FungibleToken_t;
+
+typedef struct {
     uint32_t value;
 } pd_Perbill_t;
+
+typedef struct {
+    pd_Data_t data1;
+    pd_Data_t data2;
+} pd_TupleDataData_t;
+
+typedef struct {
+    const uint8_t* _ptr;
+} pd_u128_t;
+
+typedef struct {
+    const uint8_t* _ptr;
+} pd_u8_array_20_t;
 
 typedef struct {
     uint8_t value;
@@ -166,7 +195,24 @@ typedef struct {
 
 typedef struct {
     uint8_t value;
+    union {
+        pd_Bytes_t bounded_data;
+        pd_FungibleToken_t fungible_token;
+    };
+} pd_Message_t;
+
+typedef struct {
+    uint8_t some;
+    pd_u8_array_20_t contained;
+} pd_Optionu8_array_20_t;
+
+typedef struct {
+    uint8_t value;
 } pd_Percent_t;
+
+typedef struct {
+    uint8_t value;
+} pd_ProxyType_t;
 
 typedef struct {
     pd_BlockNumber_t height;
@@ -177,6 +223,42 @@ typedef struct {
     pd_Perbill_t perbill;
     pd_AccountId_t id;
 } pd_TuplePerbillAccountId_t;
+
+typedef struct {
+    uint64_t _len;
+    const uint8_t* _ptr;
+    uint64_t _lenBuffer;
+} pd_VecBytes_t;
+
+typedef struct {
+    uint64_t _len;
+    const uint8_t* _ptr;
+    uint64_t _lenBuffer;
+} pd_VecTupleDataData_t;
+
+typedef struct {
+    uint8_t value;
+    uint32_t some;
+} pd_WeightFee_t;
+
+typedef struct {
+    uint8_t value;
+    pd_u128_t some;
+} pd_WeightMaximumFee_t;
+
+typedef struct {
+    uint32_t value_1;
+    uint32_t value_2;
+} pd_schedulePeriodBlockNumber_t;
+
+typedef struct {
+    pd_Message_t message;
+    pd_H256_t from;
+    pd_H256_t to;
+    pd_Compactu32_t origin_domain;
+    pd_Compactu32_t destination_domain;
+    pd_Compactu64_t id;
+} pd_AddressedMessage_t;
 
 typedef struct {
     uint8_t value;
@@ -209,6 +291,24 @@ typedef struct {
 } pd_ConfigOpPercent_t;
 
 typedef struct {
+    pd_WeightMaximumFee_t weight_maximum_fee;
+    pd_WeightFee_t weight_fee_divider;
+    pd_WeightFee_t weight_fee_multiplier;
+} pd_DispatchFeeModifier_t;
+
+typedef struct {
+    pd_VecTupleDataData_t additional;
+    pd_Data_t display;
+    pd_Data_t legal;
+    pd_Data_t web;
+    pd_Data_t riot;
+    pd_Data_t email;
+    pd_Optionu8_array_20_t pgp_fingerprint;
+    pd_Data_t image;
+    pd_Data_t twitter;
+} pd_IdentityInfo_t;
+
+typedef struct {
     uint8_t some;
     pd_CommissionClaimPermissionAccountId_t contained;
 } pd_OptionCommissionClaimPermissionAccountId_t;
@@ -224,9 +324,17 @@ typedef struct {
 } pd_OptionTuplePerbillAccountId_t;
 
 typedef struct {
+    pd_Call_t call;
+} pd_Proposal_t;
+
+typedef struct {
     uint8_t value;
     pd_AccountId_t accountId;
 } pd_RewardDestination_t;
+
+typedef struct {
+    pd_VecBytes_t valid_proof;
+} pd_ValidProof_t;
 
 typedef struct {
     pd_CompactPerBill_t commission;
@@ -282,15 +390,30 @@ typedef struct {
 
 typedef struct {
     const uint8_t* _ptr;
-} pd_H256_t;
-
-typedef struct {
-    const uint8_t* _ptr;
 } pd_Hash_t;
 
 typedef struct {
     const uint8_t* _ptr;
 } pd_Keys_t;
+
+typedef struct {
+    uint32_t value;
+} pd_MemberCount_t;
+
+typedef struct {
+    uint8_t some;
+    pd_AccountId_t contained;
+} pd_OptionAccountId_t;
+
+typedef struct {
+    uint8_t some;
+    pd_ProxyType_t contained;
+} pd_OptionProxyType_t;
+
+typedef struct {
+    uint8_t value;
+    pd_schedulePeriodBlockNumber_t some;
+} pd_OptionschedulePeriodBlockNumber_t;
 
 typedef struct {
     uint32_t value;
@@ -321,6 +444,10 @@ typedef struct {
     const uint8_t* _ptr;
     uint64_t _lenBuffer;
 } pd_Vecu8_t;
+
+typedef struct {
+    uint8_t value;
+} pd_schedulePriority_t;
 
 #ifdef __cplusplus
 }
