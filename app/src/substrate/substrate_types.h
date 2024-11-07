@@ -247,6 +247,11 @@ typedef struct {
 } pd_WeightMaximumFee_t;
 
 typedef struct {
+    uint32_t value_1;
+    uint32_t value_2;
+} pd_schedulePeriodBlockNumber_t;
+
+typedef struct {
     pd_Message_t message;
     pd_H256_t from;
     pd_H256_t to;
@@ -406,6 +411,11 @@ typedef struct {
 } pd_OptionProxyType_t;
 
 typedef struct {
+    uint8_t value;
+    pd_schedulePeriodBlockNumber_t some;
+} pd_OptionschedulePeriodBlockNumber_t;
+
+typedef struct {
     uint32_t value;
 } pd_Page_t;
 
@@ -434,6 +444,10 @@ typedef struct {
     const uint8_t* _ptr;
     uint64_t _lenBuffer;
 } pd_Vecu8_t;
+
+typedef struct {
+    uint8_t value;
+} pd_schedulePriority_t;
 
 #ifdef __cplusplus
 }

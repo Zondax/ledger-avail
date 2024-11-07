@@ -60,6 +60,7 @@ parser_error_t _readVecBytes(parser_context_t* c, pd_VecBytes_t* v);
 parser_error_t _readVecTupleDataData(parser_context_t* c, pd_VecTupleDataData_t* v);
 parser_error_t _readWeightFee(parser_context_t* c, pd_WeightFee_t* v);
 parser_error_t _readWeightMaximumFee(parser_context_t* c, pd_WeightMaximumFee_t* v);
+parser_error_t _readschedulePeriodBlockNumber(parser_context_t* c, pd_schedulePeriodBlockNumber_t* v);
 parser_error_t _readAddressedMessage(parser_context_t* c, pd_AddressedMessage_t* v);
 parser_error_t _readBondExtraBalanceOfT(parser_context_t* c, pd_BondExtraBalanceOfT_t* v);
 parser_error_t _readCommissionChangeRateBlockNumber(parser_context_t* c, pd_CommissionChangeRateBlockNumber_t* v);
@@ -90,12 +91,14 @@ parser_error_t _readKeys(parser_context_t* c, pd_Keys_t* v);
 parser_error_t _readMemberCount(parser_context_t* c, pd_MemberCount_t* v);
 parser_error_t _readOptionAccountId(parser_context_t* c, pd_OptionAccountId_t* v);
 parser_error_t _readOptionProxyType(parser_context_t* c, pd_OptionProxyType_t* v);
+parser_error_t _readOptionschedulePeriodBlockNumber(parser_context_t* c, pd_OptionschedulePeriodBlockNumber_t* v);
 parser_error_t _readPage(parser_context_t* c, pd_Page_t* v);
 parser_error_t _readPoolId(parser_context_t* c, pd_PoolId_t* v);
 parser_error_t _readPoolState(parser_context_t* c, pd_PoolState_t* v);
 parser_error_t _readVecAccountId(parser_context_t* c, pd_VecAccountId_t* v);
 parser_error_t _readVecu32(parser_context_t* c, pd_Vecu32_t* v);
 parser_error_t _readVecu8(parser_context_t* c, pd_Vecu8_t* v);
+parser_error_t _readschedulePriority(parser_context_t* c, pd_schedulePriority_t* v);
 
 // Common toString functions
 
@@ -337,6 +340,13 @@ parser_error_t _toStringWeightMaximumFee(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
+parser_error_t _toStringschedulePeriodBlockNumber(
+    const pd_schedulePeriodBlockNumber_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
 parser_error_t _toStringAddressedMessage(
     const pd_AddressedMessage_t* v,
     char* outValue,
@@ -547,6 +557,13 @@ parser_error_t _toStringOptionProxyType(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
+parser_error_t _toStringOptionschedulePeriodBlockNumber(
+    const pd_OptionschedulePeriodBlockNumber_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
 parser_error_t _toStringPage(
     const pd_Page_t* v,
     char* outValue,
@@ -584,6 +601,13 @@ parser_error_t _toStringVecu32(
 
 parser_error_t _toStringVecu8(
     const pd_Vecu8_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringschedulePriority(
+    const pd_schedulePriority_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,

@@ -446,6 +446,16 @@ __Z_INLINE parser_error_t _readMethod_grandpa_note_stalled_V1(
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_scheduler_schedule_after_V1(
+    parser_context_t* c, pd_scheduler_schedule_after_V1_t* m)
+{
+    CHECK_ERROR(_readBlockNumber(c, &m->after))
+    CHECK_ERROR(_readOptionschedulePeriodBlockNumber(c, &m->maybe_periodic))
+    CHECK_ERROR(_readschedulePriority(c, &m->priority))
+    CHECK_ERROR(_readCall(c, &m->call))
+    return parser_ok;
+}
+
 __Z_INLINE parser_error_t _readMethod_dataavailability_create_application_key_V1(
     parser_context_t* c, pd_dataavailability_create_application_key_V1_t* m)
 {
@@ -961,6 +971,9 @@ parser_error_t _readMethod_V1(
     case 4354: /* module 17 call 2 */
         CHECK_ERROR(_readMethod_grandpa_note_stalled_V1(c, &method->basic.grandpa_note_stalled_V1))
         break;
+    case 6148: /* module 24 call 4 */
+        CHECK_ERROR(_readMethod_scheduler_schedule_after_V1(c, &method->basic.scheduler_schedule_after_V1))
+        break;
     case 7424: /* module 29 call 0 */
         CHECK_ERROR(_readMethod_dataavailability_create_application_key_V1(c, &method->basic.dataavailability_create_application_key_V1))
         break;
@@ -1114,6 +1127,8 @@ const char* _getMethod_ModuleName_V1(uint8_t moduleIdx)
         return STR_MO_TECHNICALCOMMITTEE;
     case 17:
         return STR_MO_GRANDPA;
+    case 24:
+        return STR_MO_SCHEDULER;
     case 29:
         return STR_MO_DATAAVAILABILITY;
     case 34:
@@ -1264,6 +1279,8 @@ const char* _getMethod_Name_V1_ParserFull(uint16_t callPrivIdx)
         return STR_ME_VOTE;
     case 4354: /* module 17 call 2 */
         return STR_ME_NOTE_STALLED;
+    case 6148: /* module 24 call 4 */
+        return STR_ME_SCHEDULE_AFTER;
     case 7424: /* module 29 call 0 */
         return STR_ME_CREATE_APPLICATION_KEY;
     case 7425: /* module 29 call 1 */
@@ -1470,6 +1487,8 @@ uint8_t _getMethod_NumItems_V1(uint8_t moduleIdx, uint8_t callIdx)
         return 3;
     case 4354: /* module 17 call 2 */
         return 2;
+    case 6148: /* module 24 call 4 */
+        return 4;
     case 7424: /* module 29 call 0 */
         return 1;
     case 7425: /* module 29 call 1 */
@@ -1996,6 +2015,19 @@ const char* _getMethod_ItemName_V1(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
             return STR_IT_delay;
         case 1:
             return STR_IT_best_finalized_block_number;
+        default:
+            return NULL;
+        }
+    case 6148: /* module 24 call 4 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_after;
+        case 1:
+            return STR_IT_maybe_periodic;
+        case 2:
+            return STR_IT_priority;
+        case 3:
+            return STR_IT_call;
         default:
             return NULL;
         }
@@ -3069,6 +3101,31 @@ parser_error_t _getMethod_ItemValue_V1(
         default:
             return parser_no_data;
         }
+    case 6148: /* module 24 call 4 */
+        switch (itemIdx) {
+        case 0: /* scheduler_schedule_after_V1 - after */;
+            return _toStringBlockNumber(
+                &m->basic.scheduler_schedule_after_V1.after,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* scheduler_schedule_after_V1 - maybe_periodic */;
+            return _toStringOptionschedulePeriodBlockNumber(
+                &m->basic.scheduler_schedule_after_V1.maybe_periodic,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* scheduler_schedule_after_V1 - priority */;
+            return _toStringschedulePriority(
+                &m->basic.scheduler_schedule_after_V1.priority,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 3: /* scheduler_schedule_after_V1 - call */;
+            return _toStringCall(
+                &m->basic.scheduler_schedule_after_V1.call,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
     case 7424: /* module 29 call 0 */
         switch (itemIdx) {
         case 0: /* dataavailability_create_application_key_V1 - key */;
@@ -3811,6 +3868,7 @@ bool _getMethod_IsNestingSupported_V1(uint8_t moduleIdx, uint8_t callIdx)
     case 3586: // TechnicalCommittee:Propose
     case 3587: // TechnicalCommittee:Vote
     case 4354: // Grandpa:Note stalled
+    case 6148: // Scheduler:Schedule after
     case 7424: // DataAvailability:Create application key
     case 7425: // DataAvailability:Submit data
     case 7426: // DataAvailability:Submit block length proposal

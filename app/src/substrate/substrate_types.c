@@ -337,6 +337,14 @@ parser_error_t _readWeightMaximumFee(parser_context_t* c, pd_WeightMaximumFee_t*
     return parser_ok;
 }
 
+parser_error_t _readschedulePeriodBlockNumber(parser_context_t* c, pd_schedulePeriodBlockNumber_t* v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readUInt32(c, &v->value_1))
+    CHECK_ERROR(_readUInt32(c, &v->value_2))
+    return parser_ok;
+}
+
 parser_error_t _readAddressedMessage(parser_context_t* c, pd_AddressedMessage_t* v)
 {
     CHECK_INPUT()
@@ -603,6 +611,22 @@ parser_error_t _readMemberCount(parser_context_t* c, pd_MemberCount_t* v)
     return parser_ok;
 }
 
+parser_error_t _readOptionschedulePeriodBlockNumber(parser_context_t* c, pd_OptionschedulePeriodBlockNumber_t* v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readUInt8(c, &v->value))
+    switch (v->value) {
+    case 0: // None
+        break;
+    case 1: // some
+        CHECK_ERROR(_readschedulePeriodBlockNumber(c, &v->some))
+        break;
+    default:
+        return parser_unexpected_value;
+    }
+    return parser_ok;
+}
+
 parser_error_t _readPage(parser_context_t* c, pd_Page_t* v)
 {
     CHECK_INPUT()
@@ -618,6 +642,13 @@ parser_error_t _readPoolId(parser_context_t* c, pd_PoolId_t* v)
 }
 
 parser_error_t _readPoolState(parser_context_t* c, pd_PoolState_t* v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readUInt8(c, &v->value))
+    return parser_ok;
+}
+
+parser_error_t _readschedulePriority(parser_context_t* c, pd_schedulePriority_t* v)
 {
     CHECK_INPUT()
     CHECK_ERROR(_readUInt8(c, &v->value))
@@ -1427,6 +1458,43 @@ parser_error_t _toStringWeightMaximumFee(
     return parser_ok;
 }
 
+parser_error_t _toStringschedulePeriodBlockNumber(
+    const pd_schedulePeriodBlockNumber_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    CLEAN_AND_CHECK()
+
+    // First measure number of pages
+    uint8_t pages[2] = { 0 };
+    CHECK_ERROR(_toStringu32(&v->value_1, outValue, outValueLen, 0, &pages[0]))
+    CHECK_ERROR(_toStringu32(&v->value_2, outValue, outValueLen, 0, &pages[1]))
+
+    *pageCount = 0;
+    for (uint8_t i = 0; i < (uint8_t)sizeof(pages); i++) {
+        *pageCount += pages[i];
+    }
+
+    if (pageIdx >= *pageCount) {
+        return parser_display_idx_out_of_range;
+    }
+
+    if (pageIdx < pages[0]) {
+        CHECK_ERROR(_toStringu32(&v->value_1, outValue, outValueLen, pageIdx, &pages[0]))
+        return parser_ok;
+    }
+    pageIdx -= pages[0];
+
+    if (pageIdx < pages[1]) {
+        CHECK_ERROR(_toStringu32(&v->value_2, outValue, outValueLen, pageIdx, &pages[1]))
+        return parser_ok;
+    }
+
+    return parser_display_idx_out_of_range;
+}
+
 parser_error_t _toStringAddressedMessage(
     const pd_AddressedMessage_t* v,
     char* outValue,
@@ -2121,6 +2189,28 @@ parser_error_t _toStringMemberCount(
     return _toStringu32(&v->value, outValue, outValueLen, pageIdx, pageCount);
 }
 
+parser_error_t _toStringOptionschedulePeriodBlockNumber(
+    const pd_OptionschedulePeriodBlockNumber_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    CLEAN_AND_CHECK()
+    *pageCount = 1;
+    switch (v->value) {
+    case 0: // None
+        snprintf(outValue, outValueLen, "None");
+        break;
+    case 1: // some
+        CHECK_ERROR(_toStringschedulePeriodBlockNumber(&v->some, outValue, outValueLen, pageIdx, pageCount))
+        break;
+    default:
+        return parser_unexpected_value;
+    }
+    return parser_ok;
+}
+
 parser_error_t _toStringPage(
     const pd_Page_t* v,
     char* outValue,
@@ -2167,6 +2257,16 @@ parser_error_t _toStringPoolState(
         return parser_unexpected_value;
     }
     return parser_ok;
+}
+
+parser_error_t _toStringschedulePriority(
+    const pd_schedulePriority_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    return _toStringu8(&v->value, outValue, outValueLen, pageIdx, pageCount);
 }
 
 parser_error_t _toStringVecBytes(
