@@ -1293,7 +1293,7 @@ parser_error_t _toStringPercent(
     uint8_t pageIdx,
     uint8_t* pageCount)
 {
-    char bufferUI[50];
+    char bufferUI[51];
     char bufferRatio[50];
 
     uint64_to_str(bufferRatio, sizeof(bufferRatio), v->value);
