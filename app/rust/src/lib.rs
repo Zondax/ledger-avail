@@ -118,11 +118,30 @@ pub unsafe extern "C" fn sign_sr25519_phase1(
 ) {
     c_zemu_log_stack(b"sign_sr25519\x00".as_ref());
 
-    let sk_ristretto_expanded = from_raw_parts(sk_ristretto_expanded_ptr, 64);
-    let pk = from_raw_parts(pk_ptr, 32);
-    let context = from_raw_parts(context_ptr, context_len);
-    let message = from_raw_parts(msg_ptr, msg_len);
-    let signature = from_raw_parts_mut(sig_ptr, 64);
+    let sk_ristretto_expanded = sk_ristretto_expanded_ptr
+        .as_ref()
+        .map(|ptr| from_raw_parts(ptr, 64))
+        .unwrap_or(&[]);
+
+    let pk = pk_ptr
+        .as_ref()
+        .map(|ptr| from_raw_parts(ptr, 32))
+        .unwrap_or(&[]);
+
+    let context = context_ptr
+        .as_ref()
+        .map(|ptr| from_raw_parts(ptr, context_len))
+        .unwrap_or(&[]);
+
+    let message = msg_ptr
+        .as_ref()
+        .map(|ptr| from_raw_parts(ptr, msg_len))
+        .unwrap_or(&[]);
+
+    let signature = sig_ptr
+        .as_mut()
+        .map(|ptr| from_raw_parts_mut(ptr, 64))
+        .unwrap_or(&mut []);
 
     let mut signtranscript = Transcript::new(b"SigningContext");
     signtranscript.append_message(b"", context);
@@ -164,11 +183,30 @@ pub unsafe extern "C" fn sign_sr25519_phase2(
 ) {
     c_zemu_log_stack(b"sign_sr25519\x00".as_ref());
 
-    let sk_ristretto_expanded = from_raw_parts(sk_ristretto_expanded_ptr, 64);
-    let pk = from_raw_parts(pk_ptr, 32);
-    let context = from_raw_parts(context_ptr, context_len);
-    let message = from_raw_parts(msg_ptr, msg_len);
-    let signature = from_raw_parts_mut(sig_ptr, 64);
+    let sk_ristretto_expanded = sk_ristretto_expanded_ptr
+        .as_ref()
+        .map(|ptr| from_raw_parts(ptr, 64))
+        .unwrap_or(&[]);
+
+    let pk = pk_ptr
+        .as_ref()
+        .map(|ptr| from_raw_parts(ptr, 32))
+        .unwrap_or(&[]);
+
+    let context = context_ptr
+        .as_ref()
+        .map(|ptr| from_raw_parts(ptr, context_len))
+        .unwrap_or(&[]);
+
+    let message = msg_ptr
+        .as_ref()
+        .map(|ptr| from_raw_parts(ptr, msg_len))
+        .unwrap_or(&[]);
+
+    let signature = sig_ptr
+        .as_mut()
+        .map(|ptr| from_raw_parts_mut(ptr, 64))
+        .unwrap_or(&mut []);
 
     let mut signtranscript = Transcript::new(b"SigningContext");
     signtranscript.append_message(b"", context);
