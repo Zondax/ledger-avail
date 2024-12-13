@@ -21,7 +21,7 @@ extern "C" {
 
 #define COIN_ADDR_TYPE 42
 #define CLA 0xbc
-#define CLA_RECOVERY 0x90
+#define CLA_RECOVERY 0xf9
 
 #define INS_SIGN_RAW 0x03
 
