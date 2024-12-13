@@ -15,7 +15,8 @@
   ],
   "scripts": {
     "clean": "ts-node tests/pullImageKillOld.ts",
-    "test": "yarn clean && jest --maxConcurrency 3"
+    "test": "yarn clean && jest --maxConcurrency 3 --testPathIgnorePatterns recovery.test.ts",
+    "test_recovery": "yarn clean && jest --maxConcurrency 3 recovery.test.ts"
   },
   "dependencies": {
     "@zondax/ledger-substrate": "^1.0.0",

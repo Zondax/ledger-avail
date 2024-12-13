@@ -43,8 +43,13 @@ void extractHDPath(uint32_t rx, uint32_t offset) {
 
     memcpy(hdPath, G_io_apdu_buffer + offset, sizeof(uint32_t) * HDPATH_LEN_DEFAULT);
 
+#ifdef RECOVERY_APP
+    const bool mainnet = hdPath[0] == HDPATH_0_DEFAULT &&
+                         hdPath[1] == HDPATH_1_RECOVERY;
+#else
     const bool mainnet = hdPath[0] == HDPATH_0_DEFAULT &&
                          hdPath[1] == HDPATH_1_DEFAULT;
+#endif
 
     if (!mainnet) {
         THROW(APDU_CODE_DATA_INVALID);
@@ -249,9 +254,15 @@ void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
     {
         TRY
         {
+#ifdef RECOVERY_APP
+            if (G_io_apdu_buffer[OFFSET_CLA] != CLA_RECOVERY) {
+                THROW(APDU_CODE_CLA_NOT_SUPPORTED);
+            }
+#else
             if (G_io_apdu_buffer[OFFSET_CLA] != CLA) {
                 THROW(APDU_CODE_CLA_NOT_SUPPORTED);
             }
+#endif
 
             if (rx < APDU_MIN_LENGTH) {
                 THROW(APDU_CODE_WRONG_LENGTH);

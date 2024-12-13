@@ -21,13 +21,14 @@ extern "C" {
 
 #define COIN_ADDR_TYPE 42
 #define CLA 0xbc
+#define CLA_RECOVERY 0x90
 
 #define INS_SIGN_RAW 0x03
 
 #define HDPATH_LEN_DEFAULT 5
 #define HDPATH_0_DEFAULT (0x80000000 | 0x2c)
 #define HDPATH_1_DEFAULT (0x80000000 | 0x2c5)
-#define HDPATH_1_RECOVERY (0x80000000 | 0x2c5)
+#define HDPATH_1_RECOVERY (0x80000000 | 0x162)
 
 #define HDPATH_2_DEFAULT (0x80000000u | 0u)
 #define HDPATH_3_DEFAULT (0u)

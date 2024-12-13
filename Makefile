@@ -48,6 +48,14 @@ zemu_install: tests_tools_build
 
 test_all:
 	make zemu_install
+
+	echo "Testing recovery"
+	make clean
+	SUBSTRATE_PARSER_FULL=1 COIN=AVAIL_RECOVERY make
+	cd tests_zemu && yarn test_recovery && cd ..
+
+	echo "Testing standard"
+	make clean
 	SUBSTRATE_PARSER_FULL=1 make
 	make clean_build
 	SUBSTRATE_PARSER_FULL=1 SUPPORT_SR25519=1 make buildS
