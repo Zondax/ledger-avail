@@ -1,5 +1,5 @@
 #*******************************************************************************
-#*   (c) 2020 Zondax GmbH
+#*   (c) 2018 - 2024 Zondax AG
 #*
 #*  Licensed under the Apache License, Version 2.0 (the "License");
 #*  you may not use this file except in compliance with the License.
@@ -13,12 +13,32 @@
 #*  See the License for the specific language governing permissions and
 #*  limitations under the License.
 #********************************************************************************
-cmake_minimum_required(VERSION 3.0)
-project(ledger-kusama VERSION 0.0.0)
-enable_testing()
+cmake_minimum_required(VERSION 3.28)
+include("cmake/HunterGate.cmake")
+HunterGate(
+    URL "https://github.com/cpp-pm/hunter/archive/v0.25.5.tar.gz"
+    SHA1 "a20151e4c0740ee7d0f9994476856d813cdead29"
+    LOCAL
+)
 
+if(CMAKE_GENERATOR MATCHES "Ninja")
+        message(FATAL_ERROR "This project does not support the Ninja generator. "
+                            "Please use Unix Makefiles or another supported generator. "
+                            "This error is typical in CLion. In this case, switch to generator Unix Makefiles.")
+endif()
+
+########################################################
+
+project(ledger-avail VERSION 0.0.0)
+
+set(CMAKE_CXX_STANDARD 17)
 cmake_policy(SET CMP0025 NEW)
-set(CMAKE_CXX_STANDARD 11)
+cmake_policy(SET CMP0144 NEW)
+
+set(HUNTER_STATUS_DEBUG ON)
+set(HUNTER_TLS_VERIFY OFF)
+
+enable_testing()
 
 option(ENABLE_FUZZING "Build with fuzzing instrumentation and build fuzz targets" OFF)
 option(ENABLE_COVERAGE "Build with source code coverage instrumentation" OFF)
@@ -31,10 +51,24 @@ string(APPEND CMAKE_LINKER_FLAGS " -fno-omit-frame-pointer -g")
 add_definitions(-DAPP_STANDARD)
 add_definitions(-DSUBSTRATE_PARSER_FULL)
 
+hunter_add_package(fmt)
+find_package(fmt CONFIG REQUIRED)
+
+hunter_add_package(jsoncpp)
+find_package(jsoncpp CONFIG REQUIRED)
+
+hunter_add_package(GTest)
+find_package(GTest CONFIG REQUIRED)
+
 if(ENABLE_FUZZING)
     add_definitions(-DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION=1)
     SET(ENABLE_SANITIZERS ON CACHE BOOL "Sanitizer automatically enabled" FORCE)
     SET(CMAKE_BUILD_TYPE Debug)
+
+    add_definitions(-DENABLE_COVERAGE=1)
+    string(APPEND CMAKE_C_FLAGS " -fprofile-arcs -ftest-coverage")
+    string(APPEND CMAKE_CXX_FLAGS " -fprofile-arcs -ftest-coverage")
+    string(APPEND CMAKE_LINKER_FLAGS " -fprofile-arcs -ftest-coverage")
 
     if (DEFINED ENV{FUZZ_LOGGING})
         add_definitions(-DFUZZING_LOGGING)
@@ -44,15 +78,14 @@ if(ENABLE_FUZZING)
     set(CMAKE_CXX_CLANG_TIDY clang-tidy -checks=-*,bugprone-*,cert-*,clang-analyzer-*,-cert-err58-cpp,misc-*)
 
     if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-        # require at least clang 3.2
+        # require at least clang 10.0
         if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 10.0)
             message(FATAL_ERROR "Clang version must be at least 10.0!")
         endif()
     else()
         message(FATAL_ERROR
-                "You are using an unsupported compiler! Fuzzing only works with Clang 10.\n"
-                "1. Install clang-10 \n"
-                "2. Pass -DCMAKE_C_COMPILER=clang-10 -DCMAKE_CXX_COMPILER=clang++-10")
+                "You are using an unsupported compiler! Fuzzing only works with Clang >10.\n"
+                "1. Install any clang >10")
     endif()
 
     string(APPEND CMAKE_C_FLAGS " -fsanitize=fuzzer-no-link")
@@ -71,9 +104,6 @@ if(ENABLE_SANITIZERS)
     string(APPEND CMAKE_CXX_FLAGS " -fsanitize=address,undefined -fsanitize-recover=address,undefined")
     string(APPEND CMAKE_LINKER_FLAGS " -fsanitize=address,undefined -fsanitize-recover=address,undefined")
 endif()
-
-include(cmake/conan/CMakeLists.txt)
-add_subdirectory(cmake/gtest)
 
 set (RETRIEVE_MAJOR_CMD
         "cat ${CMAKE_CURRENT_SOURCE_DIR}/app/Makefile.version | grep APPVERSION_M | cut -b 14- | tr -d '\n'"
@@ -141,20 +171,18 @@ add_executable(unittests ${TESTS_SRC})
 target_include_directories(unittests PRIVATE
         ${gtest_SOURCE_DIR}/include
         ${gmock_SOURCE_DIR}/include
-        ${CONAN_INCLUDE_DIRS_FMT}
-        ${CONAN_INCLUDE_DIRS_JSONCPP}
         ${CMAKE_CURRENT_SOURCE_DIR}/app/src
         ${CMAKE_CURRENT_SOURCE_DIR}/app/src/lib
         )
 
 target_link_libraries(unittests PRIVATE
-        gtest_main
         app_lib
-        CONAN_PKG::fmt
-        CONAN_PKG::jsoncpp)
+        GTest::gtest_main
+        fmt::fmt
+        JsonCpp::JsonCpp)
 
 add_compile_definitions(TESTVECTORS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/")
-add_test(unittests ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/unittests)
+add_test(NAME unittests COMMAND unittests)
 set_tests_properties(unittests PROPERTIES WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/tests)
 
 ##############################################################

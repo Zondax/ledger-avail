@@ -88,8 +88,26 @@ fn get_witness_bytes_custom(br: &mut Transcript, nonce_seeds: &[&[u8]]) -> [u8; 
     x
 }
 
+/// # Safety
+///
+/// This function is `unsafe` due to raw pointer dereferencing. Ensure:
+///
+/// - **Valid Pointers**: All pointers must be valid, aligned, and point to initialized memory:
+///   - `sk_ristretto_expanded_ptr`: Must point to a 64-byte array representing the expanded secret key.
+///   - `pk_ptr`: Must point to a 32-byte array representing the public key.
+///   - `context_ptr`: Must point to a byte array of length `context_len` representing the signing context.
+///   - `msg_ptr`: Must point to a byte array of length `msg_len` representing the message to be signed.
+///   - `sig_ptr`: Must point to a writable memory region of at least 64 bytes for the signature output.
+///
+/// - **Correct Lengths**:
+///   - `context_len` and `msg_len` must accurately reflect the size of the data pointed to by `context_ptr` and `msg_ptr`, respectively. Incorrect lengths can cause buffer overflows.
+///
+/// - **Signature Buffer**:
+///   - `sig_ptr` must point to a writable memory region of at least 64 bytes to store the resulting signature.
+///
+/// Misuse can lead to undefined behavior, including memory corruption or crashes.
 #[no_mangle]
-pub extern "C" fn sign_sr25519_phase1(
+pub unsafe extern "C" fn sign_sr25519_phase1(
     sk_ristretto_expanded_ptr: *const u8,
     pk_ptr: *const u8,
     context_ptr: *const u8,
@@ -100,12 +118,30 @@ pub extern "C" fn sign_sr25519_phase1(
 ) {
     c_zemu_log_stack(b"sign_sr25519\x00".as_ref());
 
-    let sk_ristretto_expanded =
-        unsafe { from_raw_parts(sk_ristretto_expanded_ptr as *const u8, 64) };
-    let pk = unsafe { from_raw_parts(pk_ptr as *const u8, 32) };
-    let context = unsafe { from_raw_parts(context_ptr as *const u8, context_len) };
-    let message = unsafe { from_raw_parts(msg_ptr as *const u8, msg_len) };
-    let signature = unsafe { from_raw_parts_mut(sig_ptr as *mut u8, 64) };
+    let sk_ristretto_expanded = sk_ristretto_expanded_ptr
+        .as_ref()
+        .map(|ptr| from_raw_parts(ptr, 64))
+        .unwrap_or(&[]);
+
+    let pk = pk_ptr
+        .as_ref()
+        .map(|ptr| from_raw_parts(ptr, 32))
+        .unwrap_or(&[]);
+
+    let context = context_ptr
+        .as_ref()
+        .map(|ptr| from_raw_parts(ptr, context_len))
+        .unwrap_or(&[]);
+
+    let message = msg_ptr
+        .as_ref()
+        .map(|ptr| from_raw_parts(ptr, msg_len))
+        .unwrap_or(&[]);
+
+    let signature = sig_ptr
+        .as_mut()
+        .map(|ptr| from_raw_parts_mut(ptr, 64))
+        .unwrap_or(&mut []);
 
     let mut signtranscript = Transcript::new(b"SigningContext");
     signtranscript.append_message(b"", context);
@@ -117,8 +153,26 @@ pub extern "C" fn sign_sr25519_phase1(
     signature[32..64].copy_from_slice(&x);
 }
 
+/// # Safety
+///
+/// This function is `unsafe` due to raw pointer dereferencing. Ensure:
+///
+/// - **Valid Pointers**: All pointers must be valid, aligned, and point to initialized memory:
+///   - `sk_ristretto_expanded_ptr`: Must point to a 64-byte array representing the expanded secret key.
+///   - `pk_ptr`: Must point to a 32-byte array representing the public key.
+///   - `context_ptr`: Must point to a byte array of length `context_len` representing the signing context.
+///   - `msg_ptr`: Must point to a byte array of length `msg_len` representing the message to be signed.
+///   - `sig_ptr`: Must point to a writable memory region of at least 64 bytes for the signature output.
+///
+/// - **Correct Lengths**:
+///   - `context_len` and `msg_len` must accurately reflect the size of the data pointed to by `context_ptr` and `msg_ptr`, respectively. Incorrect lengths can cause buffer overflows.
+///
+/// - **Signature Buffer**:
+///   - `sig_ptr` must point to a writable memory region of at least 64 bytes to store the resulting signature.
+///
+/// Misuse can lead to undefined behavior, including memory corruption or crashes.
 #[no_mangle]
-pub extern "C" fn sign_sr25519_phase2(
+pub unsafe extern "C" fn sign_sr25519_phase2(
     sk_ristretto_expanded_ptr: *const u8,
     pk_ptr: *const u8,
     context_ptr: *const u8,
@@ -129,12 +183,30 @@ pub extern "C" fn sign_sr25519_phase2(
 ) {
     c_zemu_log_stack(b"sign_sr25519\x00".as_ref());
 
-    let sk_ristretto_expanded =
-        unsafe { from_raw_parts(sk_ristretto_expanded_ptr as *const u8, 64) };
-    let pk = unsafe { from_raw_parts(pk_ptr as *const u8, 32) };
-    let context = unsafe { from_raw_parts(context_ptr as *const u8, context_len) };
-    let message = unsafe { from_raw_parts(msg_ptr as *const u8, msg_len) };
-    let signature = unsafe { from_raw_parts_mut(sig_ptr as *mut u8, 64) };
+    let sk_ristretto_expanded = sk_ristretto_expanded_ptr
+        .as_ref()
+        .map(|ptr| from_raw_parts(ptr, 64))
+        .unwrap_or(&[]);
+
+    let pk = pk_ptr
+        .as_ref()
+        .map(|ptr| from_raw_parts(ptr, 32))
+        .unwrap_or(&[]);
+
+    let context = context_ptr
+        .as_ref()
+        .map(|ptr| from_raw_parts(ptr, context_len))
+        .unwrap_or(&[]);
+
+    let message = msg_ptr
+        .as_ref()
+        .map(|ptr| from_raw_parts(ptr, msg_len))
+        .unwrap_or(&[]);
+
+    let signature = sig_ptr
+        .as_mut()
+        .map(|ptr| from_raw_parts_mut(ptr, 64))
+        .unwrap_or(&mut []);
 
     let mut signtranscript = Transcript::new(b"SigningContext");
     signtranscript.append_message(b"", context);
@@ -154,10 +226,19 @@ pub extern "C" fn sign_sr25519_phase2(
     signature[63] |= 128;
 }
 
+/// # Safety
+///
+/// This function is `unsafe` due to raw pointer dereferencing. Ensure:
+///
+/// - **Valid Pointer**: `sk_ed25519_expanded_ptr` must point to a mutable, initialized 64-byte
+///   memory region.
+///
+/// This function converts an expanded Ed25519 secret key to an SR25519 secret key, overwriting the
+/// original data with the result.
 #[no_mangle]
-pub extern "C" fn get_sr25519_sk(sk_ed25519_expanded_ptr: *mut u8) {
-    let sk_ed25519_expanded = unsafe { from_raw_parts_mut(sk_ed25519_expanded_ptr as *mut u8, 64) };
-    let secret: SecretKey = SecretKey::from_ed25519_bytes(&sk_ed25519_expanded[..]).unwrap();
+pub unsafe extern "C" fn get_sr25519_sk(sk_ed25519_expanded_ptr: *mut u8) {
+    let sk_ed25519_expanded = from_raw_parts_mut(sk_ed25519_expanded_ptr, 64);
+    let secret: SecretKey = SecretKey::from_ed25519_bytes(sk_ed25519_expanded).unwrap();
     sk_ed25519_expanded.copy_from_slice(&secret.to_bytes());
 }
 
@@ -201,7 +282,9 @@ mod tests {
         let secret = SecretKey::from_ed25519_bytes(&sk_ed25519_expanded).unwrap();
 
         let mut pk = [0u8; 32];
-        get_sr25519_sk(sk_ed25519_expanded.as_mut_ptr());
+        unsafe {
+            get_sr25519_sk(sk_ed25519_expanded.as_mut_ptr());
+        }
 
         ristretto_scalarmult(&sk_ed25519_expanded, &mut pk);
 
@@ -211,30 +294,34 @@ mod tests {
         let msg = b"test message";
         let mut signature = [0u8; 64];
 
-        sign_sr25519_phase1(
-            secret.to_bytes().as_ptr(),
-            pk.as_ptr(),
-            context.as_ptr(),
-            context.len(),
-            msg.as_ptr(),
-            msg.len(),
-            signature.as_mut_ptr(),
-        );
+        unsafe {
+            sign_sr25519_phase1(
+                secret.to_bytes().as_ptr(),
+                pk.as_ptr(),
+                context.as_ptr(),
+                context.len(),
+                msg.as_ptr(),
+                msg.len(),
+                signature.as_mut_ptr(),
+            );
+        }
 
         let mut x = [0u8; 32];
         x.copy_from_slice(&signature[32..64]);
 
         ristretto_scalarmult(&x, &mut signature[0..32]);
 
-        sign_sr25519_phase2(
-            secret.to_bytes().as_ptr(),
-            pk.as_ptr(),
-            context.as_ptr(),
-            context.len(),
-            msg.as_ptr(),
-            msg.len(),
-            signature.as_mut_ptr(),
-        );
+        unsafe {
+            sign_sr25519_phase2(
+                secret.to_bytes().as_ptr(),
+                pk.as_ptr(),
+                context.as_ptr(),
+                context.len(),
+                msg.as_ptr(),
+                msg.len(),
+                signature.as_mut_ptr(),
+            );
+        }
 
         let keypair: Keypair = Keypair::from(secret);
 
@@ -271,7 +358,9 @@ mod tests {
         let pk_expected = "b65abc66a8fdeac1197d03daa6c3791d0c0799a52db6b7127b1cd12d46e34364";
 
         let mut pk = [0u8; 32];
-        get_sr25519_sk(sk_ed25519_expanded.as_mut_ptr());
+        unsafe {
+            get_sr25519_sk(sk_ed25519_expanded.as_mut_ptr());
+        }
 
         ristretto_scalarmult(&sk_ed25519_expanded, &mut pk);
 

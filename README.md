@@ -12,9 +12,9 @@ _Please visit our website at [zondax.ch](https://www.zondax.ch)_
 
 ---
 
-This project contains the Avail app (https://www.availproject.org/) for Ledger Nano S and X.
+This project contains the Avail app (https://www.availproject.org/) for Ledger Nano S, Nano S+, Nano X, Stax and Flex.
 
-- Ledger Nano S/X BOLOS app
+- Ledger Nano S/S+/X, Stax and Flex Avail app
 - Specs / Documentation
 - C++ unit tests
 - Zemu tests
@@ -28,7 +28,7 @@ Please:
 - **Do not use in production**
 - **Do not use a Ledger device with funds for development purposes.**
 - **Have a separate and marked device that is used ONLY for development and testing**
-# Avail 1.35.x
+# Avail 1.39.x
 
 ## System
 
@@ -147,22 +147,22 @@ Please:
 
 ## TechnicalCommittee
 
-| Name                | Nano S | Nano S XL | Nano SP/X - Stax | Nesting | Arguments                                                                                                     |
-| ------------------- | ------ | --------- | ---------------- | ------- | ------------------------------------------------------------------------------------------------------------- |
-| Set members         |        |           |                  |         | `VecAccountId`new_members<br/>`OptionAccountId`prime<br/>`MemberCount`old_count<br/>                          |
-| Execute             |        |           |                  |         | `Proposal`proposal<br/>`Compactu32`length_bound<br/>                                                          |
-| Propose             |        |           |                  |         | `Compactu32`threshold<br/>`Proposal`proposal<br/>`Compactu32`length_bound<br/>                                |
-| Vote                |        |           |                  |         | `Hash`proposal<br/>`Compactu32`index<br/>`bool`approve<br/>                                                   |
-| Disapprove proposal |        |           |                  |         | `Hash`proposal_hash<br/>                                                                                      |
-| Close               |        |           |                  |         | `Hash`proposal_hash<br/>`Compactu32`index<br/>`Weight`proposal_weight_bound<br/>`Compactu32`length_bound<br/> |
+| Name                | Nano S | Nano S XL          | Nano SP/X - Stax   | Nesting | Arguments                                                                                                     |
+| ------------------- | ------ | ------------------ | ------------------ | ------- | ------------------------------------------------------------------------------------------------------------- |
+| Set members         |        | :heavy_check_mark: | :heavy_check_mark: |         | `VecAccountId`new_members<br/>`OptionAccountId`prime<br/>`MemberCount`old_count<br/>                          |
+| Execute             |        | :heavy_check_mark: | :heavy_check_mark: |         | `Proposal`proposal<br/>`Compactu32`length_bound<br/>                                                          |
+| Propose             |        | :heavy_check_mark: | :heavy_check_mark: |         | `Compactu32`threshold<br/>`Proposal`proposal<br/>`Compactu32`length_bound<br/>                                |
+| Vote                |        | :heavy_check_mark: | :heavy_check_mark: |         | `Hash`proposal<br/>`Compactu32`index<br/>`bool`approve<br/>                                                   |
+| Disapprove proposal |        |                    |                    |         | `Hash`proposal_hash<br/>                                                                                      |
+| Close               |        |                    |                    |         | `Hash`proposal_hash<br/>`Compactu32`index<br/>`Weight`proposal_weight_bound<br/>`Compactu32`length_bound<br/> |
 
 ## Grandpa
 
-| Name                         | Nano S | Nano S XL | Nano SP/X - Stax | Nesting | Arguments                                                                                       |
-| ---------------------------- | ------ | --------- | ---------------- | ------- | ----------------------------------------------------------------------------------------------- |
-| Report equivocation          |        |           |                  |         | `BoxEquivocationProofHashBlockNumber`equivocation_proof<br/>`KeyOwnerProof`key_owner_proof<br/> |
-| Report equivocation unsigned |        |           |                  |         | `BoxEquivocationProofHashBlockNumber`equivocation_proof<br/>`KeyOwnerProof`key_owner_proof<br/> |
-| Note stalled                 |        |           |                  |         | `BlockNumber`delay<br/>`BlockNumber`best_finalized_block_number<br/>                            |
+| Name                         | Nano S | Nano S XL          | Nano SP/X - Stax   | Nesting | Arguments                                                                                       |
+| ---------------------------- | ------ | ------------------ | ------------------ | ------- | ----------------------------------------------------------------------------------------------- |
+| Report equivocation          |        |                    |                    |         | `BoxEquivocationProofHashBlockNumber`equivocation_proof<br/>`KeyOwnerProof`key_owner_proof<br/> |
+| Report equivocation unsigned |        |                    |                    |         | `BoxEquivocationProofHashBlockNumber`equivocation_proof<br/>`KeyOwnerProof`key_owner_proof<br/> |
+| Note stalled                 |        | :heavy_check_mark: | :heavy_check_mark: |         | `BlockNumber`delay<br/>`BlockNumber`best_finalized_block_number<br/>                            |
 
 ## Treasury
 
@@ -196,14 +196,14 @@ Please:
 
 ## Scheduler
 
-| Name                 | Nano S | Nano S XL | Nano SP/X - Stax | Nesting | Arguments                                                                                                                                  |
-| -------------------- | ------ | --------- | ---------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| Schedule             |        |           |                  |         | `BlockNumber`when<br/>`OptionschedulePeriodBlockNumber`maybe_periodic<br/>`schedulePriority`priority<br/>`Call`call<br/>                   |
-| Cancel               |        |           |                  |         | `BlockNumber`when<br/>`u32`index<br/>                                                                                                      |
-| Schedule named       |        |           |                  |         | `TaskName`id<br/>`BlockNumber`when<br/>`OptionschedulePeriodBlockNumber`maybe_periodic<br/>`schedulePriority`priority<br/>`Call`call<br/>  |
-| Cancel named         |        |           |                  |         | `TaskName`id<br/>                                                                                                                          |
-| Schedule after       |        |           |                  |         | `BlockNumber`after<br/>`OptionschedulePeriodBlockNumber`maybe_periodic<br/>`schedulePriority`priority<br/>`Call`call<br/>                  |
-| Schedule named after |        |           |                  |         | `TaskName`id<br/>`BlockNumber`after<br/>`OptionschedulePeriodBlockNumber`maybe_periodic<br/>`schedulePriority`priority<br/>`Call`call<br/> |
+| Name                 | Nano S | Nano S XL          | Nano SP/X - Stax   | Nesting | Arguments                                                                                                                                  |
+| -------------------- | ------ | ------------------ | ------------------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| Schedule             |        |                    |                    |         | `BlockNumber`when<br/>`OptionschedulePeriodBlockNumber`maybe_periodic<br/>`schedulePriority`priority<br/>`Call`call<br/>                   |
+| Cancel               |        |                    |                    |         | `BlockNumber`when<br/>`u32`index<br/>                                                                                                      |
+| Schedule named       |        |                    |                    |         | `TaskName`id<br/>`BlockNumber`when<br/>`OptionschedulePeriodBlockNumber`maybe_periodic<br/>`schedulePriority`priority<br/>`Call`call<br/>  |
+| Cancel named         |        |                    |                    |         | `TaskName`id<br/>                                                                                                                          |
+| Schedule after       |        | :heavy_check_mark: | :heavy_check_mark: |         | `BlockNumber`after<br/>`OptionschedulePeriodBlockNumber`maybe_periodic<br/>`schedulePriority`priority<br/>`Call`call<br/>                  |
+| Schedule named after |        |                    |                    |         | `TaskName`id<br/>`BlockNumber`after<br/>`OptionschedulePeriodBlockNumber`maybe_periodic<br/>`schedulePriority`priority<br/>`Call`call<br/> |
 
 ## DataAvailability
 
@@ -213,7 +213,7 @@ Please:
 | Submit data                  |        | :heavy_check_mark: | :heavy_check_mark: |         | `AppData`data<br/>                       |
 | Submit block length proposal |        | :heavy_check_mark: | :heavy_check_mark: |         | `u32`rows<br/>`u32`cols<br/>             |
 | Set application key          |        | :heavy_check_mark: | :heavy_check_mark: |         | `AppKey`old_key<br/>`AppKey`new_key<br/> |
-| Set submit data fee modifier |        |                    |                    |         | `DispatchFeeModifier`modifier<br/>       |
+| Set submit data fee modifier |        | :heavy_check_mark: | :heavy_check_mark: |         | `DispatchFeeModifier`modifier<br/>       |
 
 ## Preimage
 
@@ -272,69 +272,69 @@ Please:
 
 ## Identity
 
-| Name                      | Nano S | Nano S XL | Nano SP/X - Stax | Nesting | Arguments                                                                                                       |
-| ------------------------- | ------ | --------- | ---------------- | ------- | --------------------------------------------------------------------------------------------------------------- |
-| Add registrar             |        |           |                  |         | `AccountIdLookupOfT`account<br/>                                                                                |
-| Set identity              |        |           |                  |         | `IdentityInfo`info<br/>                                                                                         |
-| Set subs                  |        |           |                  |         | `VecTupleAccountIdData`subs<br/>                                                                                |
-| Clear identity            |        |           |                  |         |                                                                                                                 |
-| Request judgement         |        |           |                  |         | `Compactu32`reg_index<br/>`Compactu128`max_fee<br/>                                                             |
-| Cancel request            |        |           |                  |         | `RegistrarIndex`reg_index<br/>                                                                                  |
-| Set fee                   |        |           |                  |         | `Compactu32`index<br/>`Compactu128`fee<br/>                                                                     |
-| Set account id            |        |           |                  |         | `Compactu32`index<br/>`AccountIdLookupOfT`new\_<br/>                                                            |
-| Set fields                |        |           |                  |         | `Compactu32`index<br/>`IdentityInformationasIdentityInformationProviderFieldsIdentifier`fields<br/>             |
-| Provide judgement         |        |           |                  |         | `Compactu32`reg_index<br/>`AccountIdLookupOfT`target<br/>`JudgementBalanceOfT`judgement<br/>`Hash`identity<br/> |
-| Kill identity             |        |           |                  |         | `AccountIdLookupOfT`target<br/>                                                                                 |
-| Add sub                   |        |           |                  |         | `AccountIdLookupOfT`sub<br/>`Data`data<br/>                                                                     |
-| Rename sub                |        |           |                  |         | `AccountIdLookupOfT`sub<br/>`Data`data<br/>                                                                     |
-| Remove sub                |        |           |                  |         | `AccountIdLookupOfT`sub<br/>                                                                                    |
-| Quit sub                  |        |           |                  |         |                                                                                                                 |
-| Add username authority    |        |           |                  |         | `AccountIdLookupOfT`authority<br/>`Vecu8`suffix<br/>`u32`allocation<br/>                                        |
-| Remove username authority |        |           |                  |         | `AccountIdLookupOfT`authority<br/>                                                                              |
-| Set username for          |        |           |                  |         | `AccountIdLookupOfT`who<br/>`Vecu8`username<br/>`OptionOffchainSignature`signature<br/>                         |
-| Accept username           |        |           |                  |         | `UsernameT`username<br/>                                                                                        |
-| Remove expired approval   |        |           |                  |         | `UsernameT`username<br/>                                                                                        |
-| Set primary username      |        |           |                  |         | `UsernameT`username<br/>                                                                                        |
-| Remove dangling username  |        |           |                  |         | `UsernameT`username<br/>                                                                                        |
+| Name                      | Nano S | Nano S XL          | Nano SP/X - Stax   | Nesting | Arguments                                                                                                       |
+| ------------------------- | ------ | ------------------ | ------------------ | ------- | --------------------------------------------------------------------------------------------------------------- |
+| Add registrar             |        |                    |                    |         | `AccountIdLookupOfT`account<br/>                                                                                |
+| Set identity              |        | :heavy_check_mark: | :heavy_check_mark: |         | `IdentityInfo`info<br/>                                                                                         |
+| Set subs                  |        |                    |                    |         | `VecTupleAccountIdData`subs<br/>                                                                                |
+| Clear identity            |        | :heavy_check_mark: | :heavy_check_mark: |         |                                                                                                                 |
+| Request judgement         |        |                    |                    |         | `Compactu32`reg_index<br/>`Compactu128`max_fee<br/>                                                             |
+| Cancel request            |        |                    |                    |         | `RegistrarIndex`reg_index<br/>                                                                                  |
+| Set fee                   |        |                    |                    |         | `Compactu32`index<br/>`Compactu128`fee<br/>                                                                     |
+| Set account id            |        |                    |                    |         | `Compactu32`index<br/>`AccountIdLookupOfT`new\_<br/>                                                            |
+| Set fields                |        |                    |                    |         | `Compactu32`index<br/>`IdentityInformationasIdentityInformationProviderFieldsIdentifier`fields<br/>             |
+| Provide judgement         |        |                    |                    |         | `Compactu32`reg_index<br/>`AccountIdLookupOfT`target<br/>`JudgementBalanceOfT`judgement<br/>`Hash`identity<br/> |
+| Kill identity             |        |                    |                    |         | `AccountIdLookupOfT`target<br/>                                                                                 |
+| Add sub                   |        |                    |                    |         | `AccountIdLookupOfT`sub<br/>`Data`data<br/>                                                                     |
+| Rename sub                |        |                    |                    |         | `AccountIdLookupOfT`sub<br/>`Data`data<br/>                                                                     |
+| Remove sub                |        |                    |                    |         | `AccountIdLookupOfT`sub<br/>                                                                                    |
+| Quit sub                  |        |                    |                    |         |                                                                                                                 |
+| Add username authority    |        |                    |                    |         | `AccountIdLookupOfT`authority<br/>`Vecu8`suffix<br/>`u32`allocation<br/>                                        |
+| Remove username authority |        |                    |                    |         | `AccountIdLookupOfT`authority<br/>                                                                              |
+| Set username for          |        |                    |                    |         | `AccountIdLookupOfT`who<br/>`Vecu8`username<br/>`OptionOffchainSignature`signature<br/>                         |
+| Accept username           |        |                    |                    |         | `UsernameT`username<br/>                                                                                        |
+| Remove expired approval   |        |                    |                    |         | `UsernameT`username<br/>                                                                                        |
+| Set primary username      |        |                    |                    |         | `UsernameT`username<br/>                                                                                        |
+| Remove dangling username  |        |                    |                    |         | `UsernameT`username<br/>                                                                                        |
 
 ## Mandate
 
-| Name    | Nano S | Nano S XL | Nano SP/X - Stax | Nesting | Arguments       |
-| ------- | ------ | --------- | ---------------- | ------- | --------------- |
-| Mandate |        |           |                  |         | `Call`call<br/> |
+| Name    | Nano S | Nano S XL          | Nano SP/X - Stax   | Nesting | Arguments       |
+| ------- | ------ | ------------------ | ------------------ | ------- | --------------- |
+| Mandate |        | :heavy_check_mark: | :heavy_check_mark: |         | `Call`call<br/> |
 
 ## Vector
 
-| Name                        | Nano S | Nano S XL | Nano SP/X - Stax | Nesting | Arguments                                                                                                                |
-| --------------------------- | ------ | --------- | ---------------- | ------- | ------------------------------------------------------------------------------------------------------------------------ |
-| Fulfill call                |        |           |                  |         | `H256`function_id<br/>`FunctionInput`input<br/>`FunctionOutput`output<br/>`FunctionProof`proof<br/>`Compactu64`slot<br/> |
-| Execute                     |        |           |                  |         | `Compactu64`slot<br/>`AddressedMessage`addr_message<br/>`ValidProof`account_proof<br/>`ValidProof`storage_proof<br/>     |
-| Source chain froze          |        |           |                  |         | `Compactu32`source_chain_id<br/>`bool`frozen<br/>                                                                        |
-| Send message                |        |           |                  |         | `Message`message<br/>`H256`to<br/>`Compactu32`domain<br/>                                                                |
-| Set poseidon hash           |        |           |                  |         | `Compactu64`period<br/>`BoundedVecu8`poseidon_hash<br/>                                                                  |
-| Set broadcaster             |        |           |                  |         | `Compactu32`broadcaster_domain<br/>`H256`broadcaster<br/>                                                                |
-| Set whitelisted domains     |        |           |                  |         | `BoundedVecu32ConstU3210_000`value<br/>                                                                                  |
-| Set configuration           |        |           |                  |         | `Configuration`value<br/>                                                                                                |
-| Set function ids            |        |           |                  |         | `OptionTupleH256H256`value<br/>                                                                                          |
-| Set step verification key   |        |           |                  |         | `OptionBoundedVecu8ConstU3210_000`value<br/>                                                                             |
-| Set rotate verification key |        |           |                  |         | `OptionBoundedVecu8ConstU3210_000`value<br/>                                                                             |
-| Failed send message txs     |        |           |                  |         | `VecCompactu32`failed_txs<br/>                                                                                           |
-| Set updater                 |        |           |                  |         | `H256`updater<br/>                                                                                                       |
+| Name                        | Nano S | Nano S XL          | Nano SP/X - Stax   | Nesting | Arguments                                                                                                                |
+| --------------------------- | ------ | ------------------ | ------------------ | ------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Fulfill call                |        |                    |                    |         | `H256`function_id<br/>`FunctionInput`input<br/>`FunctionOutput`output<br/>`FunctionProof`proof<br/>`Compactu64`slot<br/> |
+| Execute                     |        | :heavy_check_mark: | :heavy_check_mark: |         | `Compactu64`slot<br/>`AddressedMessage`addr_message<br/>`ValidProof`account_proof<br/>`ValidProof`storage_proof<br/>     |
+| Source chain froze          |        |                    |                    |         | `Compactu32`source_chain_id<br/>`bool`frozen<br/>                                                                        |
+| Send message                |        | :heavy_check_mark: | :heavy_check_mark: |         | `Message`message<br/>`H256`to<br/>`Compactu32`domain<br/>                                                                |
+| Set poseidon hash           |        |                    |                    |         | `Compactu64`period<br/>`BoundedVecu8`poseidon_hash<br/>                                                                  |
+| Set broadcaster             |        |                    |                    |         | `Compactu32`broadcaster_domain<br/>`H256`broadcaster<br/>                                                                |
+| Set whitelisted domains     |        |                    |                    |         | `BoundedVecu32ConstU3210_000`value<br/>                                                                                  |
+| Set configuration           |        |                    |                    |         | `Configuration`value<br/>                                                                                                |
+| Set function ids            |        |                    |                    |         | `OptionTupleH256H256`value<br/>                                                                                          |
+| Set step verification key   |        |                    |                    |         | `OptionBoundedVecu8ConstU3210_000`value<br/>                                                                             |
+| Set rotate verification key |        |                    |                    |         | `OptionBoundedVecu8ConstU3210_000`value<br/>                                                                             |
+| Failed send message txs     |        |                    |                    |         | `VecCompactu32`failed_txs<br/>                                                                                           |
+| Set updater                 |        |                    |                    |         | `H256`updater<br/>                                                                                                       |
 
 ## Proxy
 
-| Name                | Nano S | Nano S XL | Nano SP/X - Stax | Nesting | Arguments                                                                                                                  |
-| ------------------- | ------ | --------- | ---------------- | ------- | -------------------------------------------------------------------------------------------------------------------------- |
-| Proxy               |        |           |                  |         | `AccountIdLookupOfT`real<br/>`OptionProxyType`force_proxy_type<br/>`Call`call<br/>                                         |
-| Add proxy           |        |           |                  |         | `AccountIdLookupOfT`delegate<br/>`ProxyType`proxy_type<br/>`BlockNumber`delay<br/>                                         |
-| Remove proxy        |        |           |                  |         | `AccountIdLookupOfT`delegate<br/>`ProxyType`proxy_type<br/>`BlockNumber`delay<br/>                                         |
-| Remove proxies      |        |           |                  |         |                                                                                                                            |
-| Create pure         |        |           |                  |         | `ProxyType`proxy_type<br/>`BlockNumber`delay<br/>`u16`index<br/>                                                           |
-| Kill pure           |        |           |                  |         | `AccountIdLookupOfT`spawner<br/>`ProxyType`proxy_type<br/>`u16`index<br/>`Compactu32`height<br/>`Compactu32`ext_index<br/> |
-| Announce            |        |           |                  |         | `AccountIdLookupOfT`real<br/>`CallHashOf`call_hash<br/>                                                                    |
-| Remove announcement |        |           |                  |         | `AccountIdLookupOfT`real<br/>`CallHashOf`call_hash<br/>                                                                    |
-| Reject announcement |        |           |                  |         | `AccountIdLookupOfT`delegate<br/>`CallHashOf`call_hash<br/>                                                                |
-| Proxy announced     |        |           |                  |         | `AccountIdLookupOfT`delegate<br/>`AccountIdLookupOfT`real<br/>`OptionProxyType`force_proxy_type<br/>`Call`call<br/>        |
+| Name                | Nano S | Nano S XL          | Nano SP/X - Stax   | Nesting            | Arguments                                                                                                                  |
+| ------------------- | ------ | ------------------ | ------------------ | ------------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| Proxy               |        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `AccountIdLookupOfT`real<br/>`OptionProxyType`force_proxy_type<br/>`Call`call<br/>                                         |
+| Add proxy           |        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `AccountIdLookupOfT`delegate<br/>`ProxyType`proxy_type<br/>`BlockNumber`delay<br/>                                         |
+| Remove proxy        |        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `AccountIdLookupOfT`delegate<br/>`ProxyType`proxy_type<br/>`BlockNumber`delay<br/>                                         |
+| Remove proxies      |        |                    |                    |                    |                                                                                                                            |
+| Create pure         |        |                    |                    |                    | `ProxyType`proxy_type<br/>`BlockNumber`delay<br/>`u16`index<br/>                                                           |
+| Kill pure           |        |                    |                    |                    | `AccountIdLookupOfT`spawner<br/>`ProxyType`proxy_type<br/>`u16`index<br/>`Compactu32`height<br/>`Compactu32`ext_index<br/> |
+| Announce            |        |                    |                    |                    | `AccountIdLookupOfT`real<br/>`CallHashOf`call_hash<br/>                                                                    |
+| Remove announcement |        |                    |                    |                    | `AccountIdLookupOfT`real<br/>`CallHashOf`call_hash<br/>                                                                    |
+| Reject announcement |        |                    |                    |                    | `AccountIdLookupOfT`delegate<br/>`CallHashOf`call_hash<br/>                                                                |
+| Proxy announced     |        |                    |                    |                    | `AccountIdLookupOfT`delegate<br/>`AccountIdLookupOfT`real<br/>`OptionProxyType`force_proxy_type<br/>`Call`call<br/>        |
 
 ## TxPause
 
