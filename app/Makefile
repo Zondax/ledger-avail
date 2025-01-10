@@ -139,7 +139,7 @@ listvariants:
 ifeq ($(TARGET_NAME),TARGET_NANOS)
 	@echo VARIANTS COIN AVAIL AVAIL_XL
 else
-	@echo VARIANTS COIN AVAIL
+	@echo VARIANTS COIN AVAIL AVAIL_RECOVERY
 endif
 
 .PHONY: version
