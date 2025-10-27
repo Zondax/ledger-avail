@@ -1,0 +1,32 @@
+Checks: "-*,
+  clang-diagnostic-*,
+  clang-analyzer-*,
+  cppcoreguidelines-init-variables,
+  google-runtime-int,
+  google-readability-avoid-underscore-in-googletest-name,
+  misc-*,
+  -misc-include-cleaner,
+  performance-*,
+  portability-*,
+  readability-*,
+  -misc-no-recursion,
+  -readability-function-cognitive-complexity,
+  -readability-magic-numbers,
+  -readability-braces-around-statements,
+  -readability-else-after-return,
+  -readability-isolate-declaration,
+  -readability-uppercase-literal-suffix,
+  -clang-diagnostic-error,
+  -clang-diagnostic-return-type,
+  -cppcoreguidelines-init-variables"
+WarningsAsErrors: ""
+HeaderFilterRegex: "^((?!substrate_functions\\.h|ristretto\\.h|addr\\.h).)*$"
+CheckOptions:
+  - key: readability-identifier-length.MinimumVariableNameLength
+    value: 1
+  - key: readability-identifier-length.MinimumParameterNameLength
+    value: 1
+  - key: readability-identifier-length.MinimumLoopCounterNameLength
+    value: 1
+  - key: readability-magic-numbers.IgnorePowersOf2IntegerValues
+    value: true

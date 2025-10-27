@@ -22,10 +22,11 @@
 extern "C" {
 #endif
 
-#include "substrate_types.h"
-#include "substrate_types_V1.h"
 #include <stddef.h>
 #include <stdint.h>
+
+#include "substrate_types.h"
+#include "substrate_types_V1.h"
 #ifdef LEDGER_SPECIFIC
 #include "bolos_target.h"
 #endif
@@ -60,10 +61,6 @@ typedef struct {
 typedef struct {
     pd_VecCall_t calls;
 } pd_utility_force_batch_V1_t;
-
-#ifdef SUBSTRATE_PARSER_FULL
-#ifndef TARGET_NANOS
-#endif
 
 #define PD_CALL_SYSTEM_AUTHORIZE_UPGRADE_V1 9
 typedef struct {
@@ -340,15 +337,10 @@ typedef struct {
     pd_Compactu32_t domain;
 } pd_vector_send_message_V1_t;
 
-#endif
-
 typedef union {
     pd_utility_batch_V1_t utility_batch_V1;
     pd_utility_batch_all_V1_t utility_batch_all_V1;
     pd_utility_force_batch_V1_t utility_force_batch_V1;
-#ifdef SUBSTRATE_PARSER_FULL
-#ifndef TARGET_NANOS
-#endif
     pd_system_authorize_upgrade_V1_t system_authorize_upgrade_V1;
     pd_system_authorize_upgrade_without_checks_V1_t system_authorize_upgrade_without_checks_V1;
     pd_system_apply_authorized_upgrade_V1_t system_apply_authorized_upgrade_V1;
@@ -396,7 +388,6 @@ typedef union {
     pd_mandate_mandate_V1_t mandate_mandate_V1;
     pd_vector_execute_V1_t vector_execute_V1;
     pd_vector_send_message_V1_t vector_send_message_V1;
-#endif
 } pd_MethodBasic_V1_t;
 
 #define PD_CALL_BALANCES_TRANSFER_ALLOW_DEATH_V1 0
@@ -489,9 +480,6 @@ typedef struct {
 typedef struct {
 } pd_session_purge_keys_V1_t;
 
-#ifdef SUBSTRATE_PARSER_FULL
-#ifndef TARGET_NANOS
-#endif
 #define PD_CALL_SYSTEM_REMARK_V1 0
 typedef struct {
     pd_Bytes_t remark;
@@ -669,8 +657,6 @@ typedef struct {
     pd_BlockNumber_t delay;
 } pd_proxy_remove_proxy_V1_t;
 
-#endif
-
 typedef union {
     pd_balances_transfer_allow_death_V1_t balances_transfer_allow_death_V1;
     pd_balances_force_transfer_V1_t balances_force_transfer_V1;
@@ -689,9 +675,6 @@ typedef union {
     pd_staking_rebond_V1_t staking_rebond_V1;
     pd_session_set_keys_V1_t session_set_keys_V1;
     pd_session_purge_keys_V1_t session_purge_keys_V1;
-#ifdef SUBSTRATE_PARSER_FULL
-#ifndef TARGET_NANOS
-#endif
     pd_system_remark_V1_t system_remark_V1;
     pd_system_set_heap_pages_V1_t system_set_heap_pages_V1;
     pd_system_set_code_V1_t system_set_code_V1;
@@ -721,7 +704,6 @@ typedef union {
     pd_proxy_proxy_V1_t proxy_proxy_V1;
     pd_proxy_add_proxy_V1_t proxy_add_proxy_V1;
     pd_proxy_remove_proxy_V1_t proxy_remove_proxy_V1;
-#endif
 } pd_MethodNested_V1_t;
 
 typedef union {
