@@ -71,7 +71,7 @@ extern "C" {
     if ((SIZE) % outLenNormalized != 0) *pageCount += 1;                          \
     const uint16_t pageOffset = pageIdx * outLenNormalized;                       \
     uint16_t loopmax = outLenNormalized;                                          \
-    if (loopmax > (SIZE)-pageOffset) loopmax = (SIZE)-pageOffset;                 \
+    if (loopmax > (SIZE) - pageOffset) loopmax = (SIZE) - pageOffset;             \
     for (uint16_t i = 0; i < loopmax; i++) {                                      \
         const uint16_t offset = i << 1u;                                          \
         const uint8_t *c = v->_ptr + pageOffset;                                  \
