@@ -173,9 +173,6 @@ __Z_INLINE parser_error_t _readMethod_session_purge_keys_V1(
     return parser_ok;
 }
 
-#ifdef SUBSTRATE_PARSER_FULL
-#ifndef TARGET_NANOS
-#endif
 __Z_INLINE parser_error_t _readMethod_system_remark_V1(
     parser_context_t* c, pd_system_remark_V1_t* m)
 {
@@ -790,7 +787,6 @@ __Z_INLINE parser_error_t _readMethod_proxy_remove_proxy_V1(
     return parser_ok;
 }
 
-#endif
 
 parser_error_t _readMethod_V1(
     parser_context_t* c,
@@ -863,9 +859,6 @@ parser_error_t _readMethod_V1(
         CHECK_ERROR(_readMethod_session_purge_keys_V1(c, &method->nested.session_purge_keys_V1))
         break;
 
-#ifdef SUBSTRATE_PARSER_FULL
-#ifndef TARGET_NANOS
-#endif
     case 0: /* module 0 call 0 */
         CHECK_ERROR(_readMethod_system_remark_V1(c, &method->nested.system_remark_V1))
         break;
@@ -1094,7 +1087,6 @@ parser_error_t _readMethod_V1(
     case 10242: /* module 40 call 2 */
         CHECK_ERROR(_readMethod_proxy_remove_proxy_V1(c, &method->nested.proxy_remove_proxy_V1))
         break;
-#endif
     default:
         return parser_unexpected_callIndex;
     }
@@ -1118,9 +1110,6 @@ const char* _getMethod_ModuleName_V1(uint8_t moduleIdx)
         return STR_MO_STAKING;
     case 11:
         return STR_MO_SESSION;
-#ifdef SUBSTRATE_PARSER_FULL
-#ifndef TARGET_NANOS
-#endif
     case 0:
         return STR_MO_SYSTEM;
     case 14:
@@ -1143,7 +1132,6 @@ const char* _getMethod_ModuleName_V1(uint8_t moduleIdx)
         return STR_MO_VECTOR;
     case 40:
         return STR_MO_PROXY;
-#endif
     default:
         return NULL;
     }
@@ -1206,9 +1194,6 @@ const char* _getMethod_Name_V1(uint8_t moduleIdx, uint8_t callIdx)
 const char* _getMethod_Name_V1_ParserFull(uint16_t callPrivIdx)
 {
     switch (callPrivIdx) {
-#ifdef SUBSTRATE_PARSER_FULL
-#ifndef TARGET_NANOS
-#endif
     case 0: /* module 0 call 0 */
         return STR_ME_REMARK;
     case 1: /* module 0 call 1 */
@@ -1361,7 +1346,6 @@ const char* _getMethod_Name_V1_ParserFull(uint16_t callPrivIdx)
         return STR_ME_ADD_PROXY;
     case 10242: /* module 40 call 2 */
         return STR_ME_REMOVE_PROXY;
-#endif
     default:
         return NULL;
     }
@@ -1414,9 +1398,6 @@ uint8_t _getMethod_NumItems_V1(uint8_t moduleIdx, uint8_t callIdx)
         return 2;
     case 2817: /* module 11 call 1 */
         return 0;
-#ifdef SUBSTRATE_PARSER_FULL
-#ifndef TARGET_NANOS
-#endif
     case 0: /* module 0 call 0 */
         return 1;
     case 1: /* module 0 call 1 */
@@ -1569,7 +1550,6 @@ uint8_t _getMethod_NumItems_V1(uint8_t moduleIdx, uint8_t callIdx)
         return 3;
     case 10242: /* module 40 call 2 */
         return 3;
-#endif
     default:
         return 0;
     }
@@ -1732,9 +1712,6 @@ const char* _getMethod_ItemName_V1(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-#ifdef SUBSTRATE_PARSER_FULL
-#ifndef TARGET_NANOS
-#endif
     case 0: /* module 0 call 0 */
         switch (itemIdx) {
         case 0:
@@ -2411,7 +2388,6 @@ const char* _getMethod_ItemName_V1(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-#endif
     default:
         return NULL;
     }
@@ -2653,9 +2629,6 @@ parser_error_t _getMethod_ItemValue_V1(
         default:
             return parser_no_data;
         }
-#ifdef SUBSTRATE_PARSER_FULL
-#ifndef TARGET_NANOS
-#endif
     case 0: /* module 0 call 0 */
         switch (itemIdx) {
         case 0: /* system_remark_V1 - remark */;
@@ -3776,7 +3749,6 @@ parser_error_t _getMethod_ItemValue_V1(
         default:
             return parser_no_data;
         }
-#endif
     default:
         return parser_ok;
     }

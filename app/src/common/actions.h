@@ -25,14 +25,6 @@
 
 extern uint16_t action_addrResponseLen;
 
-#ifdef SUPPORT_SR25519
-__Z_INLINE zxerr_t app_sign_sr25519() {
-    const uint8_t *message = tx_get_buffer();
-    const uint16_t messageLength = tx_get_buffer_length();
-    return crypto_sign_sr25519(message, messageLength);
-}
-#endif
-
 __Z_INLINE void app_sign_ed25519() {
     const uint8_t *message = tx_get_buffer();
     const uint16_t messageLength = tx_get_buffer_length();
@@ -48,25 +40,7 @@ __Z_INLINE void app_sign_ed25519() {
     }
 }
 
-#ifdef SUPPORT_SR25519
-__Z_INLINE void app_return_sr25519() {
-    const zxerr_t err = copy_sr25519_signdata(G_io_apdu_buffer, sizeof(G_io_apdu_buffer) - 2);
-    zeroize_sr25519_signdata();
-
-    if (err != zxerr_ok) {
-        set_code(G_io_apdu_buffer, 0, APDU_CODE_SIGN_VERIFY_ERROR);
-        io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, 2);
-    } else {
-        set_code(G_io_apdu_buffer, SIG_PLUS_TYPE_LEN, APDU_CODE_OK);
-        io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, SIG_PLUS_TYPE_LEN + 2);
-    }
-}
-#endif
-
 __Z_INLINE void app_reject() {
-#ifdef SUPPORT_SR25519
-    zeroize_sr25519_signdata();
-#endif
     set_code(G_io_apdu_buffer, 0, APDU_CODE_COMMAND_NOT_ALLOWED);
     io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, 2);
 }
@@ -79,24 +53,13 @@ __Z_INLINE zxerr_t app_fill_address(key_kind_e addressKind) {
 }
 
 __Z_INLINE key_kind_e get_key_type(uint8_t num) {
-#ifdef SUPPORT_SR25519
-    switch (num) {
-        case 0x00:
-            return key_ed25519;
-        case 0x01:
-            return key_sr25519;
+    if (num == 0) {
+        return key_ed25519;
     }
-    return 0xff;
-#else
-    UNUSED(num);
-    return key_ed25519;
-#endif
+    return (key_kind_e)0xFF; // Invalid key type
 }
 
 __Z_INLINE void app_reply_error() {
-#ifdef SUPPORT_SR25519
-    zeroize_sr25519_signdata();
-#endif
     set_code(G_io_apdu_buffer, 0, APDU_CODE_DATA_INVALID);
     io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, 2);
 }

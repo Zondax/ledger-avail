@@ -16,8 +16,8 @@
 cmake_minimum_required(VERSION 3.28)
 include("cmake/HunterGate.cmake")
 HunterGate(
-    URL "https://github.com/cpp-pm/hunter/archive/v0.25.5.tar.gz"
-    SHA1 "a20151e4c0740ee7d0f9994476856d813cdead29"
+    URL "https://github.com/cpp-pm/hunter/archive/v0.26.1.tar.gz"
+    SHA1 "e41ac7a18c49b35ebac99ff2b5244317b2638a65"
     LOCAL
 )
 
@@ -49,7 +49,6 @@ string(APPEND CMAKE_CXX_FLAGS " -fno-omit-frame-pointer -g")
 string(APPEND CMAKE_LINKER_FLAGS " -fno-omit-frame-pointer -g")
 
 add_definitions(-DAPP_STANDARD)
-add_definitions(-DSUBSTRATE_PARSER_FULL)
 
 hunter_add_package(fmt)
 find_package(fmt CONFIG REQUIRED)
@@ -126,8 +125,8 @@ message(STATUS "LEDGER_MAJOR_VERSION [${MAJOR_RESULT}]: ${MAJOR_VERSION}" )
 message(STATUS "LEDGER_MINOR_VERSION [${MINOR_RESULT}]: ${MINOR_VERSION}" )
 
 add_definitions(
-    -DLEDGER_MAJOR_VERSION=${MAJOR_VERSION}
-    -DLEDGER_MINOR_VERSION=${MINOR_VERSION}
+    -DMAJOR_VERSION=${MAJOR_VERSION}
+    -DMINOR_VERSION=${MINOR_VERSION}
 )
 
 ##############################################################
