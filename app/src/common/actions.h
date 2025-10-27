@@ -53,8 +53,10 @@ __Z_INLINE zxerr_t app_fill_address(key_kind_e addressKind) {
 }
 
 __Z_INLINE key_kind_e get_key_type(uint8_t num) {
-    UNUSED(num);
-    return key_ed25519;
+    if (num == 0) {
+        return key_ed25519;
+    }
+    return (key_kind_e)0xFF; // Invalid key type
 }
 
 __Z_INLINE void app_reply_error() {

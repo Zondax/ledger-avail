@@ -102,7 +102,7 @@ test.concurrent.each(models)('raw signing - incorrect', async function (m) {
     console.log(signatureResponse)
 
     expect(signatureResponse.return_code).toEqual(0x6984)
-    expect(signatureResponse.error_message).toEqual('Unexpected value')
+    expect(signatureResponse.error_message).toEqual('Data is invalid')
   } finally {
     await sim.close()
   }
