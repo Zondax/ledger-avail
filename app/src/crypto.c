@@ -1,26 +1,26 @@
 /*******************************************************************************
-*   (c) 2019 Zondax GmbH
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*  you may not use this file except in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-*  Unless required by applicable law or agreed to in writing, software
-*  distributed under the License is distributed on an "AS IS" BASIS,
-*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*  See the License for the specific language governing permissions and
-*  limitations under the License.
-********************************************************************************/
+ *   (c) 2019 Zondax GmbH
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ ********************************************************************************/
 
 #include "crypto.h"
+
 #include "base58.h"
 #include "coin.h"
+#include "crypto_helper.h"
 #include "cx.h"
 #include "zxmacros.h"
-#include "ristretto.h"
-#include "crypto_helper.h"
 
 uint32_t hdPath[HDPATH_LEN_DEFAULT];
 
@@ -35,14 +35,8 @@ static zxerr_t crypto_extractPublicKey(key_kind_e addressKind, uint8_t *pubKey, 
     uint8_t privateKeyData[SK_LEN_25519] = {0};
 
     // Generate keys
-    CATCH_CXERROR(os_derive_bip32_with_seed_no_throw(HDW_NORMAL,
-                                                     CX_CURVE_Ed25519,
-                                                     hdPath,
-                                                     HDPATH_LEN_DEFAULT,
-                                                     privateKeyData,
-                                                     NULL,
-                                                     NULL,
-                                                     0));
+    CATCH_CXERROR(os_derive_bip32_with_seed_no_throw(HDW_NORMAL, CX_CURVE_Ed25519, hdPath, HDPATH_LEN_DEFAULT,
+                                                     privateKeyData, NULL, NULL, 0));
 
     switch (addressKind) {
         case key_ed25519: {
@@ -96,25 +90,14 @@ zxerr_t crypto_sign_ed25519(uint8_t *signature, uint16_t signatureMaxlen, const 
     }
 
     // Generate keys
-    CATCH_CXERROR(os_derive_bip32_with_seed_no_throw(HDW_NORMAL,
-                                                     CX_CURVE_Ed25519,
-                                                     hdPath,
-                                                     HDPATH_LEN_DEFAULT,
-                                                     privateKeyData,
-                                                     NULL,
-                                                     NULL,
-                                                     0));
+    CATCH_CXERROR(os_derive_bip32_with_seed_no_throw(HDW_NORMAL, CX_CURVE_Ed25519, hdPath, HDPATH_LEN_DEFAULT,
+                                                     privateKeyData, NULL, NULL, 0));
 
     CATCH_CXERROR(cx_ecfp_init_private_key_no_throw(CX_CURVE_Ed25519, privateKeyData, SCALAR_LEN_ED25519, &cx_privateKey));
 
     // Sign
     *signature = PREFIX_SIGNATURE_TYPE_ED25519;
-    CATCH_CXERROR(cx_eddsa_sign_no_throw(&cx_privateKey,
-                                         CX_SHA512,
-                                         toSign,
-                                         messageLen,
-                                         signature + 1,
-                                         signatureMaxlen - 1));
+    CATCH_CXERROR(cx_eddsa_sign_no_throw(&cx_privateKey, CX_SHA512, toSign, messageLen, signature + 1, signatureMaxlen - 1));
     error = zxerr_ok;
 
 catch_cx_error:
@@ -135,9 +118,7 @@ zxerr_t crypto_fillAddress(key_kind_e addressKind, uint8_t *buffer, uint16_t buf
     MEMZERO(buffer, bufferLen);
     CHECK_ZXERR(crypto_extractPublicKey(addressKind, buffer, bufferLen))
 
-    size_t outLen = crypto_SS58EncodePubkey(buffer + PK_LEN_25519,
-                                            bufferLen - PK_LEN_25519,
-                                            PK_ADDRESS_TYPE, buffer);
+    size_t outLen = crypto_SS58EncodePubkey(buffer + PK_LEN_25519, bufferLen - PK_LEN_25519, PK_ADDRESS_TYPE, buffer);
     if (outLen == 0) {
         MEMZERO(buffer, bufferLen);
         return zxerr_unknown;

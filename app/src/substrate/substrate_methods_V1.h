@@ -22,10 +22,11 @@
 extern "C" {
 #endif
 
-#include "substrate_types.h"
-#include "substrate_types_V1.h"
 #include <stddef.h>
 #include <stdint.h>
+
+#include "substrate_types.h"
+#include "substrate_types_V1.h"
 #ifdef LEDGER_SPECIFIC
 #include "bolos_target.h"
 #endif
@@ -60,7 +61,6 @@ typedef struct {
 typedef struct {
     pd_VecCall_t calls;
 } pd_utility_force_batch_V1_t;
-
 
 #define PD_CALL_SYSTEM_AUTHORIZE_UPGRADE_V1 9
 typedef struct {
@@ -336,7 +336,6 @@ typedef struct {
     pd_H256_t to;
     pd_Compactu32_t domain;
 } pd_vector_send_message_V1_t;
-
 
 typedef union {
     pd_utility_batch_V1_t utility_batch_V1;
@@ -657,7 +656,6 @@ typedef struct {
     pd_ProxyType_t proxy_type;
     pd_BlockNumber_t delay;
 } pd_proxy_remove_proxy_V1_t;
-
 
 typedef union {
     pd_balances_transfer_allow_death_V1_t balances_transfer_allow_death_V1;
