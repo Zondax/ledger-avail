@@ -44,6 +44,7 @@ extern "C" {
 
 typedef enum {
     key_ed25519 = 0,
+    key_invalid = 0xFF,
 } key_kind_e;
 
 // Coin Specific
