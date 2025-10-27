@@ -23,13 +23,8 @@ extern "C" {
 #include <stddef.h>
 #include "substrate_methods.h"
 
-#if defined(TARGET_NANOX) || defined(TARGET_NANOS2) || defined(TARGET_STAX) || defined(TARGET_FLEX)
 #define MAX_CALL_NESTING_SIZE 6
 #define MAX_CALL_VEC_SIZE 6
-#else
-#define MAX_CALL_NESTING_SIZE 2
-#define MAX_CALL_VEC_SIZE 5
-#endif
 
 typedef struct {
     pd_CallIndex_t callIndex;

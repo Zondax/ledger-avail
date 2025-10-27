@@ -1,36 +1,34 @@
 /*******************************************************************************
-*   (c) 2018, 2019 Zondax GmbH
-*   (c) 2016 Ledger
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*  you may not use this file except in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-*  Unless required by applicable law or agreed to in writing, software
-*  distributed under the License is distributed on an "AS IS" BASIS,
-*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*  See the License for the specific language governing permissions and
-*  limitations under the License.
-********************************************************************************/
+ *   (c) 2018, 2019 Zondax GmbH
+ *   (c) 2016 Ledger
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ ********************************************************************************/
 
-#include "app_main.h"
-
-#include <string.h>
-#include <os_io_seproxyhal.h>
 #include <os.h>
+#include <os_io_seproxyhal.h>
+#include <string.h>
 #include <ux.h>
 
-#include "view.h"
 #include "actions.h"
-#include "tx.h"
 #include "addr.h"
-#include "crypto.h"
-#include "coin.h"
-#include "zxmacros.h"
+#include "app_main.h"
 #include "app_mode.h"
+#include "coin.h"
+#include "crypto.h"
+#include "tx.h"
 #include "view.h"
+#include "zxmacros.h"
 
 static bool tx_initialized = false;
 
@@ -44,11 +42,9 @@ void extractHDPath(uint32_t rx, uint32_t offset) {
     memcpy(hdPath, G_io_apdu_buffer + offset, sizeof(uint32_t) * HDPATH_LEN_DEFAULT);
 
 #ifdef RECOVERY_APP
-    const bool mainnet = hdPath[0] == HDPATH_0_DEFAULT &&
-                         hdPath[1] == HDPATH_1_RECOVERY;
+    const bool mainnet = hdPath[0] == HDPATH_0_DEFAULT && hdPath[1] == HDPATH_1_RECOVERY;
 #else
-    const bool mainnet = hdPath[0] == HDPATH_0_DEFAULT &&
-                         hdPath[1] == HDPATH_1_DEFAULT;
+    const bool mainnet = hdPath[0] == HDPATH_0_DEFAULT && hdPath[1] == HDPATH_1_DEFAULT;
 #endif
 
     if (!mainnet) {
@@ -58,11 +54,6 @@ void extractHDPath(uint32_t rx, uint32_t offset) {
 
 __Z_INLINE bool process_chunk(__Z_UNUSED volatile uint32_t *tx, uint32_t rx) {
     const uint8_t payloadType = G_io_apdu_buffer[OFFSET_PAYLOAD_TYPE];
-#ifndef SUPPORT_SR25519
-    if (G_io_apdu_buffer[OFFSET_P2] != 0) {
-        THROW(APDU_CODE_INVALIDP1P2);
-    }
-#endif
     if (rx < OFFSET_DATA) {
         THROW(APDU_CODE_WRONG_LENGTH);
     }
@@ -107,14 +98,14 @@ __Z_INLINE void handle_getversion(__Z_UNUSED volatile uint32_t *flags, volatile 
     G_io_apdu_buffer[0] = 0x01;
 #endif
 
-    G_io_apdu_buffer[1] = (LEDGER_MAJOR_VERSION >> 8) & 0xFF;
-    G_io_apdu_buffer[2] = (LEDGER_MAJOR_VERSION >> 0) & 0xFF;
+    G_io_apdu_buffer[1] = (MAJOR_VERSION >> 8) & 0xFF;
+    G_io_apdu_buffer[2] = (MAJOR_VERSION >> 0) & 0xFF;
 
-    G_io_apdu_buffer[3] = (LEDGER_MINOR_VERSION >> 8) & 0xFF;
-    G_io_apdu_buffer[4] = (LEDGER_MINOR_VERSION >> 0) & 0xFF;
+    G_io_apdu_buffer[3] = (MINOR_VERSION >> 8) & 0xFF;
+    G_io_apdu_buffer[4] = (MINOR_VERSION >> 0) & 0xFF;
 
-    G_io_apdu_buffer[5] = (LEDGER_PATCH_VERSION >> 8) & 0xFF;
-    G_io_apdu_buffer[6] = (LEDGER_PATCH_VERSION >> 0) & 0xFF;
+    G_io_apdu_buffer[5] = (PATCH_VERSION >> 8) & 0xFF;
+    G_io_apdu_buffer[6] = (PATCH_VERSION >> 0) & 0xFF;
 
     // sdk won't pass the apdu message if device is locked
     // keeping it for backwards compatibility
@@ -137,7 +128,7 @@ __Z_INLINE void handleGetAddr(volatile uint32_t *flags, volatile uint32_t *tx, u
     const key_kind_e key_type = get_key_type(addr_type);
 
     zxerr_t zxerr = app_fill_address(key_type);
-    if(zxerr != zxerr_ok){
+    if (zxerr != zxerr_ok) {
         *tx = 0;
         THROW(APDU_CODE_DATA_INVALID);
     }
@@ -178,19 +169,6 @@ __Z_INLINE void handleSign(volatile uint32_t *flags, volatile uint32_t *tx, uint
             *flags |= IO_ASYNCH_REPLY;
             break;
         }
-#ifdef SUPPORT_SR25519
-        case key_sr25519: {
-            zxerr_t err = app_sign_sr25519();
-            if(err != zxerr_ok){
-                *tx = 0;
-                THROW(APDU_CODE_DATA_INVALID);
-            }
-            view_review_init(tx_getItem, tx_getNumItems, app_return_sr25519);
-            view_review_show(REVIEW_TXN);
-            *flags |= IO_ASYNCH_REPLY;
-            break;
-        }
-#endif
         default: {
             THROW(APDU_CODE_DATA_INVALID);
         }
@@ -202,7 +180,7 @@ __Z_INLINE void handleSignRaw(volatile uint32_t *flags, volatile uint32_t *tx, u
     if (!process_chunk(tx, rx)) {
         THROW(APDU_CODE_OK);
     }
-    
+
     const uint8_t addr_type = G_io_apdu_buffer[OFFSET_P2];
     const key_kind_e key_type = get_key_type(addr_type);
 
@@ -222,19 +200,6 @@ __Z_INLINE void handleSignRaw(volatile uint32_t *flags, volatile uint32_t *tx, u
             *flags |= IO_ASYNCH_REPLY;
             break;
         }
-#ifdef SUPPORT_SR25519
-        case key_sr25519: {
-            zxerr_t err = app_sign_sr25519();
-            if(err != zxerr_ok){
-                *tx = 0;
-                THROW(APDU_CODE_DATA_INVALID);
-            }
-            view_review_init(tx_raw_getItem, tx_raw_getNumItems, app_return_sr25519);
-            view_review_show(REVIEW_TXN);
-            *flags |= IO_ASYNCH_REPLY;
-            break;
-        }
-#endif
         default: {
             THROW(APDU_CODE_DATA_INVALID);
         }
@@ -242,18 +207,14 @@ __Z_INLINE void handleSignRaw(volatile uint32_t *flags, volatile uint32_t *tx, u
 }
 
 #if defined(APP_TESTING)
-void handleTest(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
-    THROW(APDU_CODE_OK);
-}
+void handleTest(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) { THROW(APDU_CODE_OK); }
 #endif
 
 void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
     volatile uint16_t sw = 0;
 
-    BEGIN_TRY
-    {
-        TRY
-        {
+    BEGIN_TRY {
+        TRY {
 #ifdef RECOVERY_APP
             if (G_io_apdu_buffer[OFFSET_CLA] != CLA_RECOVERY) {
                 THROW(APDU_CODE_CLA_NOT_SUPPORTED);
@@ -292,7 +253,7 @@ void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
                 }
 
 #if defined(APP_TESTING)
-                    case INS_TEST: {
+                case INS_TEST: {
                     handleTest(flags, tx, rx);
                     THROW(APDU_CODE_OK);
                     break;
@@ -302,12 +263,8 @@ void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
                     THROW(APDU_CODE_INS_NOT_SUPPORTED);
             }
         }
-        CATCH(EXCEPTION_IO_RESET)
-        {
-            THROW(EXCEPTION_IO_RESET);
-        }
-        CATCH_OTHER(e)
-        {
+        CATCH(EXCEPTION_IO_RESET) { THROW(EXCEPTION_IO_RESET); }
+        CATCH_OTHER(e) {
             switch (e & 0xF000) {
                 case 0x6000:
                 case APDU_CODE_OK:
@@ -321,9 +278,7 @@ void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
             G_io_apdu_buffer[*tx + 1] = sw & 0xFF;
             *tx += 2;
         }
-        FINALLY
-        {
-        }
+        FINALLY {}
     }
     END_TRY;
 }
