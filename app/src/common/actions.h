@@ -55,7 +55,7 @@ __Z_INLINE key_kind_e get_key_type(uint8_t num) {
     if (num == 0) {
         return key_ed25519;
     }
-    return (key_kind_e)0xFF;  // Invalid key type
+    return key_invalid;  // Invalid key type
 }
 
 __Z_INLINE void app_reply_error() {

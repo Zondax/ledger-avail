@@ -82,6 +82,7 @@ uint16_t crypto_SS58EncodePubkey(uint8_t *buffer, uint16_t buffer_len, uint16_t 
     memcpy(unencoded + prefixSize, pubkey, 32);  // account id
     if (ss58hash((uint8_t *)unencoded, 32 + prefixSize, hash, 64) != CX_OK) {
         MEMZERO(unencoded, sizeof(unencoded));
+        MEMZERO(hash, sizeof(hash));
         return 0;
     }
     unencoded[32 + prefixSize] = hash[0];
@@ -90,8 +91,11 @@ uint16_t crypto_SS58EncodePubkey(uint8_t *buffer, uint16_t buffer_len, uint16_t 
     size_t outLen = buffer_len;
     if (encode_base58(unencoded, 34 + prefixSize, buffer, &outLen) != 0) {
         MEMZERO(unencoded, sizeof(unencoded));
+        MEMZERO(hash, sizeof(hash));
         return 0;
     }
 
+    MEMZERO(unencoded, sizeof(unencoded));
+    MEMZERO(hash, sizeof(hash));
     return outLen;
 }
